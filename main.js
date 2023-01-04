@@ -130,6 +130,11 @@ function init() {
 	if (window.location && window.location.hash) {
 		loadWKTfromURIFragment(window.location.hash);
 	}
+
+	$("#point").on("click", function () { selectGeom('Point') });
+	$("#line").on("click", function () { selectGeom('Line') });
+	$("#polygon").on("click", function () { selectGeom('Polygon') });
+
 	selectGeom('Polygon');
 	plotWKT();
 	changeUI();
