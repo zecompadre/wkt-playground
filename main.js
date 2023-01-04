@@ -92,42 +92,30 @@ function init() {
 		map.addInteraction(snap);
 	});
 
-
-
-	// document.getElementById("missing_wkt").style.display = "block";
 	createVector();
-	//raster = new ol.layer.Tile({ source: new ol.source.OSM() });
 
 	/*
-features.on('add', function (e) {
-
-		restoreDefaultColors();
-		features.forEach(toEPSG4326);
-		console.log(features.getArray());
-		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+	features.on('add', function (e) {
 	
-		console.log(multi);
-	
-		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-			rightHanded: true,
-		});
-		features.forEach(toEPSG3857);
-	
-});
-
-	map = new ol.Map({
-		layers: [raster, vector],
-		target: 'map',
-		view: new ol.View({
-			center: [-11000000, 4600000],
-			zoom: 4,
-		})
+			restoreDefaultColors();
+			features.forEach(toEPSG4326);
+			console.log(features.getArray());
+			multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+		
+			console.log(multi);
+		
+			document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+				rightHanded: true,
+			});
+			features.forEach(toEPSG3857);
+		
 	});
 	
-		if (window.location && window.location.hash) {
-			loadWKTfromURIFragment(window.location.hash);
-		}
-	*/
+	
+			if (window.location && window.location.hash) {
+				loadWKTfromURIFragment(window.location.hash);
+			}
+		*/
 	map = new ol.Map({
 		layers: [
 			new ol.layer.Tile({
@@ -177,7 +165,7 @@ features.on('add', function (e) {
 	//selectGeom('Polygon');
 	plotWKT();
 	changeUI();
-	//pasteWKT();
+	pasteWKT();
 }
 
 /**
@@ -199,22 +187,16 @@ function createVector() {
 function plotWKT() {
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
-
-	console.log("wkt_string", wkt_string);
-
 	if (wkt_string == '') {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
-		console.log("empty 1");
 		return;
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
-			console.log("new_feature", new_feature);
 		} catch (err) { }
 	}
 	if (!new_feature) {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
-		console.log("!new_feature");
 		return;
 	} else {
 		map.removeLayer(vector);
@@ -250,31 +232,12 @@ function plotWKT() {
 	map.getView().fit(extent, map.getSize());
 }
 
-
-
-
-
-function addInteraction(shape) {
-	draw = new ol.interaction.Draw({
-		features: features,
-		type: /** @type {ol.geom.GeometryType} */ shape,
-	});
-	map.addInteraction(draw);
-}
-
-
 function toEPSG4326(element, index, array) {
 	element = element.getGeometry().transform('EPSG:3857', 'EPSG:4326');
 }
 
 function toEPSG3857(element, index, array) {
 	element = element.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-}
-
-function selectGeom(shape) {
-	current_shape = shape;
-	map.removeInteraction(draw);
-	addInteraction(shape);
 }
 
 function copyWKT() {
@@ -310,24 +273,9 @@ function resizeText() {
 
 function changeUI() {
 	//document.querySelector('.btn-group-vertical').style.display = 'none';
-	document.getElementById('wktStringTextArea').style.fontSize = '0.75rem';
+	$("#wktStringTextArea").css({ fontSize: '0.75rem' });
 	window.onresize = resizeText;
 	resizeText();
-}
-
-function clearMap() {
-	map.removeLayer(vector);
-	features.clear();
-	vector = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			features: features,
-		}),
-		style: styles,
-	});
-	selectGeom(current_shape);
-	map.addLayer(vector);
-	document.getElementById('wktStringTextArea').value = '';
-	restoreDefaultColors();
 }
 
 function loadWKTfromURIFragment(fragment) {
