@@ -3,11 +3,11 @@ var source;
 var vector;
 var map;
 var features = new ol.Collection();
+var format = new ol.format.WKT();
 /*
 var typeSelect;
 var draw;
 var multi;
-var format = new ol.format.WKT();
 var current_shape = 'polygon';
 */
 var fill = new ol.style.Fill({
@@ -141,7 +141,6 @@ features.on('add', function (e) {
 			zoom: 4
 		})
 	});
-
 
 	map.on('pointermove', function (e) {
 		if (e.dragging) return;
