@@ -33,6 +33,7 @@ function init() {
 	// document.getElementById("missing_wkt").style.display = "block";
 	//createVector();
 	raster = new ol.layer.Tile({ source: new ol.source.OSM() });
+
 	/*
 features.on('add', function (e) {
 
