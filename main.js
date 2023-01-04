@@ -191,10 +191,9 @@ function createVector() {
  */
 function plotWKT() {
 	var new_feature;
-	wkt_string = document.getElementById('wktStringTextArea').value;
+	var wkt_string = $('#wktStringTextArea').val();
 	if (wkt_string == '') {
-		document.getElementById('wktStringTextArea').style.borderColor = 'red';
-		document.getElementById('wktStringTextArea').style.backgroundColor = '#F7E8F3';
+		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
 		return;
 	} else {
 		try {
@@ -202,8 +201,7 @@ function plotWKT() {
 		} catch (err) { }
 	}
 	if (!new_feature) {
-		document.getElementById('wktStringTextArea').style.borderColor = 'red';
-		document.getElementById('wktStringTextArea').style.backgroundColor = '#F7E8F3';
+		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
 		return;
 	} else {
 		map.removeLayer(vector);
@@ -219,6 +217,7 @@ function plotWKT() {
 	});
 	selectGeom(current_shape);
 	map.addLayer(vector);
+
 	derived_feature = features.getArray()[0];
 	extent = derived_feature.getGeometry().getExtent();
 	minx = derived_feature.getGeometry().getExtent()[0];
@@ -227,12 +226,14 @@ function plotWKT() {
 	maxy = derived_feature.getGeometry().getExtent()[3];
 	centerx = (minx + maxx) / 2;
 	centery = (miny + maxy) / 2;
+
 	map.setView(
 		new ol.View({
 			center: [centerx, centery],
 			zoom: 8,
 		}),
 	);
+
 	map.getView().fit(extent, map.getSize());
 }
 
