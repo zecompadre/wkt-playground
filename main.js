@@ -30,63 +30,7 @@ var styles = [
 ];
 
 function init() {
-	// document.getElementById("missing_wkt").style.display = "block";
-	createVector();
-	raster = new ol.layer.Tile({ source: new ol.source.OSM() });
 
-	/*
-features.on('add', function (e) {
-
-		restoreDefaultColors();
-		features.forEach(toEPSG4326);
-		console.log(features.getArray());
-		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-	
-		console.log(multi);
-	
-		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-			rightHanded: true,
-		});
-		features.forEach(toEPSG3857);
-	
-});
-*/
-	map = new ol.Map({
-		layers: [raster, vector],
-		target: 'map',
-		view: new ol.View({
-			center: [-11000000, 4600000],
-			zoom: 4,
-		})
-	});
-	/*
-		if (window.location && window.location.hash) {
-			loadWKTfromURIFragment(window.location.hash);
-		}
-	*/
-	map.on('pointermove', function (e) {
-		if (e.dragging) return;
-		var
-			pixel = map.getEventPixel(e.originalEvent),
-			hit = map.hasFeatureAtPixel(pixel);
-		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-	});
-
-	document.getElementById('js-remove').addEventListener('click', function () {
-		vector.getSource().removeFeature(selectedFeature);
-		overlay.setPosition(undefined);
-		interaction.getFeatures().clear();
-	});
-
-	var remove_b = document.getElementById('js-overlay');
-	var overlay = new ol.Overlay({
-		element: remove_b
-	});
-	map.addOverlay(overlay);
-	document.getElementById('js-overlay').style.display = 'block';
-	var selectedFeature;
-	var button = $('#pan').button('toggle');
-	var interaction;
 
 	$('div.btn-group button').on('click', function (event) {
 		var id = event.target.id;
@@ -147,6 +91,81 @@ features.on('add', function (e) {
 		});
 		map.addInteraction(snap);
 	});
+
+
+
+	// document.getElementById("missing_wkt").style.display = "block";
+	createVector();
+	//raster = new ol.layer.Tile({ source: new ol.source.OSM() });
+
+	/*
+features.on('add', function (e) {
+
+		restoreDefaultColors();
+		features.forEach(toEPSG4326);
+		console.log(features.getArray());
+		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+	
+		console.log(multi);
+	
+		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+			rightHanded: true,
+		});
+		features.forEach(toEPSG3857);
+	
+});
+
+	map = new ol.Map({
+		layers: [raster, vector],
+		target: 'map',
+		view: new ol.View({
+			center: [-11000000, 4600000],
+			zoom: 4,
+		})
+	});
+	
+		if (window.location && window.location.hash) {
+			loadWKTfromURIFragment(window.location.hash);
+		}
+	*/
+	var map = new ol.Map({
+		layers: [
+			new ol.layer.Tile({
+				source: new ol.source.OSM()
+			}),
+			vector
+		],
+		target: 'map',
+		view: new ol.View({
+			center: [-11000000, 4600000],
+			zoom: 4
+		})
+	});
+
+
+	map.on('pointermove', function (e) {
+		if (e.dragging) return;
+		var
+			pixel = map.getEventPixel(e.originalEvent),
+			hit = map.hasFeatureAtPixel(pixel);
+		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+	});
+
+	document.getElementById('js-remove').addEventListener('click', function () {
+		vector.getSource().removeFeature(selectedFeature);
+		overlay.setPosition(undefined);
+		interaction.getFeatures().clear();
+	});
+
+	var remove_b = document.getElementById('js-overlay');
+	var overlay = new ol.Overlay({
+		element: remove_b
+	});
+	map.addOverlay(overlay);
+	document.getElementById('js-overlay').style.display = 'block';
+	var selectedFeature;
+	var button = $('#pan').button('toggle');
+	var interaction;
 
 	//selectGeom('Polygon');
 	plotWKT();
