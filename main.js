@@ -31,7 +31,6 @@ var styles = [
 
 function init() {
 
-
 	$('div.btn-group button').on('click', function (event) {
 		var id = event.target.id;
 		button.button('toggle');
@@ -82,7 +81,8 @@ function init() {
 
 				});
 				break;
-
+			case "draw":
+				break;
 			default:
 				break;
 		}
@@ -165,6 +165,14 @@ features.on('add', function (e) {
 	var selectedFeature;
 	var button = $('#pan').button('toggle');
 	var interaction;
+
+	$('#wktStringTextArea').on("click", function () {
+		$(this).css({ borderColor: '', backgroundColor: '' });
+	});
+
+	$('#wktStringTextArea').on("change", function () {
+		$("#draw").trigger("click");
+	});
 
 	//selectGeom('Polygon');
 	plotWKT();
@@ -305,11 +313,6 @@ function changeUI() {
 	document.getElementById('wktStringTextArea').style.fontSize = '0.75rem';
 	window.onresize = resizeText;
 	resizeText();
-}
-
-function restoreDefaultColors() {
-	document.getElementById('wktStringTextArea').style.borderColor = '';
-	document.getElementById('wktStringTextArea').style.backgroundColor = '';
 }
 
 function clearMap() {
