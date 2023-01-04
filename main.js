@@ -119,6 +119,7 @@ function init() {
 
 		features.forEach(toEPSG3857);
 	});
+
 	map = new ol.Map({
 		layers: [raster, vector],
 		target: 'map',
@@ -131,9 +132,81 @@ function init() {
 		loadWKTfromURIFragment(window.location.hash);
 	}
 
-	$("#point").on("click", function () { selectGeom('Point') });
-	$("#line").on("click", function () { selectGeom('Line') });
-	$("#polygon").on("click", function () { selectGeom('Polygon') });
+	document.getElementById('js-remove').addEventListener('click', function () {
+		vector.getSource().removeFeature(selectedFeature);
+		overlay.setPosition(undefined);
+		interaction.getFeatures().clear();
+	});
+
+	var remove_b = document.getElementById('js-overlay');
+	var overlay = new ol.Overlay({
+		element: remove_b
+	});
+	map.addOverlay(overlay);
+	document.getElementById('js-overlay').style.display = 'block';
+	var selectedFeature;
+	var button = $('#pan').button('toggle');
+	var interaction;
+
+	$('div.btn-group button').on('click', function (event) {
+		var id = event.target.id;
+		button.button('toggle');
+		button = $('#' + id).button('toggle');
+		map.removeInteraction(interaction);
+
+		switch (id) {
+			case "point":
+				interaction = new ol.interaction.Draw({
+					type: 'Point',
+					source: vector.getSource()
+				});
+				map.addInteraction(interaction);
+				break;
+			case "line":
+				interaction = new ol.interaction.Draw({
+					type: 'LineString',
+					source: vector.getSource()
+				});
+
+				map.addInteraction(interaction);
+				break;
+			case "polygon":
+				interaction = new ol.interaction.Draw({
+					type: 'Polygon',
+					source: vector.getSource()
+				});
+				map.addInteraction(interaction);
+				break;
+			case "modify":
+
+				interaction = new ol.interaction.Modify({
+					features: new ol.Collection(vector.getSource().getFeatures())
+				});
+				map.addInteraction(interaction);
+
+				break;
+			case "delete":
+				interaction = new ol.interaction.Select({
+					condition: ol.events.condition.click,
+					layers: [vector]
+				});
+				map.addInteraction(interaction);
+
+				interaction.on('select', function (event) {
+					selectedFeature = event.selected[0];
+					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
+
+				});
+				break;
+
+			default:
+				break;
+		}
+		var snap = new ol.interaction.Snap({
+			source: vector.getSource()
+		});
+		map.addInteraction(snap);
+	});
 
 	selectGeom('Polygon');
 	plotWKT();

@@ -1,3 +1,34 @@
+.ol-attribution>ul {
+	font-size: 1.6rem;
+}
+
+.overlay {
+	display: none;
+	position: absolute;
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	width: 180px;
+	top: -76px;
+	left: -90px;
+}
+
+.overlay:after {
+	top: 100%;
+	border: 10px solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	border-top-color: rgba(255, 255, 255, 0.9);
+}
+
+.overlay button+button {
+	float: right;
+}
+
 @media only screen and (min-width: 1366px) {
 	.map {
 		height: 400px !important;
