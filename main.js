@@ -29,8 +29,6 @@ var styles = [
 	}),
 ];
 
-$(document).ready(init);
-
 function init() {
 
 
@@ -332,3 +330,5 @@ function loadWKTfromURIFragment(fragment) {
 	var wkt = window.location.hash.slice(1);
 	document.getElementById('wktStringTextArea').value = decodeURI(wkt);
 }
+
+$(document).ready(init);
