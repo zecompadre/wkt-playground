@@ -29,7 +29,7 @@ var styles = [
 	}),
 ];
 
-$(document).on("ready", init);
+$(document).ready(init);
 
 function init() {
 
