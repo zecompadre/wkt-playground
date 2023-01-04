@@ -33,22 +33,23 @@ function init() {
 	// document.getElementById("missing_wkt").style.display = "block";
 	//createVector();
 	raster = new ol.layer.Tile({ source: new ol.source.OSM() });
-	features.on('add', function (e) {
-		/*
-				restoreDefaultColors();
-				features.forEach(toEPSG4326);
-				console.log(features.getArray());
-				multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-		
-				console.log(multi);
-		
-				document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-					rightHanded: true,
-				});
-				features.forEach(toEPSG3857);
-		*/
-	});
+	/*
+features.on('add', function (e) {
 
+		restoreDefaultColors();
+		features.forEach(toEPSG4326);
+		console.log(features.getArray());
+		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+	
+		console.log(multi);
+	
+		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+			rightHanded: true,
+		});
+		features.forEach(toEPSG3857);
+	
+});
+*/
 	map = new ol.Map({
 		layers: [raster, vector],
 		target: 'map',
