@@ -29,6 +29,8 @@ var styles = [
 	}),
 ];
 
+$(document).on("ready", init);
+
 function init() {
 
 
@@ -192,6 +194,9 @@ function createVector() {
 function plotWKT() {
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
+
+	console.log(wkt_string);
+
 	if (wkt_string == '') {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
 		return;
