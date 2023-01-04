@@ -1,3 +1,4 @@
+/*
 var raster;
 var source;
 var vector;
@@ -8,6 +9,7 @@ var multi;
 var features = new ol.Collection();
 var format = new ol.format.WKT();
 var current_shape = 'polygon';
+*/
 var fill = new ol.style.Fill({
 	color: 'rgba(0,91,170, 0.2)',
 });
@@ -83,9 +85,10 @@ function init() {
 	var selectedFeature;
 	var button = $('#pan').button('toggle');
 	var interaction;
-
+	var features;
 	$('div.btn-group button').on('click', function (event) {
 		var id = event.target.id;
+		var features;
 		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
