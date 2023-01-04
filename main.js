@@ -192,18 +192,21 @@ function plotWKT() {
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
 
-	console.log(wkt_string);
+	console.log("wkt_string", wkt_string);
 
 	if (wkt_string == '') {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
+		console.log("empty 1");
 		return;
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
+			console.log("new_feature", new_feature);
 		} catch (err) { }
 	}
 	if (!new_feature) {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
+		console.log("!new_feature");
 		return;
 	} else {
 		map.removeLayer(vector);
