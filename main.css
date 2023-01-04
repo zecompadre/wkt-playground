@@ -34,31 +34,31 @@
 }
 
 @media only screen and (min-width: 1366px) {
-	.mapx {
+	.map {
 		height: 400px !important;
 	}
 }
 
 @media only screen and (min-width: 1440px) {
-	.mapx {
+	.map {
 		height: 500px !important;
 	}
 }
 
 @media only screen and (min-width: 1680px) {
-	.mapx {
+	.map {
 		height: 650px !important;
 	}
 }
 
 @media only screen and (min-width: 1920px) {
-	.mapx {
+	.map {
 		height: 700px !important;
 	}
 }
 
 @media only screen and (min-width: 2560px) {
-	.mapx {
+	.map {
 		height: 950px !important;
 	}
 }
