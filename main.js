@@ -55,11 +55,11 @@ function init() {
 			zoom: 4,
 		})
 	});
-
-	if (window.location && window.location.hash) {
-		loadWKTfromURIFragment(window.location.hash);
-	}
-
+	/*
+		if (window.location && window.location.hash) {
+			loadWKTfromURIFragment(window.location.hash);
+		}
+	*/
 	map.on('pointermove', function (e) {
 		if (e.dragging) return;
 		var
