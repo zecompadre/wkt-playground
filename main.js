@@ -154,7 +154,7 @@ features.on('add', function (e) {
 	});
 
 	//selectGeom('Polygon');
-	//plotWKT();
+	plotWKT();
 	changeUI();
 	//pasteWKT();
 }
