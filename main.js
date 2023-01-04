@@ -27,97 +27,24 @@ var styles = [
 	}),
 ];
 
-function addInteraction(shape) {
-	draw = new ol.interaction.Draw({
-		features: features,
-		type: /** @type {ol.geom.GeometryType} */ shape,
-	});
-	map.addInteraction(draw);
-}
-/**
- * Let user change the geometry type.
- * @param {Event} e Change event.
- */
-function createVector() {
-	vector = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			features: features,
-		}),
-		style: styles,
-	});
-}
-
-function toEPSG4326(element, index, array) {
-	element = element.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-}
-
-function toEPSG3857(element, index, array) {
-	element = element.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-}
-
-function selectGeom(shape) {
-	current_shape = shape;
-	map.removeInteraction(draw);
-	addInteraction(shape);
-}
-
-function copyWKT() {
-	var textarea = document.getElementById('wktStringTextArea');
-	textarea.select();
-	document.execCommand("copy");
-}
-
-async function pasteWKT() {
-	try {
-		const permission = await navigator.permissions.query({ name: 'clipboard-read' });
-		if (permission.state === 'denied') {
-			throw new Error('Not allowed to read clipboard.');
-		}
-		const text = await navigator.clipboard.readText();
-		if (text.indexOf('POLYGON') !== -1) {
-			document.getElementById('wktStringTextArea').value = text;
-			plotWKT();
-		}
-	} catch (error) {
-		console.error('pasteWKT:', error.message);
-	}
-}
-
-function resizeText() {
-	var doc = $(document).height();
-	var bar = $('.navbar').outerHeight();
-	var map = $('#map').outerHeight();
-	var buttons = $('.btn-group.btn-group-md').outerHeight();
-	var text = doc - (bar + map + buttons + 30);
-	$('#wktStringTextArea').height(text);
-}
-
 function init() {
 	// document.getElementById("missing_wkt").style.display = "block";
-	createVector();
+	//createVector();
 	raster = new ol.layer.Tile({ source: new ol.source.OSM() });
 	features.on('add', function (e) {
-		restoreDefaultColors();
-		features.forEach(toEPSG4326);
-		console.log(features.getArray());
-		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-
-		console.log(multi);
-
-		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-			rightHanded: true,
-		});
-
 		/*
-		document.getElementById('wktStringTextArea').value = format.writeFeatures(
-			multi.getPolygons(),
-			{
-				rightHanded: true
-			}
-		);
+				restoreDefaultColors();
+				features.forEach(toEPSG4326);
+				console.log(features.getArray());
+				multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+		
+				console.log(multi);
+		
+				document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+					rightHanded: true,
+				});
+				features.forEach(toEPSG3857);
 		*/
-
-		features.forEach(toEPSG3857);
 	});
 
 	map = new ol.Map({
@@ -128,9 +55,18 @@ function init() {
 			zoom: 4,
 		})
 	});
+
 	if (window.location && window.location.hash) {
 		loadWKTfromURIFragment(window.location.hash);
 	}
+
+	map.on('pointermove', function (e) {
+		if (e.dragging) return;
+		var
+			pixel = map.getEventPixel(e.originalEvent),
+			hit = map.hasFeatureAtPixel(pixel);
+		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+	});
 
 	document.getElementById('js-remove').addEventListener('click', function () {
 		vector.getSource().removeFeature(selectedFeature);
@@ -208,10 +144,75 @@ function init() {
 		map.addInteraction(snap);
 	});
 
-	selectGeom('Polygon');
-	plotWKT();
-	changeUI();
-	pasteWKT();
+	//selectGeom('Polygon');
+	//plotWKT();
+	//changeUI();
+	//pasteWKT();
+}
+
+function addInteraction(shape) {
+	draw = new ol.interaction.Draw({
+		features: features,
+		type: /** @type {ol.geom.GeometryType} */ shape,
+	});
+	map.addInteraction(draw);
+}
+/**
+ * Let user change the geometry type.
+ * @param {Event} e Change event.
+ */
+function createVector() {
+	vector = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			features: features,
+		}),
+		style: styles,
+	});
+}
+
+function toEPSG4326(element, index, array) {
+	element = element.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+}
+
+function toEPSG3857(element, index, array) {
+	element = element.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+}
+
+function selectGeom(shape) {
+	current_shape = shape;
+	map.removeInteraction(draw);
+	addInteraction(shape);
+}
+
+function copyWKT() {
+	var textarea = document.getElementById('wktStringTextArea');
+	textarea.select();
+	document.execCommand("copy");
+}
+
+async function pasteWKT() {
+	try {
+		const permission = await navigator.permissions.query({ name: 'clipboard-read' });
+		if (permission.state === 'denied') {
+			throw new Error('Not allowed to read clipboard.');
+		}
+		const text = await navigator.clipboard.readText();
+		if (text.indexOf('POLYGON') !== -1) {
+			document.getElementById('wktStringTextArea').value = text;
+			plotWKT();
+		}
+	} catch (error) {
+		console.error('pasteWKT:', error.message);
+	}
+}
+
+function resizeText() {
+	var doc = $(document).height();
+	var bar = $('.navbar').outerHeight();
+	var map = $('#map').outerHeight();
+	var buttons = $('.btn-group.btn-group-md').outerHeight();
+	var text = doc - (bar + map + buttons + 30);
+	$('#wktStringTextArea').height(text);
 }
 
 function changeUI() {
