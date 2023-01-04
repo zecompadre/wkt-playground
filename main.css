@@ -29,8 +29,12 @@
 	float: right;
 }
 
+.map {
+	height: 400px !important;
+}
+
 @media only screen and (min-width: 1366px) {
-	.mapx {
+	.map {
 		height: 400px !important;
 	}
 }
