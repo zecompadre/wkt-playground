@@ -220,7 +220,7 @@ function plotWKT() {
 		}),
 		style: styles,
 	});
-	selectGeom(current_shape);
+
 	map.addLayer(vector);
 
 	derived_feature = features.getArray()[0];
