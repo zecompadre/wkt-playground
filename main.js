@@ -51,6 +51,10 @@ features.on('add', function (e) {
 	
 });
 */
+	var vector = new ol.layer.Vector({
+		source: new ol.source.Vector()
+	});
+
 	map = new ol.Map({
 		layers: [raster, vector],
 		target: 'map',
