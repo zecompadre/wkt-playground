@@ -100,6 +100,7 @@ function init() {
 					source: vector.getSource()
 				});
 				map.addInteraction(interaction);
+
 				console.log("interaction: ", interaction);
 
 				break;
