@@ -82,6 +82,7 @@ function init() {
 				});
 				break;
 			case "draw":
+
 				break;
 			default:
 				break;
@@ -94,21 +95,8 @@ function init() {
 
 	createVector();
 
-
-	features.on('add', function (e) {
-
-		$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
-
-		features.forEach(toEPSG4326);
-		console.log(features.getArray());
-		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-
-		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-			rightHanded: true,
-		});
-		features.forEach(toEPSG3857);
-
-	});
+	features.on('add', updateWKY);
+	features.on('remove', updateWKY);
 
 	map = new ol.Map({
 		layers: [
@@ -274,6 +262,19 @@ function loadWKTfromURIFragment(fragment) {
 	// remove first character from fragment as it contains '#'
 	var wkt = window.location.hash.slice(1);
 	document.getElementById('wktStringTextArea').value = decodeURI(wkt);
+}
+
+function updateWKY() {
+	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
+
+	features.forEach(toEPSG4326);
+	console.log(features.getArray());
+	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+
+	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+		rightHanded: true,
+	});
+	features.forEach(toEPSG3857);
 }
 
 $(document).ready(init);
