@@ -82,7 +82,7 @@ function init() {
 				});
 				break;
 			case "draw":
-
+				plotWKT();
 				break;
 			default:
 				break;
