@@ -84,6 +84,9 @@ function init() {
 			case "draw":
 				plotWKT();
 				break;
+			case "copy":
+				copyWKT();
+				break;
 			default:
 				break;
 		}
