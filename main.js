@@ -151,7 +151,7 @@ function init() {
 	});
 
 	$('#wktStringTextArea').on("change", function () {
-		$("#draw").trigger("click");
+		plotWKT();
 	});
 
 	plotWKT();
@@ -306,8 +306,6 @@ function updateWKY() {
 
 	features.forEach(toEPSG4326);
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-	console.log(multi);
-
 	var polygons = [];
 	var shapeType = "POLYGON((###))";
 	multi.forEach(polygon => {
