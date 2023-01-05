@@ -277,10 +277,37 @@ function loadWKTfromURIFragment(fragment) {
 function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
+
+
+	/*
+		var data = [];
+		var shapeType = "POLYGON((###))";
+		window.DrawManager.getCollection().forEach(col => {
+			var polygons = col.latLngs.cd.reduce((x, c, v) => {
+				var data = c.cd.reduce((k, b, u) => {
+					k.push(b.lng() + " " + b.lat());
+					return k;
+				}, []);
+				x.push(data);
+				return x;
+			}, []);
+	
+			data.push(polygons.join(","));
+		});
+	
+		if (data.length > 1) {
+			shapeType = "MULTIPOLYGON(((###)))";
+		}
+	
+		copyToCipboard(shapeType.replace("###", data.join("),(")));
+	*/
+
+
+
 	features.forEach(toEPSG4326);
 	console.log(features.getArray());
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-
+	console.log(multi);
 	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
 		rightHanded: true,
 	});
