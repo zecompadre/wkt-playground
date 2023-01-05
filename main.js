@@ -5,6 +5,7 @@ var map;
 var features = new ol.Collection();
 var format = new ol.format.WKT();
 var selectedFeature;
+var interaction;
 /*
 var typeSelect;
 var draw;
@@ -188,7 +189,6 @@ function init() {
 	document.getElementById('wkt-overlay').style.display = 'block';
 
 	var button = $('#pan').button('toggle');
-	var interaction;
 
 	$('#wktStringTextArea').on("click", function () {
 		$(this).css({ borderColor: '', backgroundColor: '' });
