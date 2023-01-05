@@ -35,7 +35,7 @@ function init() {
 		var id = event.target.id;
 		button.button('toggle');
 
-		console.log("id", id);
+		console.log("id", event.target, id);
 
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
