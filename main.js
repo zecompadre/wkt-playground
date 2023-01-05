@@ -305,9 +305,26 @@ function updateWKY() {
 
 
 	features.forEach(toEPSG4326);
-	console.log(features.getArray());
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
 	console.log(multi);
+
+	var polygons = [];
+	var shapeType = "POLYGON((###))";
+	multi.forEach(polygon => {
+		var data = [];
+		polygon.forEach(coord => {
+			data.push(coord[0] + " " + coord[1]);
+		});
+		polygons.push(data.join(","));
+	});
+
+	if (polygons.length > 1) {
+		shapeType = "MULTIPOLYGON(((###)))";
+	}
+	shapeType.replace("###", polygons.join("),("));
+
+	console.log(shapeType);
+
 	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
 		rightHanded: true,
 	});
