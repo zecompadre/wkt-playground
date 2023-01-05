@@ -302,8 +302,6 @@ function updateWKY() {
 		copyToCipboard(shapeType.replace("###", data.join("),(")));
 	*/
 
-
-
 	features.forEach(toEPSG4326);
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
 
