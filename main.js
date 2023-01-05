@@ -306,6 +306,9 @@ function updateWKY() {
 
 	features.forEach(toEPSG4326);
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+
+	console.log("multi:", multi);
+
 	var polygons = [];
 	var shapeType = "POLYGON((###))";
 	multi.forEach(polygon => {
@@ -321,7 +324,7 @@ function updateWKY() {
 	}
 	shapeType.replace("###", polygons.join("),("));
 
-	console.log(polygons, shapeType);
+	console.log("shapeType:", polygons, shapeType);
 
 	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
 		rightHanded: true,
