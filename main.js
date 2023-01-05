@@ -100,7 +100,7 @@ function init() {
 					source: vector.getSource()
 				});
 				map.addInteraction(interaction);
-				interaction.setStyle(selected);
+				console.log("interaction: ", interaction);
 
 				break;
 			case "modify":
