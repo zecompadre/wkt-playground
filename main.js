@@ -32,10 +32,15 @@ var styles = [
 function init() {
 
 	$('div.btn-group button').on('click', function (event) {
-		var id = event.target.id;
+
+		var target = event.target;
+		if (event.target.tagName === "I")
+			target = target.parentElement;
+
+		var id = target.id;
 		button.button('toggle');
 
-		console.log("id", event.target, id);
+		console.log("id", target, id);
 
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
@@ -125,18 +130,18 @@ function init() {
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 	});
 
-	document.getElementById('js-remove').addEventListener('click', function () {
+	document.getElementById('wkt-remove').addEventListener('click', function () {
 		vector.getSource().removeFeature(selectedFeature);
 		overlay.setPosition(undefined);
 		interaction.getFeatures().clear();
 	});
 
-	var remove_b = document.getElementById('js-overlay');
+	var remove_b = document.getElementById('wkt-overlay');
 	var overlay = new ol.Overlay({
 		element: remove_b
 	});
 	map.addOverlay(overlay);
-	document.getElementById('js-overlay').style.display = 'block';
+	document.getElementById('wkt-overlay').style.display = 'block';
 	var selectedFeature;
 	var button = $('#pan').button('toggle');
 	var interaction;
