@@ -116,6 +116,9 @@ function init() {
 				map.addInteraction(interaction);
 
 				interaction.on('select', function (event) {
+					if (selectedFeature)
+						selectedFeature.setStyle(styles);
+
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
 						overlay.setPosition(selectedFeature.getGeometry().getExtent());
@@ -123,7 +126,6 @@ function init() {
 					}
 					else {
 						overlay.setPosition(undefined);
-						vector.setStyle(styles);
 					}
 
 				});
