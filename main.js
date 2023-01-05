@@ -4,6 +4,7 @@ var vector;
 var map;
 var features = new ol.Collection();
 var format = new ol.format.WKT();
+var selectedFeature;
 /*
 var typeSelect;
 var draw;
@@ -145,7 +146,7 @@ function init() {
 	});
 	map.addOverlay(overlay);
 	document.getElementById('wkt-overlay').style.display = 'block';
-	var selectedFeature;
+
 	var button = $('#pan').button('toggle');
 	var interaction;
 
