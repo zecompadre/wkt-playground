@@ -78,7 +78,6 @@ function init() {
 				interaction.on('select', function (event) {
 					selectedFeature = event.selected[0];
 					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
-
 				});
 				break;
 			case "draw":
