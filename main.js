@@ -94,28 +94,21 @@ function init() {
 
 	createVector();
 
-	/*
+
 	features.on('add', function (e) {
-	
-			restoreDefaultColors();
-			features.forEach(toEPSG4326);
-			console.log(features.getArray());
-			multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-		
-			console.log(multi);
-		
-			document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-				rightHanded: true,
-			});
-			features.forEach(toEPSG3857);
-		
+
+		restoreDefaultColors();
+		features.forEach(toEPSG4326);
+		console.log(features.getArray());
+		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
+
+		document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
+			rightHanded: true,
+		});
+		features.forEach(toEPSG3857);
+
 	});
-	
-	
-			if (window.location && window.location.hash) {
-				loadWKTfromURIFragment(window.location.hash);
-			}
-		*/
+
 	map = new ol.Map({
 		layers: [
 			new ol.layer.Tile({
@@ -162,7 +155,6 @@ function init() {
 		$("#draw").trigger("click");
 	});
 
-	//selectGeom('Polygon');
 	plotWKT();
 	changeUI();
 	pasteWKT();
@@ -272,7 +264,6 @@ function resizeText() {
 }
 
 function changeUI() {
-	//document.querySelector('.btn-group-vertical').style.display = 'none';
 	$("#wktStringTextArea").css({ fontSize: '0.75rem' });
 	window.onresize = resizeText;
 	resizeText();
