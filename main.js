@@ -323,7 +323,7 @@ function updateWKY() {
 	}
 	shapeType.replace("###", polygons.join("),("));
 
-	console.log(shapeType);
+	console.log(polygons, shapeType);
 
 	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
 		rightHanded: true,
