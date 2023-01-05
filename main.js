@@ -97,7 +97,8 @@ function init() {
 
 	features.on('add', function (e) {
 
-		restoreDefaultColors();
+		$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
+
 		features.forEach(toEPSG4326);
 		console.log(features.getArray());
 		multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
