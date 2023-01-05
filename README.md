@@ -4,4 +4,4 @@ Plot [WKT](https://en.wikipedia.org/wiki/Well-known_text) shapes on [OpenSteetMa
 
 See it working https://wkt-playground.zecompadre.com/wkt-playground
 
-Original Code: [clydedacruz](https://github.com/clydedacruz/openstreetmap-wkt-playground)
+Original Code/Inspiration: [clydedacruz](https://github.com/clydedacruz/openstreetmap-wkt-playground)
