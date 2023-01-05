@@ -123,7 +123,7 @@ function init() {
 					}
 					else {
 						overlay.setPosition(undefined);
-						selectedFeature.setStyle(styles);
+						vector.setStyle(styles);
 					}
 
 				});
