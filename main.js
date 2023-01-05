@@ -29,6 +29,25 @@ var styles = [
 	}),
 ];
 
+var normal = new ol.style.Style({
+	stroke: new ol.style.Stroke({
+		color: 'gray',
+		width: 1,
+	}),
+	fill: new ol.style.Fill({
+		color: 'rgba(20,20,20,0.9)',
+	}),
+});
+var selected = new ol.style.Style({
+	stroke: new ol.style.Stroke({
+		color: 'rgba(200,20,20,0.8)',
+		width: 2,
+	}),
+	fill: new ol.style.Fill({
+		color: 'rgba(200,20,20,0.4)',
+	}),
+});
+
 function init() {
 
 	$('div.btn-group button').on('click', function (event) {
@@ -168,7 +187,7 @@ function createVector() {
 		source: new ol.source.Vector({
 			features: features,
 		}),
-		style: styles,
+		style: normal,
 	});
 }
 
@@ -199,7 +218,7 @@ function plotWKT() {
 		source: new ol.source.Vector({
 			features: features,
 		}),
-		style: styles,
+		style: normal,
 	});
 
 	map.addLayer(vector);
