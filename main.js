@@ -105,10 +105,8 @@ function init() {
 
 				interaction.on('select', function (event) {
 					selectedFeature = event.selected[0];
-
-					selectedFeature.setStyle(selected);
-
 					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
+					selectedFeature.setStyle(selected);
 				});
 				break;
 			case "draw":
@@ -121,8 +119,7 @@ function init() {
 				break;
 		}
 		var snap = new ol.interaction.Snap({
-			source: vector.getSource(),
-			style: styles,
+			source: vector.getSource()
 		});
 		map.addInteraction(snap);
 	});
