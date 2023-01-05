@@ -31,6 +31,18 @@ var styles = [
 	})
 ];
 
+var selected = [
+	new ol.style.Style({
+		image: new ol.style.Circle({
+			fill: fill,
+			stroke: stroke,
+			radius: 5,
+		}),
+		fill: fill,
+		stroke: stroke,
+	})
+];
+
 function init() {
 
 	$('div.btn-group button').on('click', function (event) {
@@ -87,6 +99,7 @@ function init() {
 
 				interaction.on('select', function (event) {
 					selectedFeature = event.selected[0];
+
 					console.log(selectedFeature);
 
 					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
@@ -102,7 +115,8 @@ function init() {
 				break;
 		}
 		var snap = new ol.interaction.Snap({
-			source: vector.getSource()
+			source: vector.getSource(),
+			style: styles,
 		});
 		map.addInteraction(snap);
 	});
