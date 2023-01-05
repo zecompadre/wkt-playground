@@ -312,7 +312,7 @@ function updateWKY() {
 	var shapeType = "POLYGON((###))";
 	multi.forEach(polygon => {
 		var data = [];
-		polygon.forEach(coord => {
+		polygon[0].forEach(coord => {
 			data.push(coord[0] + " " + coord[1]);
 		});
 		polygons.push(data.join(","));
