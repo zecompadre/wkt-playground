@@ -17,6 +17,7 @@ var stroke = new ol.style.Stroke({
 	color: '#005baa',
 	width: 2,
 });
+
 var styles = [
 	new ol.style.Style({
 		image: new ol.style.Circle({
@@ -26,15 +27,6 @@ var styles = [
 		}),
 		fill: fill,
 		stroke: stroke,
-	}),
-	new ol.style.Style({
-		stroke: new ol.style.Stroke({
-			color: 'rgba(200,20,20,0.8)',
-			width: 2,
-		}),
-		fill: new ol.style.Fill({
-			color: 'rgba(200,20,20,0.4)',
-		}),
 	})
 ];
 
@@ -94,6 +86,8 @@ function init() {
 
 				interaction.on('select', function (event) {
 					selectedFeature = event.selected[0];
+					console.log(selectedFeature);
+
 					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
 				});
 				break;
@@ -285,31 +279,6 @@ function loadWKTfromURIFragment(fragment) {
 
 function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
-
-
-
-	/*
-		var data = [];
-		var shapeType = "POLYGON((###))";
-		window.DrawManager.getCollection().forEach(col => {
-			var polygons = col.latLngs.cd.reduce((x, c, v) => {
-				var data = c.cd.reduce((k, b, u) => {
-					k.push(b.lng() + " " + b.lat());
-					return k;
-				}, []);
-				x.push(data);
-				return x;
-			}, []);
-	
-			data.push(polygons.join(","));
-		});
-	
-		if (data.length > 1) {
-			shapeType = "MULTIPOLYGON(((###)))";
-		}
-	
-		copyToCipboard(shapeType.replace("###", data.join("),(")));
-	*/
 
 	features.forEach(toEPSG4326);
 	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
