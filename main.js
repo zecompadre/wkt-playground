@@ -34,12 +34,18 @@ var styles = [
 var selected = [
 	new ol.style.Style({
 		image: new ol.style.Circle({
-			fill: fill,
+			fill: new ol.style.Fill({
+				color: 'rgba(255,0,0, 0.2)',
+			}),
 			stroke: stroke,
 			radius: 5,
 		}),
-		fill: fill,
-		stroke: stroke,
+		fill: new ol.style.Fill({
+			color: 'rgba(255,0,0, 0.2)',
+		}),
+		stroke: new ol.style.Fill({
+			color: 'rgba(255,0,0, 1)',
+		}),
 	})
 ];
 
@@ -99,10 +105,13 @@ function init() {
 
 				interaction.on('select', function (event) {
 					selectedFeature = event.selected[0];
-
-					console.log(selectedFeature);
-
-					(selectedFeature) ? overlay.setPosition(selectedFeature.getGeometry().getExtent()) : overlay.setPosition(undefined);
+					if (selectedFeature) {
+						selectedFeature.setStyle(selected);
+						overlay.setPosition(selectedFeature.getGeometry().getExtent());
+					}
+					else {
+						overlay.setPosition(undefined);
+					}
 				});
 				break;
 			case "draw":
