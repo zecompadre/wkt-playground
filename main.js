@@ -99,6 +99,8 @@ function init() {
 					source: vector.getSource()
 				});
 				map.addInteraction(interaction);
+				interaction.setStyle(selected);
+
 				break;
 			case "modify":
 
