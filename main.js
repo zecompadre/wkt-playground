@@ -22,12 +22,22 @@ var stroke = new ol.style.Stroke({
 var styles = [
 	new ol.style.Style({
 		image: new ol.style.Circle({
-			fill: fill,
-			stroke: stroke,
+			fill: new ol.style.Fill({
+				color: 'rgba(0,91,170, 0.2)',
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#005baa',
+				width: 2,
+			}),
 			radius: 5,
 		}),
-		fill: fill,
-		stroke: stroke,
+		fill: new ol.style.Fill({
+			color: 'rgba(0,91,170, 0.2)',
+		}),
+		stroke: new ol.style.Stroke({
+			color: '#005baa',
+			width: 2,
+		}),
 	})
 ];
 
@@ -37,13 +47,15 @@ var selected = [
 			fill: new ol.style.Fill({
 				color: 'rgba(255,0,0, 0.2)',
 			}),
-			stroke: stroke,
+			stroke: new ol.style.Stroke({
+				color: 'rgba(255,0,0, 1)',
+			}),
 			radius: 5,
 		}),
 		fill: new ol.style.Fill({
 			color: 'rgba(255,0,0, 0.2)',
 		}),
-		stroke: new ol.style.Fill({
+		stroke: new ol.style.Stroke({
 			color: 'rgba(255,0,0, 1)',
 		}),
 	})
