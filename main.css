@@ -39,8 +39,7 @@
 	min-width: 65px;
 }
 
-.btn-group>.btn:not(.active) {
-	color: #fff;
+.notactive {
 	background-color: #6c757d;
 	border-color: #6c757d;
 }

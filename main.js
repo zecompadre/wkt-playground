@@ -81,6 +81,9 @@ function init() {
 
 		resetColors();
 
+		$('div.btn-group label').addClass("notactive");
+		$('div.btn-group label.active').removeClass("notactive");
+
 		switch (id) {
 			case "point":
 				interaction = new ol.interaction.Draw({
