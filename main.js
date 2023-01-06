@@ -328,13 +328,10 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
-	multi = features.getArray().map((f) => f.getGeometry().getCoordinates());
-
-	//console.log("multi:", multi);
 
 	var polygons = [];
 	var shapeType = "POLYGON((###))";
-	multi.forEach(polygon => {
+	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
 		polygon[0].forEach(coord => {
 			data.push(coord[0] + " " + coord[1]);
@@ -346,14 +343,8 @@ function updateWKY() {
 		shapeType = "MULTIPOLYGON(((###)))";
 	}
 	shapeType = shapeType.replace("###", polygons.join("),("));
-
-	//console.log("shapeType:", polygons, shapeType);
 	document.getElementById('wktStringTextArea').value = shapeType;
-	/*
-	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
-		rightHanded: true,
-	});
-	*/
+
 	features.forEach(toEPSG3857);
 }
 
