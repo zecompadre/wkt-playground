@@ -75,7 +75,8 @@ function init() {
 	$('div.btn-group input').on('change', function (event) {
 
 		var target = event.target;
-		if (event.target.tagName !== "input")
+		console.log(target, event.target.tagName);
+		if (event.target.tagName !== "INPUT")
 			target = target.querySelector("input");
 
 		var id = target.id;
