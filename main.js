@@ -153,6 +153,7 @@ function init() {
 
 	features.on('add', updateWKY);
 	features.on('remove', updateWKY);
+	features.on('change', updateWKY);
 
 	map = new ol.Map({
 		layers: [
@@ -174,7 +175,6 @@ function init() {
 			pixel = map.getEventPixel(e.originalEvent),
 			hit = map.hasFeatureAtPixel(pixel);
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-		plotWKT();
 	});
 
 	document.getElementById('wkt-remove').addEventListener('click', function () {
