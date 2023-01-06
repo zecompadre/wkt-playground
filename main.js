@@ -7,7 +7,7 @@ var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
 
-var styles = [
+var defaultStyle =
 	new ol.style.Style({
 		image: new ol.style.Circle({
 			fill: new ol.style.Fill({
@@ -26,10 +26,9 @@ var styles = [
 			color: '#005baa',
 			width: 2,
 		}),
-	})
-];
+	});
 
-var selected = [
+var selectedStyle =
 	new ol.style.Style({
 		image: new ol.style.Circle({
 			fill: new ol.style.Fill({
@@ -46,10 +45,9 @@ var selected = [
 		stroke: new ol.style.Stroke({
 			color: 'rgba(255,0,0, 1)',
 		}),
-	})
-];
+	});
 
-var draw =
+var drawStyle =
 	new ol.style.Style({
 		image: new ol.style.Circle({
 			fill: new ol.style.Fill({
@@ -104,11 +102,9 @@ function init() {
 				interaction = new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vector.getSource(),
-					style: draw
+					style: drawStyle
 				});
 				map.addInteraction(interaction);
-
-				//console.log("interaction: ", interaction);
 
 				break;
 			case "modify":
@@ -128,7 +124,7 @@ function init() {
 
 				interaction.on('select', function (event) {
 					if (selectedFeature)
-						selectedFeature.setStyle(styles);
+						selectedFeature.setStyle(selectedStyle);
 
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
@@ -220,7 +216,7 @@ function createVector() {
 		source: new ol.source.Vector({
 			features: features,
 		}),
-		style: styles,
+		style: defaultStyle,
 	});
 }
 
@@ -251,7 +247,7 @@ function plotWKT() {
 		source: new ol.source.Vector({
 			features: features,
 		}),
-		style: styles,
+		style: defaultStyle,
 	});
 
 	map.addLayer(vector);
