@@ -76,7 +76,7 @@ function init() {
 
 		var target = event.target;
 		if (event.target.tagName !== "input")
-			target = target.parentElement;
+			target = target.querySelector("input");
 
 		var id = target.id;
 
