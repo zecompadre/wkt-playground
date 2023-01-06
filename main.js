@@ -80,13 +80,13 @@ function init() {
 
 		var id = target.id;
 
-		$('div.btn-group button').each(function () {
-			$('button').prop('disabled', (this.id !== id));
-		});
-
 		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
+
+		var active = $('div.btn-group button.active').length > 0;
+		if (active)
+			$('div.btn-group button:not(.active)').prop('disabled', true);
 
 		resetColors();
 
