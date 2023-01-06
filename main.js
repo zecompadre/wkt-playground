@@ -79,7 +79,7 @@ function init() {
 			target = target.parentElement;
 
 		var id = target.id;
-
+		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
 
