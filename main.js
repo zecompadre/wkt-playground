@@ -98,7 +98,7 @@ function init() {
 				interaction = new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vector.getSource(),
-					style: selected
+					style: vector.getStyle()
 				});
 				map.addInteraction(interaction);
 
