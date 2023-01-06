@@ -307,7 +307,7 @@ function resizeText() {
 	var doc = $(document).height();
 	var bar = $('.navbar').outerHeight();
 	var map = $('#map').outerHeight();
-	var buttons = $('.btn-group.btn-group-md').outerHeight();
+	var buttons = $('.btn-group').outerHeight();
 	var text = doc - (bar + map + buttons + 30);
 	$('#wktStringTextArea').height(text);
 }
