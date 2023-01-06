@@ -80,9 +80,9 @@ function init() {
 
 		var id = target.id;
 
-		$('div.btn-group button').each(){
+		$('div.btn-group button').each(function () {
 			$('button').prop('disabled', (this.id !== id));
-		}
+		});
 
 		button.button('toggle');
 		button = $('#' + id).button('toggle');
