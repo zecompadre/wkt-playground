@@ -7,11 +7,11 @@ var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
 var overlay;
+var button;
 
 var defaultColor = "#005baa"
 var selectedColor = "#dc3545"
 var drawColor = "#28a745"
-
 var opacity = "80";
 
 var defaultStyle = new ol.style.Style({
@@ -80,7 +80,6 @@ function init() {
 
 		var id = target.id;
 
-		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
 
@@ -196,7 +195,7 @@ function init() {
 	map.addOverlay(overlay);
 	document.getElementById('wkt-overlay').style.display = 'block';
 
-	var button = $('#pan').button('toggle');
+	button = $('#pan').button('toggle');
 
 	$('#wktStringTextArea').on("click", function () {
 		$(this).css({ borderColor: '', backgroundColor: '' });
