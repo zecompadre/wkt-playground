@@ -49,6 +49,25 @@ var selected = [
 	})
 ];
 
+var draw =
+	new ol.style.Style({
+		image: new ol.style.Circle({
+			fill: new ol.style.Fill({
+				color: 'rgba(0,255,0, 0.2)',
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'rgba(0,255,0, 1)',
+			}),
+			radius: 5,
+		}),
+		fill: new ol.style.Fill({
+			color: 'rgba(0,255,0, 0.2)',
+		}),
+		stroke: new ol.style.Stroke({
+			color: 'rgba(0,255,0, 1)',
+		}),
+	});
+
 function init() {
 
 	$('div.btn-group button').on('click', function (event) {
@@ -85,7 +104,7 @@ function init() {
 				interaction = new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vector.getSource(),
-					style: selected[0]
+					style: draw
 				});
 				map.addInteraction(interaction);
 
