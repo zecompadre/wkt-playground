@@ -6,19 +6,6 @@ var features = new ol.Collection();
 var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
-/*
-var typeSelect;
-var draw;
-var multi;
-var current_shape = 'polygon';
-*/
-var fill = new ol.style.Fill({
-	color: 'rgba(0,91,170, 0.2)',
-});
-var stroke = new ol.style.Stroke({
-	color: '#005baa',
-	width: 2,
-});
 
 var styles = [
 	new ol.style.Style({
@@ -98,7 +85,7 @@ function init() {
 				interaction = new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vector.getSource(),
-					style: vector.getStyle()
+					style: selected[0]
 				});
 				map.addInteraction(interaction);
 
