@@ -6,6 +6,7 @@ var features = new ol.Collection();
 var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
+var overlay;
 
 var defaultColor = "#005baa"
 var selectedColor = "#dc3545"
@@ -184,9 +185,7 @@ function init() {
 	});
 
 	var remove_b = document.getElementById('wkt-overlay');
-	var overlay = new ol.Overlay({
-		element: remove_b
-	});
+	overlay = new ol.Overlay({ element: remove_b });
 	map.addOverlay(overlay);
 	document.getElementById('wkt-overlay').style.display = 'block';
 
@@ -206,6 +205,7 @@ function init() {
 }
 
 function resetColors() {
+	overlay.setPosition(undefined);
 	features.forEach(feature => {
 		feature.setStyle(defaultStyle);
 	});
