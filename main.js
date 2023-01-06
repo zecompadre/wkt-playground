@@ -97,11 +97,12 @@ function init() {
 			case "polygon":
 				interaction = new ol.interaction.Draw({
 					type: 'Polygon',
-					source: vector.getSource()
+					source: vector.getSource(),
+					style: selected
 				});
 				map.addInteraction(interaction);
 
-				console.log("interaction: ", interaction);
+				//console.log("interaction: ", interaction);
 
 				break;
 			case "modify":
