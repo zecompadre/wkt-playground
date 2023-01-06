@@ -7,18 +7,8 @@ var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
 
-var defaultStyle =
-	new ol.style.Style({
-		image: new ol.style.Circle({
-			fill: new ol.style.Fill({
-				color: 'rgba(0,91,170, 0.2)',
-			}),
-			stroke: new ol.style.Stroke({
-				color: '#005baa',
-				width: 2,
-			}),
-			radius: 5,
-		}),
+var defaultStyle = new ol.style.Style({
+	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
 			color: 'rgba(0,91,170, 0.2)',
 		}),
@@ -26,45 +16,52 @@ var defaultStyle =
 			color: '#005baa',
 			width: 2,
 		}),
-	});
+		radius: 5,
+	}),
+	fill: new ol.style.Fill({
+		color: 'rgba(0,91,170, 0.2)',
+	}),
+	stroke: new ol.style.Stroke({
+		color: '#005baa',
+		width: 2,
+	}),
+});
 
-var selectedStyle =
-	new ol.style.Style({
-		image: new ol.style.Circle({
-			fill: new ol.style.Fill({
-				color: 'rgba(255,0,0, 0.2)',
-			}),
-			stroke: new ol.style.Stroke({
-				color: 'rgba(255,0,0, 1)',
-			}),
-			radius: 5,
-		}),
+var selectedStyle = new ol.style.Style({
+	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
 			color: 'rgba(255,0,0, 0.2)',
 		}),
 		stroke: new ol.style.Stroke({
 			color: 'rgba(255,0,0, 1)',
 		}),
-	});
+		radius: 5,
+	}),
+	fill: new ol.style.Fill({
+		color: 'rgba(255,0,0, 0.2)',
+	}),
+	stroke: new ol.style.Stroke({
+		color: 'rgba(255,0,0, 1)',
+	}),
+});
 
-var drawStyle =
-	new ol.style.Style({
-		image: new ol.style.Circle({
-			fill: new ol.style.Fill({
-				color: 'rgba(0,255,0, 0.2)',
-			}),
-			stroke: new ol.style.Stroke({
-				color: 'rgba(0,255,0, 1)',
-			}),
-			radius: 5,
-		}),
+var drawStyle = new ol.style.Style({
+	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
 			color: 'rgba(0,255,0, 0.2)',
 		}),
 		stroke: new ol.style.Stroke({
 			color: 'rgba(0,255,0, 1)',
 		}),
-	});
+		radius: 5,
+	}),
+	fill: new ol.style.Fill({
+		color: 'rgba(0,255,0, 0.2)',
+	}),
+	stroke: new ol.style.Stroke({
+		color: 'rgba(0,255,0, 1)',
+	}),
+});
 
 function init() {
 
