@@ -125,7 +125,7 @@ function init() {
 				interaction.on('select', function (event) {
 
 					features.forEach(feature => {
-						feature.setStyle(selectedStyle);
+						feature.setStyle(defaultStyle);
 					});
 
 					selectedFeature = event.selected[0];
