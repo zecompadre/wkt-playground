@@ -75,12 +75,7 @@ function init() {
 	$('div.btn-group input').on('change', function (event) {
 
 		var target = event.target;
-		console.log(target, event.target.tagName);
-		if (event.target.tagName !== "INPUT")
-			target = target.querySelector("input");
-
 		var id = target.id;
-		console.log(target, id);
 
 		map.removeInteraction(interaction);
 
