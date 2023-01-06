@@ -75,11 +75,10 @@ function init() {
 	$('div.btn-group button').on('click', function (event) {
 
 		var target = event.target;
-		if (event.target.tagName === "I")
+		if (event.target.tagName !== "BUTTON")
 			target = target.parentElement;
 
 		var id = target.id;
-
 
 		$('div.btn-group button').each(){
 			$('button').prop('disabled', (this.id !== id));
