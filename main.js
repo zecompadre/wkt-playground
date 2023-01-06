@@ -79,6 +79,12 @@ function init() {
 			target = target.parentElement;
 
 		var id = target.id;
+
+
+		$('div.btn-group button').each(){
+			$('button').prop('disabled', (this.id !== id));
+		}
+
 		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
