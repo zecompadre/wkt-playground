@@ -8,8 +8,8 @@ var selectedFeature;
 var interaction;
 
 var defaultColor = "#005baa"
-var selectedColor = "#005baa"
-var drawColor = "#005baa"
+var selectedColor = "#dc3545"
+var drawColor = "#28a745"
 
 var opacity = "80";
 
