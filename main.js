@@ -72,15 +72,14 @@ var drawStyle = new ol.style.Style({
 
 function init() {
 
-	$('div.btn-group button').on('click', function (event) {
+	$('div.btn-group input').on('click', function (event) {
 
 		var target = event.target;
-		if (event.target.tagName !== "BUTTON")
+		if (event.target.tagName !== "input")
 			target = target.parentElement;
 
 		var id = target.id;
-		button.button('toggle');
-		button = $('#' + id).button('toggle');
+
 		map.removeInteraction(interaction);
 
 		resetColors();
