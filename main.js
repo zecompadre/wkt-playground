@@ -72,13 +72,15 @@ var drawStyle = new ol.style.Style({
 
 function init() {
 
-	$('div.btn-group input').on('click', function (event) {
+	$('div.btn-group input').on('change', function (event) {
 
 		var target = event.target;
 		if (event.target.tagName !== "input")
 			target = target.parentElement;
 
 		var id = target.id;
+
+		console.log(target, id);
 
 		map.removeInteraction(interaction);
 
