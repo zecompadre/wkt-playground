@@ -1,5 +1,11 @@
 .ol-attribution>ul {
-	font-size: 1.6rem;
+	font-size: 1rem;
+}
+
+.ol-attribution button {
+	font-size: inherit;
+	height: 1.5em;
+	width: 1.5em;
 }
 
 .overlay {
@@ -27,6 +33,10 @@
 
 .overlay button+button {
 	float: right;
+}
+
+.btn-group.btn-group-toggle label {
+	min-width: 65px;
 }
 
 @media only screen and (min-width: 1366px) {
