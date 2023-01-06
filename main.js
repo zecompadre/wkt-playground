@@ -79,7 +79,6 @@ function init() {
 			target = target.querySelector("input");
 
 		var id = target.id;
-
 		console.log(target, id);
 
 		map.removeInteraction(interaction);
