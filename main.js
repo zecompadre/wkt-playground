@@ -123,8 +123,10 @@ function init() {
 				map.addInteraction(interaction);
 
 				interaction.on('select', function (event) {
-					if (selectedFeature)
-						selectedFeature.setStyle(selectedStyle);
+
+					features.forEach(feature => {
+						feature.setStyle(selectedStyle);
+					});
 
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
@@ -343,13 +345,15 @@ function updateWKY() {
 	if (polygons.length > 1) {
 		shapeType = "MULTIPOLYGON(((###)))";
 	}
-	shapeType.replace("###", polygons.join("),("));
+	shapeType = shapeType.replace("###", polygons.join("),("));
 
 	console.log("shapeType:", polygons, shapeType);
-
+	document.getElementById('wktStringTextArea').value = shapeType;
+	/*
 	document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), {
 		rightHanded: true,
 	});
+	*/
 	features.forEach(toEPSG3857);
 }
 
