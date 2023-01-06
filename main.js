@@ -82,7 +82,7 @@ function init() {
 		button.button('toggle');
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
-
+		resetColors();
 		switch (id) {
 			case "point":
 				interaction = new ol.interaction.Draw({
