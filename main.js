@@ -7,6 +7,7 @@ var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
 
+
 var defaultStyle = new ol.style.Style({
 	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
