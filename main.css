@@ -40,8 +40,8 @@
 }
 
 .notactive {
-	background-color: #6c757d;
-	border-color: #6c757d;
+	background-color: #c0c0c0;
+	border-color: #c0c0c0;
 }
 
 @media only screen and (min-width: 1366px) {
