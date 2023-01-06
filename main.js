@@ -187,7 +187,7 @@ function init() {
 	map.addOverlay(overlay);
 	document.getElementById('wkt-overlay').style.display = 'block';
 
-	button = $('#pan').button('toggle');
+	$('#pan').trigger('click');
 
 	$('#wktStringTextArea').on("click", function () {
 		$(this).css({ borderColor: '', backgroundColor: '' });
