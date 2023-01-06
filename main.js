@@ -48,7 +48,7 @@ var selectedStyle = new ol.style.Style({
 var drawStyle = new ol.style.Style({
 	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
-			color: 'rgba(0,255,0, 0.2)',
+			color: 'rgba(0,255,0, 0.5)',
 		}),
 		stroke: new ol.style.Stroke({
 			color: 'rgba(0,255,0, 1)',
@@ -56,7 +56,7 @@ var drawStyle = new ol.style.Style({
 		radius: 5,
 	}),
 	fill: new ol.style.Fill({
-		color: 'rgba(0,255,0, 0.2)',
+		color: 'rgba(0,255,0, 0.5)',
 	}),
 	stroke: new ol.style.Stroke({
 		color: 'rgba(0,255,0, 1)',
