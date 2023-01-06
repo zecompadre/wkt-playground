@@ -40,7 +40,9 @@
 }
 
 .btn-group>.btn:not(.active) {
-	opacity: .75;
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
 }
 
 @media only screen and (min-width: 1366px) {
