@@ -123,11 +123,7 @@ function init() {
 				map.addInteraction(interaction);
 
 				interaction.on('select', function (event) {
-
-					features.forEach(feature => {
-						feature.setStyle(defaultStyle);
-					});
-
+					resetColors();
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
 						overlay.setPosition(selectedFeature.getGeometry().getExtent());
@@ -207,6 +203,12 @@ function init() {
 	plotWKT();
 	changeUI();
 	pasteWKT();
+}
+
+function resetColors() {
+	features.forEach(feature => {
+		feature.setStyle(defaultStyle);
+	});
 }
 
 /**
