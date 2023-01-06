@@ -126,7 +126,7 @@ function init() {
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
 						overlay.setPosition(selectedFeature.getGeometry().getExtent());
-						selectedFeature.setStyle(selected);
+						selectedFeature.setStyle(selectedStyle);
 					}
 					else {
 						overlay.setPosition(undefined);
