@@ -200,6 +200,12 @@ function init() {
 		plotWKT();
 	});
 
+	$(document).keyup(function (e) {
+		if (e.key === "Escape") { // escape key maps to keycode `27`
+			$('#pan').trigger('click');
+		}
+	});
+
 	plotWKT();
 	changeUI();
 	pasteWKT();
