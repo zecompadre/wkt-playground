@@ -48,18 +48,18 @@ var selectedStyle = new ol.style.Style({
 var drawStyle = new ol.style.Style({
 	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
-			color: 'rgba(0,255,0, 0.5)',
+			color: 'rgba(25, 111, 61, 0.5)',
 		}),
 		stroke: new ol.style.Stroke({
-			color: 'rgba(0,255,0, 1)',
+			color: 'rgba(25, 111, 61, 1)',
 		}),
 		radius: 5,
 	}),
 	fill: new ol.style.Fill({
-		color: 'rgba(0,255,0, 0.5)',
+		color: 'rgba(25, 111, 61, 0.5)',
 	}),
 	stroke: new ol.style.Stroke({
-		color: 'rgba(0,255,0, 1)',
+		color: 'rgba(25, 111, 61, 1)',
 	}),
 });
 
@@ -73,9 +73,6 @@ function init() {
 
 		var id = target.id;
 		button.button('toggle');
-
-		console.log("id", target, id);
-
 		button = $('#' + id).button('toggle');
 		map.removeInteraction(interaction);
 
@@ -171,9 +168,8 @@ function init() {
 
 	map.on('pointermove', function (e) {
 		if (e.dragging) return;
-		var
-			pixel = map.getEventPixel(e.originalEvent),
-			hit = map.hasFeatureAtPixel(pixel);
+		var pixel = map.getEventPixel(e.originalEvent);
+		var hit = map.hasFeatureAtPixel(pixel);
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 	});
 
