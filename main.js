@@ -91,6 +91,7 @@ function init() {
 					type: 'Point',
 					source: vector.getSource()
 				});
+
 				map.addInteraction(interaction);
 				break;
 			case "line":
@@ -107,14 +108,13 @@ function init() {
 					source: vector.getSource(),
 					style: drawStyle
 				});
+
 				map.addInteraction(interaction);
 				break;
 			case "modify":
-
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
-
 				map.addInteraction(interaction);
 
 				break;
@@ -137,9 +137,6 @@ function init() {
 					}
 
 				});
-				break;
-			case "draw":
-				plotWKT();
 				break;
 			case "copy":
 				copyWKT();
@@ -217,9 +214,9 @@ function init() {
 		}
 	};
 
-	plotWKT();
 	changeUI();
 	pasteWKT();
+	plotWKT();
 }
 
 function resetColors() {
@@ -316,7 +313,6 @@ async function pasteWKT() {
 		const text = await navigator.clipboard.readText();
 		if (text.indexOf('POLYGON') !== -1) {
 			document.getElementById('wktStringTextArea').value = text;
-			plotWKT();
 		}
 	} catch (error) {
 		console.error('pasteWKT:', error.message);
