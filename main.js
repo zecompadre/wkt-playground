@@ -115,6 +115,11 @@ function init() {
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
+
+				interaction.on('modifyend', function (e) {
+					console.log("feature id is", e.features.getArray()[0].getId());
+				});
+
 				map.addInteraction(interaction);
 
 				break;
