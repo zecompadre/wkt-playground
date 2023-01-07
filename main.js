@@ -114,8 +114,6 @@ function init() {
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
-				//interaction.feature.on('change', updateWKY);
-				console.log(interaction.feature);
 
 				map.addInteraction(interaction);
 
@@ -158,7 +156,6 @@ function init() {
 	createVector();
 
 	features.on('add', updateWKY);
-	features.on('change', updateWKY);
 	features.on('remove', updateWKY);
 
 	map = new ol.Map({
@@ -180,6 +177,7 @@ function init() {
 		var pixel = map.getEventPixel(e.originalEvent);
 		var hit = map.hasFeatureAtPixel(pixel);
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+		updateWKY();
 	});
 
 	document.getElementById('wkt-remove').addEventListener('click', function () {
