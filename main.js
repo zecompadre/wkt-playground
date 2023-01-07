@@ -164,20 +164,19 @@ function init() {
 	features.on('add', updateWKY);
 	features.on('remove', updateWKY);
 
+	var tiles = new ol.layer.Tile({
+		source: new ol.source.XYZ({
+			attributions: ['Powered by Esri', 'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'],
+			attributionsCollapsible: false,
+			url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+			maxZoom: 20
+		})
+	});
+
+	//var tiles = new ol.layer.Tile({ source: new ol.source.OSM() });
 
 	map = new ol.Map({
-		layers: [
-			new ol.layer.Tile({
-				source: new ol.source.XYZ({
-					attributions: ['Powered by Esri',
-						'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'],
-					attributionsCollapsible: false,
-					url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-					maxZoom: 23
-				})
-			}),
-			vector
-		],
+		layers: [tiles, vector],
 		target: 'map',
 		view: new ol.View({
 			center: [-11000000, 4600000],
