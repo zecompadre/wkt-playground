@@ -138,7 +138,7 @@ function init() {
 						var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
 						console.log(selectedFeature.getGeometry().getExtent(), coordinates);
 
-						overlay.setPosition(selectedFeature.getGeometry().getExtent());
+						overlay.setPosition(coordinates[0]);
 						selectedFeature.setStyle(selectedStyle);
 					}
 					else {
