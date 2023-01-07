@@ -114,7 +114,8 @@ function init() {
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
-				interaction.features.on('change', updateWKY);
+				//interaction.feature.on('change', updateWKY);
+				console.log(interaction.feature);
 
 				map.addInteraction(interaction);
 
