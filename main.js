@@ -164,6 +164,7 @@ function init() {
 	features.on('add', updateWKY);
 	features.on('remove', updateWKY);
 
+
 	map = new ol.Map({
 		layers: [
 			new ol.layer.Tile({
