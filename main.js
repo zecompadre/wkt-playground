@@ -91,7 +91,7 @@ function init() {
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
 
-				interaction.features.on('change', updateWKY);
+				interaction.features.on('change', function () { console.log("change") });
 
 				map.addInteraction(interaction);
 
