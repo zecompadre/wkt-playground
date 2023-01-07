@@ -136,9 +136,10 @@ function init() {
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
 						var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
-						console.log(selectedFeature.getGeometry().getExtent().getCenter(), coordinates);
-
-						overlay.setPosition(selectedFeature.getGeometry().getExtent().getCenter());
+						var ext = selectedFeature.getGeometry().getExtent();
+						var center = ext.getCenter();
+						console.log(center, coordinates, ext);
+						overlay.setPosition(center);
 						selectedFeature.setStyle(selectedStyle);
 					}
 					else {
