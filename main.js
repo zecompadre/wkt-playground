@@ -116,15 +116,8 @@ function init() {
 			case "modify":
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures()),
-					deleteCondition: function (event) {
-						console.log(event);
-						var key = event.originalEvent.keycode || event.originalEvent.charCode;
-						if (key == 46) {
-							return ol.events.condition.always(event);
-						} else {
-							return ol.events.condition.never(event);
-						}
-					}
+					deleteCondition: ol.events.condition.click,
+					condition: ol.events.condition.altKeyOnly
 				});
 
 				interaction.on('modifyend', updateWKY);
