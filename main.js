@@ -117,7 +117,7 @@ function init() {
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures()),
 					deleteCondition: ol.events.condition.click,
-					condition: shiftKeyOnly
+					condition: altKeyOnly
 				});
 
 				interaction.on('modifyend', updateWKY);
