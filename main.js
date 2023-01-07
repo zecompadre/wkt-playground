@@ -133,11 +133,8 @@ function init() {
 						resetColors();
 						selectedFeature = event.selected[0];
 						if (selectedFeature) {
-
-							var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
-
-							console.log(selectedFeature.getGeometry().getExtent(), coordinates);
-
+							//var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
+							//console.log(selectedFeature.getGeometry().getExtent(), coordinates);
 							overlay.setPosition(selectedFeature.getGeometry().getExtent());
 							selectedFeature.setStyle(selectedStyle);
 						}
