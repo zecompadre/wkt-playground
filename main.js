@@ -177,6 +177,7 @@ function init() {
 
 		console.log(e);
 
+
 		var pixel = map.getEventPixel(e.originalEvent);
 		var hit = map.hasFeatureAtPixel(pixel);
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
