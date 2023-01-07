@@ -34,41 +34,17 @@ var defaultStyle = new ol.style.Style({
 	}),
 });
 
-var selectedStyle = new ol.style.Style({
-	image: new ol.style.Circle({
-		fill: new ol.style.Fill({
-			color: selectedColor + opacity,
-		}),
-		stroke: new ol.style.Stroke({
-			color: selectedColor,
-		}),
-		radius: 5,
-	}),
-	fill: new ol.style.Fill({
-		color: selectedColor + opacity,
-	}),
-	stroke: new ol.style.Stroke({
-		color: selectedColor,
-	}),
-});
+var selectedStyle = defaultStyle;
+selectedStyle.image.fill.color = selectedColor + opacity;
+selectedStyle.image.stroke.color = selectedColor;
+selectedStyle.fill.color = selectedColor + opacity;
+selectedStyle.stroke.color = selectedColor;
 
-var drawStyle = new ol.style.Style({
-	image: new ol.style.Circle({
-		fill: new ol.style.Fill({
-			color: drawColor + opacity,
-		}),
-		stroke: new ol.style.Stroke({
-			color: drawColor,
-		}),
-		radius: 5,
-	}),
-	fill: new ol.style.Fill({
-		color: drawColor + opacity,
-	}),
-	stroke: new ol.style.Stroke({
-		color: drawColor,
-	}),
-});
+var drawStyle = defaultStyle;
+selectedStyle.image.fill.color = drawColor + opacity;
+selectedStyle.image.stroke.color = drawColor;
+selectedStyle.fill.color = drawColor + opacity;
+selectedStyle.stroke.color = drawColor;
 
 function init() {
 
