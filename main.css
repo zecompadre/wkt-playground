@@ -40,10 +40,6 @@
 	cursor: pointer;
 }
 
-.btn-group.btn-group-toggle input {
-	min-width: 65px;
-}
-
 .notactive {
 	background-color: #c0c0c0;
 	border-color: #c0c0c0;
