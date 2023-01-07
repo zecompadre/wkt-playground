@@ -120,6 +120,7 @@ function init() {
 					condition: altKeyOnly
 				});
 
+
 				interaction.on('modifyend', updateWKY);
 
 				map.addInteraction(interaction);
