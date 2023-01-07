@@ -115,7 +115,16 @@ function init() {
 				break;
 			case "modify":
 				interaction = new ol.interaction.Modify({
-					features: new ol.Collection(vector.getSource().getFeatures())
+					features: new ol.Collection(vector.getSource().getFeatures()),
+					deleteCondition: function (event) {
+						console.log(event);
+						var key = event.originalEvent.keycode || event.originalEvent.charCode;
+						if (key == 46) {
+							return ol.events.condition.always(event);
+						} else {
+							return ol.events.condition.never(event);
+						}
+					}
 				});
 
 				interaction.on('modifyend', updateWKY);
