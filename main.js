@@ -116,10 +116,7 @@ function init() {
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
 
-				interaction.on('modifyend', function (e) {
-					updateWKY();
-					console.log("feature id is", e.features.getArray()[0].getId());
-				});
+				interaction.on('modifyend', updateWKY);
 
 				map.addInteraction(interaction);
 
@@ -361,7 +358,7 @@ function updateWKY() {
 		shapeType = "MULTIPOLYGON(((###)))";
 	}
 	shapeType = shapeType.replace("###", polygons.join("),("));
-	document.getElementById('wktStringTextArea').value = shapeType;
+	$('#wktStringTextArea').val(polygons.length > 0 ? shapeType : '');
 
 	features.forEach(toEPSG3857);
 }
