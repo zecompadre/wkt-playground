@@ -47,6 +47,7 @@
 
 #wkt-remove {
 	border-radius: 30px;
+	cursor: pointer;
 }
 
 @media only screen and (min-width: 1366px) {
