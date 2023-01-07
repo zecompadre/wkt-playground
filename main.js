@@ -213,9 +213,9 @@ function init() {
 		}
 	};
 
+	plotWKT();
 	changeUI();
 	pasteWKT();
-	plotWKT();
 }
 
 function resetColors() {
@@ -312,6 +312,7 @@ async function pasteWKT() {
 		const text = await navigator.clipboard.readText();
 		if (text.indexOf('POLYGON') !== -1) {
 			document.getElementById('wktStringTextArea').value = text;
+			plotWKT();
 		}
 	} catch (error) {
 		console.error('pasteWKT:', error.message);
