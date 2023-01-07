@@ -135,6 +135,7 @@ function init() {
 						if (selectedFeature) {
 							//var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
 							//console.log(selectedFeature.getGeometry().getExtent(), coordinates);
+
 							overlay.setPosition(selectedFeature.getGeometry().getExtent());
 							selectedFeature.setStyle(selectedStyle);
 						}
