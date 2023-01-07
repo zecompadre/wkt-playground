@@ -108,14 +108,11 @@ function init() {
 					style: drawStyle
 				});
 				map.addInteraction(interaction);
-
-				interaction.features.on('change', function () { console.log("change") });
-
 				break;
 			case "modify":
 
 				interaction = new ol.interaction.Modify({
-					features: new ol.Collection(vector.getSource().getFeatures())
+					features: new ol.Collection(vector.getSource().getFeatures()).on('change', updateWKY)
 				});
 
 				map.addInteraction(interaction);
@@ -159,6 +156,7 @@ function init() {
 	createVector();
 
 	features.on('add', updateWKY);
+	features.on('change', updateWKY);
 	features.on('remove', updateWKY);
 
 	map = new ol.Map({
