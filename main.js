@@ -117,6 +117,7 @@ function init() {
 				});
 
 				interaction.on('modifyend', function (e) {
+					updateWKY();
 					console.log("feature id is", e.features.getArray()[0].getId());
 				});
 
