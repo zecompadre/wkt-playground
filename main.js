@@ -128,17 +128,31 @@ function init() {
 				interaction = new ol.interaction.Select({
 					condition: ol.events.condition.click,
 					layers: [vector],
-					pixelTolerance: 30,
-					condition: (event) => {
-						resetColors();
-						selectedFeature = event.selected[0];
-						if (selectedFeature) {
-							overlay.setPosition(selectedFeature.getGeometry().getExtent());
-							selectedFeature.setStyle(selectedStyle);
+					// Show on select
+					condition: function (e) {
+						// Check if there is a feature to select
+						var f = this.getMap().getFeaturesAtPixel(e.pixel, {
+							hitTolerance: 5
+						});
+						if (f) {
+							var p0 = e.pixel;
+							var p1 = f[0].getGeometry().getClosestPoint(e.coordinate);
+							p1 = this.getMap().getPixelFromCoordinate(p1);
+							var dx = p0[0] - p1[0];
+							var dy = p0[1] - p1[1];
+							if (Math.sqrt(dx * dx + dy * dy) > 8) {
+								f = null;
+							}
 						}
-						else {
-							overlay.setPosition(undefined);
-						}
+						if (f) overlay.style.display = "inline-block";
+						else overlay.style.display = "none";
+
+						return true;
+					},
+					// Hide on insert
+					insertVertexCondition: function (e) {
+						overlay.style.display = "none";
+						return true;
 					}
 				});
 				map.addInteraction(interaction);
