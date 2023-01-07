@@ -137,8 +137,18 @@ function init() {
 					if (selectedFeature) {
 						var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
 						var ext = selectedFeature.getGeometry().getExtent();
-						var center = ext.getCenter();
-						console.log(center, coordinates, ext);
+
+
+						minx = ext[0];
+						miny = ext[1];
+						maxx = ext[2];
+						maxy = ext[3];
+						centerx = (minx + maxx) / 2;
+						centery = (miny + maxy) / 2;
+
+						var center = [centerx, centery];
+
+						console.log(center);
 
 						overlay.setPosition(center);
 						selectedFeature.setStyle(selectedStyle);
