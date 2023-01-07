@@ -135,21 +135,8 @@ function init() {
 					resetColors();
 					selectedFeature = event.selected[0];
 					if (selectedFeature) {
-						var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
 						var ext = selectedFeature.getGeometry().getExtent();
-
-
-						minx = ext[0];
-						miny = ext[1];
-						maxx = ext[2];
-						maxy = ext[3];
-						centerx = (minx + maxx) / 2;
-						centery = (miny + maxy) / 2;
-
-						var center = [centerx, centery];
-
-						console.log(center);
-
+						var center = [(ext[0] + ext[2]) / 2, (ext[1] + ext[3]) / 2];
 						overlay.setPosition(center);
 						selectedFeature.setStyle(selectedStyle);
 					}
