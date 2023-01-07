@@ -126,9 +126,8 @@ function init() {
 				break;
 			case "delete":
 				interaction = new ol.interaction.Select({
-					condition: ol.events.condition.click,
+					//					condition: ol.events.condition.click,
 					layers: [vector],
-					// Show on select
 					condition: function (e) {
 						// Check if there is a feature to select
 						var f = this.getMap().getFeaturesAtPixel(e.pixel, {
