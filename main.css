@@ -37,6 +37,7 @@
 
 .btn-group.btn-group-toggle label {
 	min-width: 65px;
+	cursor: pointer;
 }
 
 .btn-group.btn-group-toggle input {
