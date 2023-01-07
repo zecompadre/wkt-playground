@@ -127,37 +127,25 @@ function init() {
 			case "delete":
 				interaction = new ol.interaction.Select({
 					condition: ol.events.condition.click,
-					layers: [vector],
-					pixelTolerance: 30,
-					condition: (event) => {
-						resetColors();
-						selectedFeature = event.selected[0];
-						if (selectedFeature) {
-							//var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
-							//console.log(selectedFeature.getGeometry().getExtent(), coordinates);
-
-							overlay.setPosition(selectedFeature.getGeometry().getExtent());
-							selectedFeature.setStyle(selectedStyle);
-						}
-						else {
-							overlay.setPosition(undefined);
-						}
-					}
+					layers: [vector]
 				});
 				map.addInteraction(interaction);
-				/*
-								interaction.on('select', function (event) {
-									resetColors();
-									selectedFeature = event.selected[0];
-									if (selectedFeature) {
-										overlay.setPosition(selectedFeature.getGeometry().getExtent());
-										selectedFeature.setStyle(selectedStyle);
-									}
-									else {
-										overlay.setPosition(undefined);
-									}
-								});
-				*/
+
+				interaction.on('select', function (event) {
+					resetColors();
+					selectedFeature = event.selected[0];
+					if (selectedFeature) {
+						var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
+						console.log(selectedFeature.getGeometry().getExtent(), coordinates);
+
+						overlay.setPosition(selectedFeature.getGeometry().getExtent());
+						selectedFeature.setStyle(selectedStyle);
+					}
+					else {
+						overlay.setPosition(undefined);
+					}
+				});
+
 
 				break;
 			case "copy":
