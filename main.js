@@ -171,10 +171,6 @@ function init() {
 
 	map.on('pointermove', function (e) {
 		if (e.dragging) return;
-
-		console.log(e);
-
-
 		var pixel = map.getEventPixel(e.originalEvent);
 		var hit = map.hasFeatureAtPixel(pixel);
 		map.getTargetElement().style.cursor = hit ? 'pointer' : '';
