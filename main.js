@@ -90,6 +90,9 @@ function init() {
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
+
+				interaction.features.on('change', updateWKY);
+
 				map.addInteraction(interaction);
 
 				break;
@@ -132,7 +135,6 @@ function init() {
 
 	features.on('add', updateWKY);
 	features.on('remove', updateWKY);
-	features.on('change', updateWKY);
 
 	map = new ol.Map({
 		layers: [
