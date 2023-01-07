@@ -139,6 +139,7 @@ function init() {
 						var ext = selectedFeature.getGeometry().getExtent();
 						var center = ext.getCenter();
 						console.log(center, coordinates, ext);
+
 						overlay.setPosition(center);
 						selectedFeature.setStyle(selectedStyle);
 					}
