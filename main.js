@@ -174,6 +174,28 @@ function init() {
 	});
 
 	//var tiles = new ol.layer.Tile({ source: new ol.source.OSM() });
+	var tiles = [
+		new ol.layer.Tile({
+			// A layer must have a title to appear in the layerswitcher
+			title: 'Satelite',
+			// Again set this layer as a base layer
+			type: 'base',
+			visible: false,
+			source: new ol.source.XYZ({
+				attributions: ['Powered by Esri', 'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'],
+				attributionsCollapsible: false,
+				url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+				maxZoom: 19
+			})
+		}),
+		new ol.layer.Tile({
+			// A layer must have a title to appear in the layerswitcher
+			title: 'OSM',
+			// Again set this layer as a base layer
+			type: 'base',
+			visible: true,
+			source: new ol.source.OSM()
+		})];
 
 	map = new ol.Map({
 		layers: [tiles, vector],
