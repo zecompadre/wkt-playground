@@ -126,32 +126,24 @@ function init() {
 				break;
 			case "delete":
 				interaction = new ol.interaction.Select({
-					//					condition: ol.events.condition.click,
+					condition: ol.events.condition.click,
 					layers: [vector],
-					condition: function (e) {
-						// Check if there is a feature to select
-						var f = this.getMap().getFeaturesAtPixel(e.pixel, {
-							hitTolerance: 5
-						});
-						if (f) {
-							var p0 = e.pixel;
-							var p1 = f[0].getGeometry().getClosestPoint(e.coordinate);
-							p1 = this.getMap().getPixelFromCoordinate(p1);
-							var dx = p0[0] - p1[0];
-							var dy = p0[1] - p1[1];
-							if (Math.sqrt(dx * dx + dy * dy) > 8) {
-								f = null;
-							}
-						}
-						if (f) overlay.style.display = "inline-block";
-						else overlay.style.display = "none";
+					pixelTolerance: 30,
+					condition: (event) => {
+						resetColors();
+						selectedFeature = event.selected[0];
+						if (selectedFeature) {
 
-						return true;
-					},
-					// Hide on insert
-					insertVertexCondition: function (e) {
-						overlay.style.display = "none";
-						return true;
+							var coordinates = selectedFeature.getGeometry().getCoordinates()[0];
+
+							console.log(selectedFeature.getGeometry().getExtent(), coordinates);
+
+							overlay.setPosition(selectedFeature.getGeometry().getExtent());
+							selectedFeature.setStyle(selectedStyle);
+						}
+						else {
+							overlay.setPosition(undefined);
+						}
 					}
 				});
 				map.addInteraction(interaction);
