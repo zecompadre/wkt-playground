@@ -84,14 +84,14 @@ function init() {
 				});
 				map.addInteraction(interaction);
 
+				interaction.features.on('change', function () { console.log("change") });
+
 				break;
 			case "modify":
 
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures())
 				});
-
-				interaction.features.on('change', function () { console.log("change") });
 
 				map.addInteraction(interaction);
 
