@@ -180,7 +180,7 @@ function init() {
 			title: 'Satelite',
 			// Again set this layer as a base layer
 			type: 'base',
-			visible: false,
+			visible: true,
 			source: new ol.source.XYZ({
 				attributions: ['Powered by Esri', 'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'],
 				attributionsCollapsible: false,
@@ -198,7 +198,7 @@ function init() {
 		})];
 
 	map = new ol.Map({
-		layers: [tiles, vector],
+		layers: [tiles[1], vector],
 		target: 'map',
 		view: new ol.View({
 			center: [-11000000, 4600000],
