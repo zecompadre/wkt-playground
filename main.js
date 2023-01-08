@@ -36,7 +36,6 @@ var defaultStyle = new ol.style.Style({
 	}),
 });
 
-
 var selectedStyle = new ol.style.Style({
 	image: new ol.style.Circle({
 		fill: new ol.style.Fill({
@@ -119,8 +118,7 @@ function init() {
 					deleteCondition: ol.events.condition.click
 				});
 
-
-				interaction.on('modifyend', updateWKY);
+				interaction.on('modifyend', updateFeature);
 
 				map.addInteraction(interaction);
 
@@ -132,19 +130,7 @@ function init() {
 				});
 				map.addInteraction(interaction);
 
-				interaction.on('select', function (event) {
-					resetColors();
-					selectedFeature = event.selected[0];
-					if (selectedFeature) {
-						var ext = selectedFeature.getGeometry().getExtent();
-						var center = [(ext[0] + ext[2]) / 2, (ext[1] + ext[3]) / 2];
-						overlay.setPosition(center);
-						selectedFeature.setStyle(selectedStyle);
-					}
-					else {
-						overlay.setPosition(undefined);
-					}
-				});
+				interaction.on('select', selectFeature);
 
 
 				break;
@@ -246,6 +232,24 @@ function init() {
 
 	changeUI();
 	pasteWKT();
+}
+
+function updateFeature(event) {
+	updateWKY();
+}
+
+function selectFeature(event) {
+	resetColors();
+	selectedFeature = event.selected[0];
+	if (selectedFeature) {
+		var ext = selectedFeature.getGeometry().getExtent();
+		var center = [(ext[0] + ext[2]) / 2, (ext[1] + ext[3]) / 2];
+		overlay.setPosition(center);
+		selectedFeature.setStyle(selectedStyle);
+	}
+	else {
+		overlay.setPosition(undefined);
+	}
 }
 
 function resetColors() {
