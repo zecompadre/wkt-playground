@@ -80,11 +80,9 @@ var drawStyle = new ol.style.Style({
 
 function init() {
 
-	drawOtion.forEach(obj => {
-		Object.entries(obj).forEach(([key, value]) => {
-			if (!value)
-				$("#" + key).parent("label").hide();
-		});
+	Object.entries(drawOtion).forEach(([key, value]) => {
+		if (!value)
+			$("#" + key).parent("label").hide();
 	});
 
 	$('div.btn-group input').on('change', function (event) {
