@@ -128,7 +128,7 @@ function init() {
 			case "modify":
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures()),
-					deleteCondition: ol.events.condition.click
+					//deleteCondition: ol.events.condition.click
 				});
 
 				interaction.on('modifyend', updateFeature);
