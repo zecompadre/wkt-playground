@@ -119,6 +119,7 @@ function init() {
 					deleteCondition: ol.events.condition.click
 				});
 
+
 				interaction.on('modifyend', updateWKY);
 
 				map.addInteraction(interaction);
