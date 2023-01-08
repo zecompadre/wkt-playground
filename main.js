@@ -101,7 +101,8 @@ function init() {
 			case "point":
 				interaction = new ol.interaction.Draw({
 					type: 'Point',
-					source: vector.getSource()
+					source: vector.getSource(),
+					style: drawStyle
 				});
 
 				map.addInteraction(interaction);
@@ -109,7 +110,8 @@ function init() {
 			case "line":
 				interaction = new ol.interaction.Draw({
 					type: 'LineString',
-					source: vector.getSource()
+					source: vector.getSource(),
+					style: drawStyle
 				});
 
 				map.addInteraction(interaction);
@@ -142,8 +144,6 @@ function init() {
 				map.addInteraction(interaction);
 
 				interaction.on('select', selectFeature);
-
-
 				break;
 			case "copy":
 				copyWKT();
