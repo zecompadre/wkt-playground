@@ -15,8 +15,8 @@ var drawColor = "#28a745"
 var opacity = "80";
 
 var drawOtion = {
-	point: false,
-	line: false,
+	point: true,
+	line: true,
 	polygon: true,
 };
 
