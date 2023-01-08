@@ -120,7 +120,6 @@ function init() {
 					condition: ol.events.condition.shiftKeyOnly
 				});
 
-
 				interaction.on('modifyend', updateWKY);
 
 				map.addInteraction(interaction);
