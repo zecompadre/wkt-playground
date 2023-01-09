@@ -128,7 +128,7 @@ function init() {
 			case "modify":
 				interaction = new ol.interaction.Modify({
 					features: new ol.Collection(vector.getSource().getFeatures()),
-					//deleteCondition: ol.events.condition.click,
+					deleteCondition: ol.events.condition.click,
 					//condition: ol.events.condition.shiftKeyOnly
 				});
 
@@ -162,15 +162,6 @@ function init() {
 
 	features.on('add', updateWKY);
 	features.on('remove', updateWKY);
-
-	var tiles = new ol.layer.Tile({
-		source: new ol.source.XYZ({
-			attributions: ['Powered by Esri', 'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'],
-			attributionsCollapsible: false,
-			url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-			maxZoom: 19
-		})
-	});
 
 	//var tiles = new ol.layer.Tile({ source: new ol.source.OSM() });
 	var tiles = [
@@ -242,13 +233,12 @@ function init() {
 		}
 	};
 
-	plotWKT();
 	changeUI();
 	pasteWKT();
 }
 
 function updateFeature(event) {
-	updateWKY();
+	//updateWKY();
 }
 
 function selectFeature(event) {
@@ -317,8 +307,7 @@ function plotWKT() {
 
 	map.addLayer(vector);
 
-	derived_feature = features.getArray()[0];
-	extent = derived_feature.getGeometry().getExtent();
+	extent = features.getArray()[0].getGeometry().getExtent();
 	map.setView(
 		new ol.View({
 			center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
