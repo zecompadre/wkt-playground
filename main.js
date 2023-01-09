@@ -3,7 +3,7 @@ var source;
 var vector;
 var map;
 var features = new ol.Collection();
-var format = new ol.format.GeoJSON();
+var format = new ol.format.WKT();
 var selectedFeature;
 var interaction;
 var overlay;
