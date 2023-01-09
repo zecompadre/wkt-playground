@@ -420,7 +420,6 @@ function updateWKY() {
 		$('#wktStringTextArea').val(shapes);
 	*/
 
-
 	features.forEach(toEPSG3857);
 }
 
