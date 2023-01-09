@@ -303,7 +303,8 @@ function plotWKT() {
 		return;
 	} else {
 		map.removeLayer(vector);
-		features.clear().push(toEPSG3857(new_feature));
+		features.clear();
+		features.push(toEPSG3857(new_feature));
 	}
 	vector = new ol.layer.Vector({
 		source: new ol.source.Vector({
