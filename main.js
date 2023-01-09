@@ -396,7 +396,7 @@ function updateWKY() {
 	features.forEach(toEPSG4326);
 
 	var polygons = [];
-	var shapeType = "POLYGON((###))";
+	var shapes = "POLYGON((###))";
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
 		polygon[0].forEach(coord => {
@@ -406,10 +406,11 @@ function updateWKY() {
 	});
 
 	if (polygons.length > 1) {
-		shapeType = "MULTIPOLYGON(((###)))";
+		shapes = "MULTIPOLYGON(((###)))";
 	}
-	shapeType = shapeType.replace("###", polygons.join(")),(("));
-	$('#wktStringTextArea').val(polygons.length > 0 ? shapeType : '');
+
+	shapes = shapes.replace("###", polygons.join(")),(("));
+	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
 
 	/*
 		var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
