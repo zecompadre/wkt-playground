@@ -295,7 +295,7 @@ function plotWKT() {
 		return;
 	} else {
 		try {
-			new_feature = format.readFeature(wkt_string);
+			new_feature = format.readGeometry(wkt_string);
 		} catch (err) { }
 	}
 	if (!new_feature) {
