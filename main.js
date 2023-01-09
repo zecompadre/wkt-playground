@@ -411,7 +411,14 @@ function updateWKY() {
 		shapeType = shapeType.replace("###", polygons.join("),("));
 		$('#wktStringTextArea').val(polygons.length > 0 ? shapeType : '');
 	*/
-	$('#wktStringTextArea').val(format.writeFeatures(features.getArray(), { rightHanded: true, }));
+	var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
+	if (shapes.indexOf('GEOMETRYCOLLECTION')) {
+		shapes = shapes.replace('GEOMETRYCOLLECTION', 'MULTIPOLYGON');
+		shapes = shapes.replace(/POLYGON/g, '');
+	}
+
+
+	$('#wktStringTextArea').val(shapes);
 
 	features.forEach(toEPSG3857);
 }
