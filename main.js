@@ -296,6 +296,10 @@ function plotWKT() {
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
+
+			console.log("new_feature", new_feature);
+
+
 		} catch (err) { }
 	}
 	if (!new_feature) {
@@ -304,8 +308,7 @@ function plotWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-		//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-		new_feature.forEach(toEPSG3857);
+		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		features.push(new_feature);
 	}
 	vector = new ol.layer.Vector({
