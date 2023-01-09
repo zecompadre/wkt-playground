@@ -304,8 +304,8 @@ function plotWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-		features.on('add', null);
-		features.on('remove', null);
+		features.on('add', function () { });
+		features.on('remove', function () { });
 		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		features.push(new_feature);
 		features.on('add', updateWKY);
