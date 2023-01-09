@@ -296,10 +296,6 @@ function plotWKT() {
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
-
-			console.log("new_feature", new_feature);
-
-
 		} catch (err) { }
 	}
 	if (!new_feature) {
@@ -308,7 +304,7 @@ function plotWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+		new_feature = new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		features.push(new_feature);
 	}
 	vector = new ol.layer.Vector({
@@ -322,16 +318,9 @@ function plotWKT() {
 
 	derived_feature = features.getArray()[0];
 	extent = derived_feature.getGeometry().getExtent();
-	minx = derived_feature.getGeometry().getExtent()[0];
-	miny = derived_feature.getGeometry().getExtent()[1];
-	maxx = derived_feature.getGeometry().getExtent()[2];
-	maxy = derived_feature.getGeometry().getExtent()[3];
-	centerx = (minx + maxx) / 2;
-	centery = (miny + maxy) / 2;
-
 	map.setView(
 		new ol.View({
-			center: [centerx, centery],
+			center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
 			zoom: 8,
 		}),
 	);
@@ -370,7 +359,6 @@ async function pasteWKT() {
 	if ($('#wktStringTextArea').val() === "") {
 		$('#wktStringTextArea').val(defaultWKT);
 		plotWKT();
-		features.forEach(toEPSG4326);
 	}
 }
 
