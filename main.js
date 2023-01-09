@@ -306,6 +306,8 @@ function plotWKT() {
 		features.clear();
 		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		features.push(new_feature);
+
+
 	}
 	vector = new ol.layer.Vector({
 		source: new ol.source.Vector({
