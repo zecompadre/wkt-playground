@@ -393,10 +393,10 @@ function updateWKY() {
 */
 
 	var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
-	if (shapes.indexOf('GEOMETRYCOLLECTION')) {
-		shapes = shapes.replace(/POLYGON/g, '');
-		shapes = shapes.replace('GEOMETRYCOLLECTION', 'MULTIPOLYGON');
-	}
+	//if (shapes.indexOf('GEOMETRYCOLLECTION')) {
+	//	shapes = shapes.replace(/POLYGON/g, '');
+	//	shapes = shapes.replace('GEOMETRYCOLLECTION', 'MULTIPOLYGON');
+	//}
 	$('#wktStringTextArea').val(shapes);
 
 
