@@ -3,7 +3,7 @@ var source;
 var vector;
 var map;
 var features = new ol.Collection();
-var format = new ol.format.WKT();
+var format = new ol.format.GeoJSON();
 var selectedFeature;
 var interaction;
 var overlay;
@@ -394,22 +394,24 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
-
-	var polygons = [];
-	var shapeType = "POLYGON((###))";
-	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
-		var data = [];
-		polygon[0].forEach(coord => {
-			data.push(coord[0] + " " + coord[1]);
+	/*
+		var polygons = [];
+		var shapeType = "POLYGON((###))";
+		features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
+			var data = [];
+			polygon[0].forEach(coord => {
+				data.push(coord[0] + " " + coord[1]);
+			});
+			polygons.push(data.join(","));
 		});
-		polygons.push(data.join(","));
-	});
-
-	if (polygons.length > 1) {
-		shapeType = "MULTIPOLYGON(((###)))";
-	}
-	shapeType = shapeType.replace("###", polygons.join("),("));
-	$('#wktStringTextArea').val(polygons.length > 0 ? shapeType : '');
+	
+		if (polygons.length > 1) {
+			shapeType = "MULTIPOLYGON(((###)))";
+		}
+		shapeType = shapeType.replace("###", polygons.join("),("));
+		$('#wktStringTextArea').val(polygons.length > 0 ? shapeType : '');
+	*/
+	$('#wktStringTextArea').val(format.writeFeatures(features.getArray(), { rightHanded: true, }));
 
 	features.forEach(toEPSG3857);
 }
