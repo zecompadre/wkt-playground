@@ -296,6 +296,9 @@ function writeTextAreaWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
+
+		console.log("new_feature.getGeometry()", new_feature.getGeometry());
+
 		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		features.push(new_feature);
 	}
