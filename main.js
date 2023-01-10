@@ -279,6 +279,9 @@ function createVector() {
  * Plot wkt string on map
  */
 function plotWKT() {
+
+	return;
+
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
 	if (wkt_string == '') {
