@@ -370,6 +370,9 @@ function loadWKTfromURIFragment(fragment) {
 }
 
 function updateWKY() {
+
+	return;
+
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
