@@ -375,7 +375,7 @@ function loadWKTfromURIFragment(fragment) {
 function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
-	//features.forEach(toEPSG4326);
+	features.forEach(toEPSG4326);
 
 	console.log(features.getArray());
 
@@ -408,7 +408,7 @@ function updateWKY() {
 
 	*/
 
-	//features.forEach(toEPSG3857);
+	features.forEach(toEPSG3857);
 }
 
 $(document).ready(init);
