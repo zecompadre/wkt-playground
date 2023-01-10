@@ -373,36 +373,24 @@ function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
-	console.log("features", features.getArray());
-
 	var polygons = [];
-	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(feature => {
-
-		//var ff = toEPSG4326(feature);
-
-		console.log("feature", feature);
-
-		//feature.getGeometry().getCoordinates()).forEach(polygon => {
-		//))}	
-	});
-	/*
-	var polygons = [];
-	var shapes = "POLYGON((###))";
+	var shapes = "POLYGON(###)";
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
 		polygon[0].forEach(coord => {
 			data.push(coord[0] + " " + coord[1]);
 		});
-		polygons.push(data.join(","));
+		polygons.push("(" + data.join(",") + ")");
 	});
 
 	if (polygons.length > 1) {
-		shapes = "MULTIPOLYGON(((###)))";
+		shapes = "MULTIPOLYGON((###))";
 	}
 
-	shapes = shapes.replace("###", polygons.join(")),(("));
+	shapes = shapes.replace("###", polygons.join("),("));
+
 	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
-*/
+
 	/*
 	features.forEach(toEPSG4326);
 		var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
