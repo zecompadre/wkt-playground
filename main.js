@@ -160,8 +160,8 @@ function init() {
 
 	createVector();
 
-	features.on('add', updateWKY);
-	features.on('remove', updateWKY);
+	//features.on('add', updateWKY);
+	//features.on('remove', updateWKY);
 
 	//var tiles = new ol.layer.Tile({ source: new ol.source.OSM() });
 	var tiles = [
@@ -295,16 +295,10 @@ function writeTextAreaWKT() {
 		return;
 	} else {
 		map.removeLayer(vector);
-		features.on('add', function () { });
-		features.on('remove', function () { });
-
 		features.clear();
 
 		features.push(new_feature);
 		features.forEach(toEPSG4326);
-
-		features.on('add', updateWKY);
-		features.on('remove', updateWKY);
 
 	}
 
