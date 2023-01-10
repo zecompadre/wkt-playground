@@ -301,12 +301,6 @@ function writeTextAreaWKT() {
 
 		features.push(new_feature);
 
-		new_feature = features.getArray()[0]
-
-		console.log("new_feature[0]:", new_feature);
-
-		features.clear();
-		features.push(new_feature);
 	}
 
 	createVector();
@@ -388,9 +382,11 @@ function updateWKY() {
 	var polygons = [];
 	var shapes = "POLYGON(###)";
 
-	console.log("polygons: ", features.getArray().map((f) => f.getGeometry().getCoordinates()));
 
-	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
+
+	console.log("polygons: ", features.getArray()[0].map((f) => f.getGeometry().getCoordinates()));
+
+	features.getArray()[0].map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
 
 		console.log("polygon:", polygon);
