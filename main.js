@@ -376,6 +376,9 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
+
+	console.log("features", features.getArray());
+
 	/*
 	var polygons = [];
 	var shapes = "POLYGON((###))";
