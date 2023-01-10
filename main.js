@@ -297,8 +297,11 @@ function plotWKT() {
 		map.removeLayer(vector);
 		features.clear();
 		//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+		console.log("new_feature", new_feature);
+
 		features.push(new_feature);
-		features.forEach(toEPSG3857);
+		features.forEach(toEPSG4326);
 		console.log("features", features);
 
 	}
