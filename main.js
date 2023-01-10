@@ -373,6 +373,8 @@ function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
+	console.log(features.getArray().map((f) => f.getGeometry().getCoordinates()));
+
 	var polygons = [];
 	var shapes = "POLYGON(###)";
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
