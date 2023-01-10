@@ -278,7 +278,7 @@ function createVector() {
 /**
  * Plot wkt string on map
  */
-function plotWKT() {
+function writeTextAreaWKT() {
 
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
@@ -296,15 +296,8 @@ function plotWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-
 		new_feature.forEach(toEPSG4326);
-
-		console.log("new_feature", new_feature);
-
 		features.push(new_feature);
-		features.forEach(toEPSG4326);
-		console.log("features", features);
-
 	}
 
 	createVector();
@@ -345,14 +338,14 @@ async function pasteWKT() {
 		const text = await navigator.clipboard.readText();
 		if (text.indexOf('POLYGON') !== -1) {
 			$('#wktStringTextArea').val(text);
-			plotWKT();
+			writeTextAreaWKT();
 		}
 	} catch (error) {
 		console.error('pasteWKT:', error.message);
 	}
 	if ($('#wktStringTextArea').val() === "") {
 		$('#wktStringTextArea').val(defaultWKT);
-		plotWKT();
+		writeTextAreaWKT();
 	}
 }
 
@@ -382,8 +375,6 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
-
-	console.log(features.getArray());
 
 	var polygons = [];
 	var shapes = "POLYGON(###)";
