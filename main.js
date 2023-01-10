@@ -371,8 +371,6 @@ function loadWKTfromURIFragment(fragment) {
 
 function updateWKY() {
 
-	return;
-
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	features.forEach(toEPSG4326);
@@ -397,14 +395,14 @@ function updateWKY() {
 	shapes = shapes.replace("###", polygons.join(")),(("));
 	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
 */
-
-	var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
-	//if (shapes.indexOf('GEOMETRYCOLLECTION')) {
-	//	shapes = shapes.replace(/POLYGON/g, '');
-	//	shapes = shapes.replace('GEOMETRYCOLLECTION', 'MULTIPOLYGON');
-	//}
-	$('#wktStringTextArea').val(shapes);
-
+	/*
+		var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
+		//if (shapes.indexOf('GEOMETRYCOLLECTION')) {
+		//	shapes = shapes.replace(/POLYGON/g, '');
+		//	shapes = shapes.replace('GEOMETRYCOLLECTION', 'MULTIPOLYGON');
+		//}
+		$('#wktStringTextArea').val(shapes);
+	*/
 
 	features.forEach(toEPSG3857);
 }
