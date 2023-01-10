@@ -295,9 +295,16 @@ function writeTextAreaWKT() {
 		return;
 	} else {
 		map.removeLayer(vector);
+		features.on('add', function () { });
+		features.on('remove', function () { });
+
 		features.clear();
 		features.push(new_feature);
 		features.forEach(toEPSG4326);
+
+		features.on('add', updateWKY);
+		features.on('remove', updateWKY);
+
 	}
 
 	createVector();
