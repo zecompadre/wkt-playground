@@ -380,6 +380,9 @@ function updateWKY() {
 	var shapes = "POLYGON(###)";
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
+
+		console.log(polygon);
+
 		polygon[0].forEach(coord => {
 			data.push(coord[0] + " " + coord[1]);
 		});
