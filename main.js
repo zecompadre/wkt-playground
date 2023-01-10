@@ -404,11 +404,11 @@ function updateWKY() {
 	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
 
 
-	var geoJson3857 = new ol.format.GeoJSON().writeFeatures(features, {
+	var geoJson = new ol.format.GeoJSON().writeFeatures(features, {
 		dataProjection: 'EPSG:3857',
 		featureProjection: 'EPSG:4326'
 	});
-	console.log("geoJson3857:", geoJson3857);
+	console.log("geoJson3857:", geoJson);
 
 	/*
 	features.forEach(toEPSG4326);
