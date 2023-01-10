@@ -374,13 +374,16 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 	features.forEach(toEPSG4326);
 
-	console.log(features.getArray().map((f) => f.getGeometry().getCoordinates()));
+	console.log(features.getArray());
 
 	var polygons = [];
 	var shapes = "POLYGON(###)";
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
-		polygon[0].forEach(coord => {
+
+		polygon.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(coord => {
+
+			//polygon[0].forEach(coord => {
 			data.push(coord[0] + " " + coord[1]);
 		});
 		polygons.push("(" + data.join(",") + ")");
