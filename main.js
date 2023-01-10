@@ -377,9 +377,10 @@ function updateWKY() {
 
 	var polygons = [];
 	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(feature => {
-		var ff = toEPSG4326(feature);
 
-		console.log("feature", feature, ff);
+		//var ff = toEPSG4326(feature);
+
+		console.log("feature", feature);
 
 		//feature.getGeometry().getCoordinates()).forEach(polygon => {
 		//))}	
