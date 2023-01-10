@@ -299,6 +299,7 @@ function writeTextAreaWKT() {
 		features.on('remove', function () { });
 
 		features.clear();
+
 		features.push(new_feature);
 		features.forEach(toEPSG4326);
 
