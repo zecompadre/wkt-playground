@@ -301,7 +301,12 @@ function writeTextAreaWKT() {
 
 		features.push(new_feature);
 
-		console.log("new_feature[0]:", features.getArray()[0]);
+		new_feature = features.getArray()[0]
+
+		console.log("new_feature[0]:", new_feature);
+
+		features.clear();
+		features.push(new_feature);
 	}
 
 	createVector();
