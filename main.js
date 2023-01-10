@@ -297,9 +297,10 @@ function writeTextAreaWKT() {
 		map.removeLayer(vector);
 		features.clear();
 
-		console.log("new_feature[0]:", new_feature.getArray()[0]);
-
 		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+		console.log("new_feature[0]:", new_feature[0]);
+
 		features.push(new_feature);
 	}
 
