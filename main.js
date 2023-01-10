@@ -280,8 +280,6 @@ function createVector() {
  */
 function plotWKT() {
 
-	return;
-
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
 	if (wkt_string == '') {
@@ -375,6 +373,7 @@ function loadWKTfromURIFragment(fragment) {
 function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
+
 	features.forEach(toEPSG4326);
 
 	console.log(features.getArray());
