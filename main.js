@@ -384,7 +384,7 @@ function updateWKY() {
 
 
 
-	console.log("polygons: ", features.getArray()[0].map((f) => f.getGeometry().getCoordinates()));
+	console.log("polygons: ", features.getArray()[0]);
 
 	features.getArray()[0].map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
