@@ -296,8 +296,8 @@ function writeTextAreaWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-		new_feature.forEach(toEPSG4326);
 		features.push(new_feature);
+		features.forEach(toEPSG4326);
 	}
 
 	createVector();
