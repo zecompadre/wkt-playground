@@ -289,7 +289,7 @@ function writeTextAreaWKT() {
 		return;
 	} else {
 		try {
-			new_feature = format.readFeature(wkt_string);
+			new_feature = format.read(wkt_string);
 		} catch (err) { }
 	}
 	if (!new_feature) {
