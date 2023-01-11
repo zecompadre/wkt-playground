@@ -377,16 +377,18 @@ function updateWKY() {
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
 	var polygonsRaw = [];
-	if (typeof features.getArray()[0].getGeometry().getPolygons !== 'undefined') {
-		console.log("isMultiple");
-		features.getArray()[0].getGeometry().getPolygons().forEach(polygon => {
-			polygonsRaw.push(polygon);
-		});
-	}
-	else {
-		console.log("issingle");
-		polygonsRaw.push(features.getArray()[0]);
-	}
+	features.getArray().forEach(feature => {
+		if (typeof feature.getGeometry().getPolygons !== 'undefined') {
+			console.log("isMultiple");
+			feature.getGeometry().getPolygons().forEach(polygon => {
+				polygonsRaw.push(polygon);
+			});
+		}
+		else {
+			console.log("issingle");
+			polygonsRaw.push(feature);
+		}
+	});
 
 	console.log(polygonsRaw);
 
