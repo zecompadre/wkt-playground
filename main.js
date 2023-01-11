@@ -399,14 +399,10 @@ function updateWKY() {
 
 	polygonsRaw.forEach(polygon => {
 		if (typeof polygon.getCoordinates !== 'undefined')
-			console.log(polygon.getCoordinates());
+			coord = polygon.getCoordinates();
 		else
-			console.log(polygon);
-	});
+			coord = polygon;
 
-	console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
-
-	features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
 		var data = [];
 
 		console.log("polygon:", polygon);
@@ -417,7 +413,21 @@ function updateWKY() {
 		polygons.push("(" + data.join(",") + ")");
 
 	});
-
+	/*
+		console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
+	
+		features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
+			var data = [];
+	
+			console.log("polygon:", polygon);
+	
+			polygon[0].forEach(coord => {
+				data.push(coord[0] + " " + coord[1]);
+			});
+			polygons.push("(" + data.join(",") + ")");
+	
+		});
+	*/
 	if (polygons.length > 1) {
 		shapes = "MULTIPOLYGON((###))";
 	}
