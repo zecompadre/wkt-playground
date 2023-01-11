@@ -433,9 +433,6 @@ function updateWKY() {
 	console.log("polygons", polygons);
 
 	//$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
-
-
-
 	/*
 	features.forEach(toEPSG4326);
 		var shapes = format.writeFeatures(features.getArray(), { rightHanded: true, });
