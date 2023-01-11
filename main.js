@@ -302,6 +302,8 @@ function writeTextAreaWKT() {
 		new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 
 		features.push(new_feature);
+
+		console.log("writefeatures:", features)
 	}
 
 	createVector();
