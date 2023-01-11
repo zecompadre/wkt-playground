@@ -386,7 +386,7 @@ function updateWKY() {
 		}
 		else {
 			console.log("issingle");
-			polygonsRaw.push(feature);
+			polygonsRaw.push(feature.getGeometry());
 		}
 	});
 
@@ -398,7 +398,7 @@ function updateWKY() {
 	var shapes = "POLYGON( ### )";
 
 	polygonsRaw.forEach(polygon => {
-		console.log(polygon.getGeometry().getCoordinates());
+		console.log(polygon.getCoordinates());
 	});
 
 	console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
