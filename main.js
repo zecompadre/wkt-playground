@@ -407,7 +407,7 @@ function updateWKY() {
 		console.log("coord:", coord);
 
 		var latlng = [];
-		for (let i = 0; i < coord.length; i++) {
+		for (let i = 0; i < coord[0].length; i++) {
 			latlng.push(coord[i][0] + " " + coord[i][1]);
 		}
 		console.log("latlng:", latlng);
