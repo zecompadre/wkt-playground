@@ -404,10 +404,14 @@ function updateWKY() {
 		else
 			coord = polygon;
 
-		console.log("coord:", coord);
+		console.log("coord:", coord, coord.length);
+
+		cood.map(function (f) {
+			console.log("f:", f);
+		});
 
 		var latlng = [];
-		for (let i = 0; i < coord[0].length; i++) {
+		for (let i = 0; i < coord.length; i++) {
 			latlng.push(coord[i][0] + " " + coord[i][1]);
 		}
 		console.log("latlng:", latlng);
