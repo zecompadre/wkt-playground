@@ -380,6 +380,8 @@ function updateWKY() {
 
 	features.forEach(toEPSG4326);
 
+	console.log("features:", features);
+
 	var polygonsRaw = [];
 	features.getArray().forEach(feature => {
 		if (typeof feature.getGeometry().getPolygons !== 'undefined') {
