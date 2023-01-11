@@ -398,6 +398,9 @@ function updateWKY() {
 	var shapes = "POLYGON( ### )";
 
 	polygonsRaw.forEach(polygon => {
+
+		console.log("polygon:", polygon);
+
 		if (typeof polygon.getCoordinates !== 'undefined')
 			coord = polygon.getCoordinates();
 		else
@@ -405,10 +408,10 @@ function updateWKY() {
 
 		var data = [];
 
-		console.log("polygon:", polygon, coord, coord.getArray());
+		console.log("coord:", coord);
 
-		polygon.forEach(coord => {
-			data.push(coord[0] + " " + coord[1]);
+		coord.forEach(c => {
+			data.push(c[0] + " " + c[1]);
 		});
 		polygons.push("(" + data.join(",") + ")");
 
