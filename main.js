@@ -410,6 +410,9 @@ function updateWKY() {
 		coord.forEach(c => {
 			data.push(c[0] + " " + c[1]);
 		});
+
+		console.log("data:", data);
+
 		polygons.push("(" + data.join(",") + ")");
 	});
 
