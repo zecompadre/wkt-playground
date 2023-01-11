@@ -398,7 +398,7 @@ function updateWKY() {
 	var shapes = "POLYGON( ### )";
 
 	polygonsRaw.forEach(polygon => {
-		console.log(polygon.getCoordinates());
+		console.log(polygon.getGeometry().getCoordinates());
 	});
 
 	console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
