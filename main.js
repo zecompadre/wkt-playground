@@ -407,7 +407,7 @@ function updateWKY() {
 		console.log("coord:", coord);
 
 		var data = [];
-		coord.forEach(c => {
+		coord.getArray().forEach(c => {
 			data.push(c[0] + " " + c[1]);
 		});
 
