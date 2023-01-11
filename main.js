@@ -407,9 +407,9 @@ function updateWKY() {
 		console.log("coord:", coord);
 
 		var data = [];
-		coord.forEach(function (c) {
-			data.push(c[0] + " " + c[1]);
-		});
+		for (let i = 0; i < coord.length; i++) {
+			data.push(coord[i][0] + " " + coord[i][1]);
+		}
 		console.log("data:", data);
 		polygons.push("(" + data.join(",") + ")");
 	});
