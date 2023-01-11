@@ -296,19 +296,23 @@ function writeTextAreaWKT() {
 	} else {
 		map.removeLayer(vector);
 		features.clear();
-		createVector();
+
+		console.log(new_feature.constructor);
 
 		if (new_feature.constructor != Array) {
 			new_feature = [new_feature];
 		}
 
-		vector.addFeatures(new_feature);
-		//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+		new_feature.forEach(toEPSG3857);
+
+		console.log(new_feature);
 
 		//features.push(new_feature);
 
 		console.log("writefeatures:", features)
 	}
+
+	createVector();
 
 	map.addLayer(vector);
 
