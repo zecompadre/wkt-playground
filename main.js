@@ -409,7 +409,7 @@ function updateWKY() {
 		console.log("coord:", coord, coord.length, typeof coord);
 
 		var latlng = [];
-		coord[0].getArray().forEach(function (c) {
+		coord[0].forEach(function (c) {
 			latlng.push(c[0] + " " + c[1]);
 		});
 
