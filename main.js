@@ -407,14 +407,11 @@ function updateWKY() {
 			coord = polygon;
 
 		var data = [];
-
 		console.log("coord:", coord);
-
 		coord.forEach(c => {
 			data.push(c[0] + " " + c[1]);
 		});
 		polygons.push("(" + data.join(",") + ")");
-
 	});
 	/*
 		console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
