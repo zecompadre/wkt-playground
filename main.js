@@ -387,7 +387,7 @@ function updateWKY() {
 			});
 		}
 		else {
-			console.log("issingle");
+			console.log("isSingle");
 			polygonsRaw.push(feature.getGeometry());
 		}
 	});
@@ -418,6 +418,8 @@ function updateWKY() {
 	}
 
 	shapes = shapes.replace("###", polygons.join("),("));
+
+	console.log("polygons", polygons);
 
 	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
 
