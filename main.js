@@ -376,17 +376,19 @@ function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
-	var polygons = [];
+	var polygonsRaw = [];
 	if (typeof features.getArray()[0].getGeometry().getPolygons !== 'undefined') {
 		console.log("isMultiple");
 		features.getArray()[0].getGeometry().getPolygons().forEach(polygon => {
-			console.log(polygon);
+			polygonsRaw.push(polygon);
 		});
 	}
 	else {
 		console.log("issingle");
-		console.log(features.getArray()[0]);
+		polygonsRaw.push(features.getArray()[0]);
 	}
+
+	console.log(polygonsRaw);
 
 	features.forEach(toEPSG4326);
 
