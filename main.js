@@ -288,6 +288,9 @@ function writeTextAreaWKT() {
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
+			console.log(new_feature);
+			console.log(new_feature.constructor);
+
 		} catch (err) { }
 	}
 	if (!new_feature) {
