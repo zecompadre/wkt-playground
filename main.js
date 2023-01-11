@@ -406,12 +406,12 @@ function updateWKY() {
 
 		console.log("coord:", coord);
 
-		var data = [];
+		var latlng = [];
 		for (let i = 0; i < coord.length; i++) {
-			data.push(coord[i][0] + " " + coord[i][1]);
+			latlng.push(coord[i][0] + " " + coord[i][1]);
 		}
-		console.log("data:", data);
-		polygons.push("(" + data.join(",") + ")");
+		console.log("latlng:", latlng);
+		polygons.push("(" + latlng.join(",") + ")");
 	});
 
 	if (polygons.length > 1) {
