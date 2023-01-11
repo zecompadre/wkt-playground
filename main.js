@@ -376,13 +376,17 @@ function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
-
-	var geoJson = new ol.format.GeoJSON().writeFeatures(features, {
-		dataProjection: 'EPSG:4326',
-		featureProjection: 'EPSG:3857'
-	});
-
-	console.log("geoJson3857:", geoJson);
+	var polygons = [];
+	if (typeof features.getArray()[0].getGeometry().getPolygons !== 'undefined') {
+		console.log("isMultiple");
+		features.getArray()[0].getGeometry().getPolygons().forEach(polygon => {
+			console.log(polygon);
+		});
+	}
+	else {
+		console.log("issingle");
+		console.log(features.getArray()[0]);
+	}
 
 	features.forEach(toEPSG4326);
 
