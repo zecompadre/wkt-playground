@@ -394,20 +394,28 @@ function updateWKY() {
 		}
 	});
 
+	console.log("polygonsRaw:", polygonsRaw);
+
 	var polygons = [];
 	var shapes = "POLYGON( ### )";
 
 	polygonsRaw.forEach(polygon => {
+
+		console.log("polygon:", polygon);
 
 		if (typeof polygon.getCoordinates !== 'undefined')
 			coord = polygon.getCoordinates();
 		else
 			coord = polygon;
 
+		console.log("coord:", coord, coord.length, typeof coord);
+
 		var latlng = [];
-		coord[0].forEach(function (c) {
+		coord[0].getArray().forEach(function (c) {
 			latlng.push(c[0] + " " + c[1]);
 		});
+
+		console.log("latlng:", latlng);
 		polygons.push("(" + latlng.join(",") + ")");
 	});
 
@@ -417,7 +425,11 @@ function updateWKY() {
 
 	shapes = shapes.replace("###", polygons.join("),("));
 
+	console.log("polygons", polygons);
+
 	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
+
+
 
 	/*
 	features.forEach(toEPSG4326);
