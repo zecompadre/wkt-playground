@@ -376,6 +376,8 @@ function updateWKY() {
 
 	$("#wktStringTextArea").css({ borderColor: '', backgroundColor: '' });
 
+	features.forEach(toEPSG4326);
+
 	var polygonsRaw = [];
 	features.getArray().forEach(feature => {
 		if (typeof feature.getGeometry().getPolygons !== 'undefined') {
@@ -389,10 +391,6 @@ function updateWKY() {
 			polygonsRaw.push(feature.getGeometry());
 		}
 	});
-
-	console.log(polygonsRaw);
-
-	features.forEach(toEPSG4326);
 
 	var polygons = [];
 	var shapes = "POLYGON( ### )";
@@ -414,21 +412,7 @@ function updateWKY() {
 		});
 		polygons.push("(" + data.join(",") + ")");
 	});
-	/*
-		console.log("polygons: ", polygonsRaw.map((f) => f.getGeometry().getCoordinates()));
-	
-		features.getArray().map((f) => f.getGeometry().getCoordinates()).forEach(polygon => {
-			var data = [];
-	
-			console.log("polygon:", polygon);
-	
-			polygon[0].forEach(coord => {
-				data.push(coord[0] + " " + coord[1]);
-			});
-			polygons.push("(" + data.join(",") + ")");
-	
-		});
-	*/
+
 	if (polygons.length > 1) {
 		shapes = "MULTIPOLYGON((###))";
 	}
