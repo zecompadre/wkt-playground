@@ -404,7 +404,7 @@ function updateWKY() {
 		else
 			coord = polygon;
 
-		console.log("coord:", coord);
+		console.log("coord:", coord.getArray());
 
 		var data = [];
 		coord.getArray().forEach(c => {
