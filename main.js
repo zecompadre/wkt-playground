@@ -429,7 +429,7 @@ function updateWKY() {
 
 	console.log("polygons", polygons);
 
-	$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
+	//$('#wktStringTextArea').val(polygons.length > 0 ? shapes : '');
 
 
 
