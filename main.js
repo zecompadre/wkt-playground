@@ -3,7 +3,7 @@ var source;
 var vector;
 var map;
 var features = new ol.Collection();
-var in_options = { 'internalProjection': new OpenLayers.Projection("EPSG:4326"), 'externalProjection': new OpenLayers.Projection("EPSG:4326") };
+var in_options = { 'internalProjection': new ol.Projection("EPSG:4326"), 'externalProjection': new ol.Projection("EPSG:4326") };
 var format = new ol.format.WKT(in_options);
 var selectedFeature;
 var interaction;
