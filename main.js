@@ -235,8 +235,8 @@ function init() {
 	changeUI();
 	pasteWKT();
 
-	features.on('add', updateWKY);
-	features.on('remove', updateWKY);
+	//features.on('add', updateWKY);
+	//features.on('remove', updateWKY);
 }
 
 function updateFeature(event) {
