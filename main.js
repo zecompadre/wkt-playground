@@ -287,7 +287,7 @@ function writeTextAreaWKT() {
 		return;
 	} else {
 		try {
-			new_feature = format.read(wkt_string);
+			new_feature = format.readText(wkt_string);
 		} catch (err) { }
 	}
 	if (!new_feature) {
@@ -298,7 +298,11 @@ function writeTextAreaWKT() {
 		features.clear();
 		createVector();
 
-		vector.addFeatures(features);
+		if (new_feature.constructor != Array) {
+			new_feature = [new_feature];
+		}
+
+		vector.addFeatures(new_feature);
 		//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 
 		//features.push(new_feature);
