@@ -56,7 +56,7 @@
 		padding: 0.75em 0 0.75em 0;
 	}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/3.9.0-alpha.1/ol.js" integrity="sha512-wTpoUVpZGe6pkuRZKyGGFnfU2bufqkL85HaE/IiyaBaknAVsZ78XhF/Z0zT5k/G4kC6PCIS+ugT/HWKu7HccXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="openlayers.js"></script>
 <script type="text/javascript">
 	var map, vectors, formats;
 	function updateFormats() {
@@ -110,19 +110,9 @@
 	function init() {
 		map = new ol.Map('map');
 
-		var wms = new ol.layer.Tile({
-			// A layer must have a title to appear in the layerswitcher
-			title: 'OSM',
-			// Again set this layer as a base layer
-			type: 'base',
-			visible: true,
-			source: new ol.source.OSM()
-		});
+		var wms = new ol.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", { layers: 'basic' });
 
-		vectors =
-			new ol.layer.Vector({
-				source: new ol.source.Vector()
-			});
+		vectors = new ol.Layer.Vector("Vector Layer");
 
 		map.addLayers([wms, vectors]);
 		map.addControl(new ol.Control.MousePosition());
