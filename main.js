@@ -491,5 +491,4 @@ function deserializeWKT() {
 	}
 }
 
-
 $(document).ready(init);

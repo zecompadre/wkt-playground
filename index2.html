@@ -109,9 +109,20 @@
 	}
 	function init() {
 		map = new ol.Map('map');
-		var wms = new ol.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", { layers: 'basic' });
 
-		vectors = new ol.Layer.Vector("Vector Layer");
+		var wms = new ol.layer.Tile({
+			// A layer must have a title to appear in the layerswitcher
+			title: 'OSM',
+			// Again set this layer as a base layer
+			type: 'base',
+			visible: true,
+			source: new ol.source.OSM()
+		});
+
+		vectors =
+			new ol.layer.Vector({
+				source: new ol.source.Vector()
+			});
 
 		map.addLayers([wms, vectors]);
 		map.addControl(new ol.Control.MousePosition());
