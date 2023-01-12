@@ -561,12 +561,12 @@ var OpenLayers = {
 			return function (date) {
 				var str; if (isNaN(date.getTime())) { str = "Invalid Date"; } else {
 					str = date.getUTCFullYear() + "-" +
-					OpenLayers.Number.zeroPad(date.getUTCMonth() + 1, 2) + "-" +
-					OpenLayers.Number.zeroPad(date.getUTCDate(), 2) + "T" +
-					OpenLayers.Number.zeroPad(date.getUTCHours(), 2) + ":" +
-					OpenLayers.Number.zeroPad(date.getUTCMinutes(), 2) + ":" +
-					OpenLayers.Number.zeroPad(date.getUTCSeconds(), 2) + "." +
-					OpenLayers.Number.zeroPad(date.getUTCMilliseconds(), 3) + "Z";
+						OpenLayers.Number.zeroPad(date.getUTCMonth() + 1, 2) + "-" +
+						OpenLayers.Number.zeroPad(date.getUTCDate(), 2) + "T" +
+						OpenLayers.Number.zeroPad(date.getUTCHours(), 2) + ":" +
+						OpenLayers.Number.zeroPad(date.getUTCMinutes(), 2) + ":" +
+						OpenLayers.Number.zeroPad(date.getUTCSeconds(), 2) + "." +
+						OpenLayers.Number.zeroPad(date.getUTCMilliseconds(), 3) + "Z";
 				}
 				return str;
 			};
@@ -5300,7 +5300,7 @@ OpenLayers.Handler.Keyboard = OpenLayers.Class(OpenLayers.Handler, {
 		var doc = ajaxRequest.responseXML; if (!doc || !doc.documentElement) { doc = OpenLayers.Format.XML.prototype.read(ajaxRequest.responseText); }
 		if (this.useFeedTitle) {
 			var name = null; try { name = doc.getElementsByTagNameNS('*', 'title')[0].firstChild.nodeValue; }
-				catch (e) { name = doc.getElementsByTagName('title')[0].firstChild.nodeValue; }
+			catch (e) { name = doc.getElementsByTagName('title')[0].firstChild.nodeValue; }
 			if (name) { this.setName(name); }
 		}
 		var options = {}; OpenLayers.Util.extend(options, this.formatOptions); if (this.map && !this.projection.equals(this.map.getProjectionObject())) { options.externalProjection = this.projection; options.internalProjection = this.map.getProjectionObject(); }
@@ -7725,7 +7725,7 @@ OpenLayers.Util.extend(OpenLayers.Tile.prototype, {
 		var width = Math.round(style.graphicWidth || size * aspectRatio); var height = Math.round(style.graphicHeight || size); node.style.width = width + "px"; node.style.height = height + "px"; var image = document.getElementById(node.id + "_image"); if (!image) { image = this.createNode("olv:imagedata", node.id + "_image"); node.appendChild(image); }
 		image.style.width = width + "px"; image.style.height = height + "px"; image.src = style.externalGraphic; image.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(" + "src='', sizingMethod='scale')"; var rot = rotation * Math.PI / 180; var sintheta = Math.sin(rot); var costheta = Math.cos(rot); var filter = "progid:DXImageTransform.Microsoft.Matrix(M11=" + costheta + ",M12=" + (-sintheta) + ",M21=" + sintheta + ",M22=" + costheta + ",SizingMethod='auto expand')\n"; var opacity = style.graphicOpacity || style.fillOpacity; if (opacity && opacity != 1) {
 			filter += "progid:DXImageTransform.Microsoft.BasicImage(opacity=" +
-			opacity + ")\n";
+				opacity + ")\n";
 		}
 		node.style.filter = filter; var centerPoint = new OpenLayers.Geometry.Point(-xOffset, -yOffset); var imgBox = new OpenLayers.Bounds(0, 0, width, height).toGeometry(); imgBox.rotate(style.rotation, centerPoint); var imgBounds = imgBox.getBounds(); node.style.left = Math.round(parseInt(node.style.left) + imgBounds.left) + "px"; node.style.top = Math.round(parseInt(node.style.top) - imgBounds.bottom) + "px";
 	}, postDraw: function (node) {
@@ -8088,7 +8088,7 @@ OpenLayers.Util.extend(OpenLayers.Tile.prototype, {
 			var oldX = this.x, oldY = this.y; OpenLayers.Geometry.Point.prototype.move.call(this, x, y); if (control._moving) { return; }
 			var evt = control.dragControl.handlers.drag.evt; var constrain = (evt && evt.shiftKey) ? 45 : 1; var centerGeometry = control.center; var dx1 = this.x - centerGeometry.x; var dy1 = this.y - centerGeometry.y; var dx0 = dx1 - x; var dy0 = dy1 - y; this.x = oldX; this.y = oldY; var a0 = Math.atan2(dy0, dx0); var a1 = Math.atan2(dy1, dx1); var angle = a1 - a0; angle *= 180 / Math.PI; control._angle = (control._angle + angle) % 360; var diff = control.rotation % constrain; if (Math.abs(control._angle) >= constrain || diff !== 0) {
 				angle = Math.round(control._angle / constrain) * constrain -
-				diff; control._angle = 0; control.box.geometry.rotate(angle, centerGeometry); control.transformFeature({ rotation: angle });
+					diff; control._angle = 0; control.box.geometry.rotate(angle, centerGeometry); control.transformFeature({ rotation: angle });
 			}
 		}; var handles = new Array(8); var rotationHandles = new Array(4); var geom, handle, rotationHandle; var positions = ["sw", "s", "se", "e", "ne", "n", "nw", "w"]; for (var i = 0; i < 8; ++i) {
 			geom = this.box.geometry.components[i]; handle = new OpenLayers.Feature.Vector(geom.clone(), { role: positions[i] + "-resize" }, typeof this.renderIntent == "string" ? null : this.renderIntent); if (i % 2 == 0) { rotationHandle = new OpenLayers.Feature.Vector(geom.clone(), { role: positions[i] + "-rotate" }, typeof this.rotationHandleSymbolizer == "string" ? null : this.rotationHandleSymbolizer); rotationHandle.geometry.move = rotationHandleMoveFn; geom._rotationHandle = rotationHandle; rotationHandles[i / 2] = rotationHandle; }
@@ -8549,5 +8549,3 @@ OpenLayers.Util.extend(OpenLayers.Tile.prototype, {
 		if (handled) { OpenLayers.Event.stop(evt); }
 	}, CLASS_NAME: "OpenLayers.Control.KeyboardDefaults"
 }); OpenLayers.Lang['en-CA'] = OpenLayers.Util.applyDefaults({}, OpenLayers.Lang["en"]);
-
-}
