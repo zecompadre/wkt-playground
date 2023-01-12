@@ -130,6 +130,7 @@
 
 		//map.addLayers([wms, vectors]);
 		map.addControl(new ol.control.MousePosition());
+		map.addControl(new ol.control.Control({ element: document.getElementById("OpenLayers_Control_EditingToolbar") }));
 		//map.addControl(new ol.control.EditingToolbar(vector));
 
 		var options = {
@@ -222,7 +223,12 @@
 		<p id="shortdesc">
 			Shows the wide variety of vector formats that open layers supports.
 		</p>
-
+		<div id="OpenLayers_Control_EditingToolbar" class="olControlEditingToolbar olControlNoSelect" unselectable="on" style="position: absolute; z-index: 1010;">
+			<div class="olControlNavigationItemActive olButton"></div>
+			<div class="olControlDrawFeaturePointItemInactive olButton"></div>
+			<div class="olControlDrawFeaturePathItemInactive olButton"></div>
+			<div class="olControlDrawFeaturePolygonItemInactive olButton"></div>
+		</div>
 		<div id="map" class="smallmap"></div>
 		<div id="input">
 			<p>Use the drop-down below to select the input/output format
