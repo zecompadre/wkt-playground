@@ -10504,7 +10504,7 @@ OpenLayers.Map = OpenLayers.Class({
 		}
 		this.tileSize = new OpenLayers.Size(OpenLayers.Map.TILE_WIDTH, OpenLayers.Map.TILE_HEIGHT);
 		this.paddingForPopups = new OpenLayers.Bounds(15, 15, 15, 15);
-		this.theme = OpenLayers._getScriptLocation() + 'theme/default/style.css';
+		this.theme = OpenLayers._getScriptLocation() + 'style.css';
 		this.options = OpenLayers.Util.extend({}, options);
 		OpenLayers.Util.extend(this, options);
 		var projCode = this.projection instanceof OpenLayers.Projection ? this.projection.projCode : this.projection;
@@ -10521,6 +10521,7 @@ OpenLayers.Map = OpenLayers.Class({
 		if (this.center && !(this.center instanceof OpenLayers.LonLat)) {
 			this.center = new OpenLayers.LonLat(this.center);
 		}
+
 		this.layers = [];
 		this.id = OpenLayers.Util.createUniqueID("OpenLayers.Map_");
 		this.div = OpenLayers.Util.getElement(div);
