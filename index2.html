@@ -60,7 +60,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	var map, vectors, formats;
+	var map, vectors, formats, interaction;
 	function updateFormats() {
 		var in_options = {
 			'internalProjection': map.baseLayer.projection,
@@ -77,6 +77,7 @@
 		var gmlOptionsIn = ol.Util.extend(ol.Util.extend({}, gmlOptions), in_options);
 		var gmlOptionsOut = ol.Util.extend(ol.Util.extend({}, gmlOptions), out_options);
 		var kmlOptionsIn = ol.Util.extend({ extractStyles: true }, in_options);
+
 		formats = {
 			'in': {
 				wkt: new ol.format.WKT(in_options),
@@ -102,8 +103,6 @@
 			}
 		};
 	}
-
-	var interaction;
 
 	function init() {
 		//map = new OpenLayers.Map('map');
@@ -200,7 +199,7 @@
 			var snap = new ol.interaction.Snap({
 				source: vector.getSource()
 			});
-			map.addInteraction(snap);
+			//map.addInteraction(snap);
 		});
 
 		map.setView(
