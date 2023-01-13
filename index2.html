@@ -73,38 +73,31 @@
 			featureType: "feature",
 			featureNS: "http://example.com/feature"
 		};
-		var gmlOptionsIn = OpenLayers.Util.extend(
-			OpenLayers.Util.extend({}, gmlOptions),
-			in_options
-		);
-		var gmlOptionsOut = OpenLayers.Util.extend(
-			OpenLayers.Util.extend({}, gmlOptions),
-			out_options
-		);
-		var kmlOptionsIn = OpenLayers.Util.extend(
-			{ extractStyles: true }, in_options);
+		var gmlOptionsIn = ol.Util.extend(ol.Util.extend({}, gmlOptions), in_options);
+		var gmlOptionsOut = ol.Util.extend(ol.Util.extend({}, gmlOptions), out_options);
+		var kmlOptionsIn = ol.Util.extend({ extractStyles: true }, in_options);
 		formats = {
 			'in': {
-				wkt: new OpenLayers.Format.WKT(in_options),
-				geojson: new OpenLayers.Format.GeoJSON(in_options),
-				georss: new OpenLayers.Format.GeoRSS(in_options),
-				gml2: new OpenLayers.Format.GML.v2(gmlOptionsIn),
-				gml3: new OpenLayers.Format.GML.v3(gmlOptionsIn),
-				kml: new OpenLayers.Format.KML(kmlOptionsIn),
-				atom: new OpenLayers.Format.Atom(in_options),
-				gpx: new OpenLayers.Format.GPX(in_options),
-				encoded_polyline: new OpenLayers.Format.EncodedPolyline(in_options)
+				wkt: new ol.format.WKT(in_options),
+				geojson: new ol.format.GeoJSON(in_options),
+				georss: new ol.format.GeoRSS(in_options),
+				gml2: new ol.format.GML.v2(gmlOptionsIn),
+				gml3: new ol.format.GML.v3(gmlOptionsIn),
+				kml: new ol.format.KML(kmlOptionsIn),
+				atom: new ol.format.Atom(in_options),
+				gpx: new ol.format.GPX(in_options),
+				encoded_polyline: new ol.format.EncodedPolyline(in_options)
 			},
 			'out': {
-				wkt: new OpenLayers.Format.WKT(out_options),
-				geojson: new OpenLayers.Format.GeoJSON(out_options),
-				georss: new OpenLayers.Format.GeoRSS(out_options),
-				gml2: new OpenLayers.Format.GML.v2(gmlOptionsOut),
-				gml3: new OpenLayers.Format.GML.v3(gmlOptionsOut),
-				kml: new OpenLayers.Format.KML(out_options),
-				atom: new OpenLayers.Format.Atom(out_options),
-				gpx: new OpenLayers.Format.GPX(out_options),
-				encoded_polyline: new OpenLayers.Format.EncodedPolyline(out_options)
+				wkt: new ol.format.WKT(out_options),
+				geojson: new ol.format.GeoJSON(out_options),
+				georss: new ol.format.GeoRSS(out_options),
+				gml2: new ol.format.GML.v2(gmlOptionsOut),
+				gml3: new ol.format.GML.v3(gmlOptionsOut),
+				kml: new ol.format.KML(out_options),
+				atom: new ol.format.Atom(out_options),
+				gpx: new ol.format.GPX(out_options),
+				encoded_polyline: new ol.format.EncodedPolyline(out_options)
 			}
 		};
 	}
@@ -115,10 +108,6 @@
 
 		vector = new ol.layer.Vector();
 
-		//var wms = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", { layers: 'basic' });
-
-		//vectors = new OpenLayers.Layer.Vector("Vector Layer");
-
 		map = new ol.Map({
 			layers: [tile, vector],
 			target: 'map',
@@ -128,15 +117,17 @@
 			})
 		});
 
-		//map.addLayers([wms, vectors]);
 		map.addControl(new ol.control.MousePosition());
 		map.addControl(new ol.control.Control({ element: document.getElementById("EditingToolbar") }));
 		//map.addControl(new ol.control.EditingToolbar(vector));
 
-		var options = {
-			hover: true,
-			onSelect: serialize
-		};
+		var select = new ol.interaction.Select({
+			condition: ol.events.condition.hover,
+			layers: [vector]
+		});
+		map.addInteraction(select);
+		//select.on('select', selectFeature);
+
 
 		//var select = new OpenLayers.ContrOpenLayers.SelectFeature(vector, options);
 		//map.addControl(select);
@@ -150,9 +141,6 @@
 				zoom: 1,
 			}),
 		);
-
-
-		//map.setCenter(new OpenLayers.LonLat(0, 0), 1);
 	}
 
 	function serialize(feature) {
