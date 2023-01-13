@@ -60,7 +60,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	var map, vectors, formats, interaction;
+	var map, vectors, formats, interaction, currentbtn;
 	function updateFormats() {
 		var in_options = {
 			'internalProjection': map.baseLayer.projection,
@@ -138,6 +138,8 @@
 
 		//updateFormats();
 
+		currentbtn = "pan";
+
 		$('#EditingToolbar .olButton').on('click', function (event) {
 
 			var target = event.target;
@@ -145,16 +147,20 @@
 
 			//map.removeInteraction(interaction);
 
+			if ($("#" + currentbtn).hasClass("olControl" + currentbtn + "ItemActive")) {
+				$("#" + currentbtn).removeClass("olControl" + currentbtn + "ItemActive")
+				$("#" + currentbtn).addClass("olControl" + currentbtn + "ItemInactive")
+			}
+
+			$(target).toggleClass("olControl" + id + "ItemActive");
+			$(target).toggleClass("olControl" + id + "ItemInactive");
 
 			switch (id) {
-				case "pan":
+				case "Navigation":
 
-					$(target).toggleClass("olControlNavigationItemActive");
-					$(target).toggleClass("olControlNavigationItemInactive");
+
 					break;
-				case "point":
-					$(target).toggleClass("olControlDrawFeaturePointItemActive");
-					$(target).toggleClass("olControlDrawFeaturePointItemInactive");
+				case "DrawFeaturePoint":
 
 					/*
 										interaction = new ol.interaction.Draw({
@@ -166,10 +172,8 @@
 										map.addInteraction(interaction);
 					*/
 					break;
-				case "line":
+				case "DrawFeaturePath":
 
-					$(target).toggleClass("olControlDrawFeaturePathItemActive");
-					$(target).toggleClass("olControlDrawFeaturePathItemInactive");
 					/*
 										interaction = new ol.interaction.Draw({
 											type: 'LineString',
@@ -180,10 +184,9 @@
 										map.addInteraction(interaction);
 					*/
 					break;
-				case "polygon":
+				case "DrawFeaturePolygon":
 
-					$(target).toggleClass("olControlDrawFeaturePolygonItemActive");
-					$(target).toggleClass("olControlDrawFeaturePolygonItemInactive");
+
 					/*
 										interaction = new ol.interaction.Draw({
 											type: 'Polygon',
@@ -201,6 +204,8 @@
 				source: vector.getSource()
 			});
 			//map.addInteraction(snap);
+
+			currentbtn = id;
 		});
 
 		map.setView(
@@ -281,10 +286,10 @@
 			Shows the wide variety of vector formats that open layers supports.
 		</p>
 		<div id="EditingToolbar" class="olControlEditingToolbar olControlNoSelect" unselectable="on" style="position: absolute; z-index: 1010;">
-			<div class="olControlNavigationItemActive olButton" id="pan"></div>
-			<div class="olControlDrawFeaturePointItemInactive olButton" id="point"></div>
-			<div class="olControlDrawFeaturePathItemInactive olButton" id="path"></div>
-			<div class="olControlDrawFeaturePolygonItemInactive olButton" id="polygon"></div>
+			<div class="olControlNavigationItemActive olButton" id="Navigation"></div>
+			<div class="olControlDrawFeaturePointItemInactive olButton" id="DrawFeaturePoint"></div>
+			<div class="olControlDrawFeaturePathItemInactive olButton" id="DrawFeaturePath"></div>
+			<div class="olControlDrawFeaturePolygonItemInactive olButton" id="DrawFeaturePolygon"></div>
 		</div>
 		<div id="map" class="smallmap"></div>
 		<div id="input">
