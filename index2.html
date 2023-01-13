@@ -135,6 +135,67 @@
 
 		//updateFormats();
 
+		$('#EditingToolbar .olButton').on('click', function (event) {
+
+			var target = event.target;
+			var id = target.id;
+
+			map.removeInteraction(interaction);
+
+
+			switch (id) {
+				case "pan":
+					$(target).removeClass("olControlNavigationItemActive").toogle();
+					$(target).addClass("olControlNavigationItemInactive").toogle();
+					break;
+				case "point":
+					$(target).addClass("olControlDrawFeaturePointItemActive").toogle();
+					$(target).removeClass("olControlDrawFeaturePointItemInactive").toogle();
+
+
+					interaction = new ol.interaction.Draw({
+						type: 'Point',
+						source: vector.getSource(),
+						style: drawStyle
+					});
+
+					map.addInteraction(interaction);
+					break;
+				case "line":
+
+					$(target).addClass("olControlDrawFeaturePathItemActive").toogle();
+					$(target).removeClass("olControlDrawFeaturePathItemInactive").toogle();
+
+					interaction = new ol.interaction.Draw({
+						type: 'LineString',
+						source: vector.getSource(),
+						style: drawStyle
+					});
+
+					map.addInteraction(interaction);
+					break;
+				case "polygon":
+
+					$(target).addClass("olControlDrawFeaturePolygonItemActive").toogle();
+					$(target).removeClass("olControlDrawFeaturePolygonItemInactive").toogle();
+
+					interaction = new ol.interaction.Draw({
+						type: 'Polygon',
+						source: vector.getSource(),
+						style: drawStyle
+					});
+
+					map.addInteraction(interaction);
+					break;
+				default:
+					break;
+			}
+			var snap = new ol.interaction.Snap({
+				source: vector.getSource()
+			});
+			map.addInteraction(snap);
+		});
+
 		map.setView(
 			new ol.View({
 				center: [-9.58, 39.00],
@@ -213,10 +274,10 @@
 			Shows the wide variety of vector formats that open layers supports.
 		</p>
 		<div id="EditingToolbar" class="olControlEditingToolbar olControlNoSelect" unselectable="on" style="position: absolute; z-index: 1010;">
-			<div class="olControlNavigationItemActive olButton"></div>
-			<div class="olControlDrawFeaturePointItemInactive olButton"></div>
-			<div class="olControlDrawFeaturePathItemInactive olButton"></div>
-			<div class="olControlDrawFeaturePolygonItemInactive olButton"></div>
+			<div class="olControlNavigationItemActive olButton" id="pan"></div>
+			<div class="olControlDrawFeaturePointItemInactive olButton" id="point"></div>
+			<div class="olControlDrawFeaturePathItemInactive olButton" id="path"></div>
+			<div class="olControlDrawFeaturePolygonItemInactive olButton" id="polygon"></div>
 		</div>
 		<div id="map" class="smallmap"></div>
 		<div id="input">
