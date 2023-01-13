@@ -148,12 +148,13 @@
 
 			switch (id) {
 				case "pan":
-					$(target).removeClass("olControlNavigationItemActive").toggle();
-					$(target).addClass("olControlNavigationItemInactive").toggle();
+
+					$(target).toggleClass("olControlNavigationItemActive");
+					$(target).toggleClass("olControlNavigationItemInactive");
 					break;
 				case "point":
-					$(target).addClass("olControlDrawFeaturePointItemActive").toggle();
-					$(target).removeClass("olControlDrawFeaturePointItemInactive").toggle();
+					$(target).toggleClass("olControlDrawFeaturePointItemActive");
+					$(target).toggleClass("olControlDrawFeaturePointItemInactive");
 
 					/*
 										interaction = new ol.interaction.Draw({
@@ -167,8 +168,8 @@
 					break;
 				case "line":
 
-					$(target).addClass("olControlDrawFeaturePathItemActive").toggle();
-					$(target).removeClass("olControlDrawFeaturePathItemInactive").toggle();
+					$(target).toggleClass("olControlDrawFeaturePathItemActive");
+					$(target).toggleClass("olControlDrawFeaturePathItemInactive");
 					/*
 										interaction = new ol.interaction.Draw({
 											type: 'LineString',
@@ -181,8 +182,8 @@
 					break;
 				case "polygon":
 
-					$(target).addClass("olControlDrawFeaturePolygonItemActive").toggle();
-					$(target).removeClass("olControlDrawFeaturePolygonItemInactive").toggle();
+					$(target).toggleClass("olControlDrawFeaturePolygonItemActive");
+					$(target).toggleClass("olControlDrawFeaturePolygonItemInactive");
 					/*
 										interaction = new ol.interaction.Draw({
 											type: 'Polygon',
