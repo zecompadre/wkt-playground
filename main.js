@@ -269,17 +269,16 @@ function writeTextAreaWKT() {
 
 	var new_feature;
 	var wkt_string = $('#wktStringTextArea').val();
+
 	if (wkt_string == '') {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
 		return;
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
-			console.log("new_feature", new_feature);
-			console.log("new_feature.constructor", new_feature.constructor);
-
 		} catch (err) { }
 	}
+
 	if (!new_feature) {
 		$('#wktStringTextArea').css({ borderColor: 'red', backgroundColor: '#F7E8F3' });
 		return;
@@ -288,28 +287,21 @@ function writeTextAreaWKT() {
 		features.clear();
 
 		console.log("new_feature.constructor", new_feature.constructor);
+		console.log("new_feature", new_feature);
+
 
 		if (new_feature.constructor != Array) {
 			new_feature = [new_feature];
 		}
 
 		new_feature.forEach(toEPSG3857);
-
-		console.log("new_feature", new_feature);
-
 		features.push(new_feature);
-
-		console.log("writefeatures:", features)
 	}
 
 	createVector();
 
 	map.addLayer(vector);
-
-	console.log(features.getArray());
-
 	extent = features.getArray()[0].getGeometry().getExtent();
-
 	map.setView(
 		new ol.View({
 			center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
