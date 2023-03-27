@@ -288,8 +288,8 @@ function writeTextAreaWKT() {
 	} else {
 		try {
 			new_feature = format.readFeature(wkt_string);
-			console.log(new_feature);
-			console.log(new_feature.constructor);
+			console.log("new_feature", new_feature);
+			console.log("new_feature.constructor", new_feature.constructor);
 
 		} catch (err) { }
 	}
@@ -300,7 +300,7 @@ function writeTextAreaWKT() {
 		map.removeLayer(vector);
 		features.clear();
 
-		console.log(new_feature.constructor);
+		console.log("new_feature.constructor", new_feature.constructor);
 
 		if (new_feature.constructor != Array) {
 			new_feature = [new_feature];
@@ -308,7 +308,7 @@ function writeTextAreaWKT() {
 
 		new_feature.forEach(toEPSG3857);
 
-		console.log(new_feature);
+		console.log("new_feature", new_feature);
 
 		//features.push(new_feature);
 
