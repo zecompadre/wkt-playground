@@ -310,7 +310,7 @@ function writeTextAreaWKT() {
 
 		console.log("new_feature", new_feature);
 
-		//features.push(new_feature);
+		features.push(new_feature);
 
 		console.log("writefeatures:", features)
 	}
@@ -356,10 +356,8 @@ async function pasteWKT() {
 			throw new Error('Not allowed to read clipboard.');
 		}
 		const text = await navigator.clipboard.readText();
-
-		console.log("pasteWKT", text);
-
 		if (text.indexOf('POLYGON') !== -1) {
+			console.log("wktStringTextArea[text]", text);
 			$('#wktStringTextArea').val(text);
 			writeTextAreaWKT();
 		}
@@ -367,6 +365,7 @@ async function pasteWKT() {
 		console.error('pasteWKT:', error.message);
 	}
 	if ($('#wktStringTextArea').val() === "") {
+		console.log("wktStringTextArea[defaultWKT]", defaultWKT);
 		$('#wktStringTextArea').val(defaultWKT);
 		writeTextAreaWKT();
 	}
