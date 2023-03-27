@@ -2,68 +2,76 @@
 <html>
 
 <head>
-	<title>WKT PlayGround</title>
+	<title>Draw WKT</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css" type="text/css">
-
+	<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
 	<!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" />
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js" type="text/javascript"></script>
-
+	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
 	<script src="main.js"></script>
-	<link rel="stylesheet" href="main.css" type="text/css" />
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+	<link rel="stylesheet" href="/main.css">
 </head>
 
-<body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 40px; line-height: 0.5;">
-		<a class="navbar-brand" href="#">WKT PlayGround</a>
+<body onload="init()">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 40px;line-height: 0.5">
+		<a class="navbar-brand" href="#">OpenStreetMap WKT Playground</a>
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" href="https://github.com/clydedacruz/openstreetmap-wkt-playground">Code</a>
+			</li>
+			<li class="nav-item">
+				<!-- Place this tag where you want the button to render. -->
+				&nbsp;&nbsp;&nbsp;
+				<a class="github-button" href="https://github.com/clydedacruz/openstreetmap-wkt-playground" data-icon="octicon-star" data-size="large" data-show-count="true"
+					aria-label="Star clydedacruz/openstreetmap-wkt-playground on GitHub">Star</a>
+			</li>
+		</ul>
 	</nav>
-	<div class="container-fluid" style="padding: 0px; border: 0px;">
-		<div class="mapholder">
-			<div id="map" class="map" style="z-index: 0;"></div>
-			<div id="wkt-overlay">
-				<button id="wkt-remove" class="btn btn-danger" title="Delete"><i class="fa-solid fa-circle-xmark"></i></button>
+	<div class="container-fluid" style="padding: 0px; border:0px">
+		<div class="span12">
+			<div id="overlay" class="row align-items-center justify-content-center" style="background-color: transparent; z-index:1; position: absolute; top:280px; right:26px">
+				<div class="btn-group-vertical ">
+					<button type="button" class="btn btn-primary" onclick="selectGeom('Point')">Point</button>
+					<button type="button" class="btn btn-primary" onclick="selectGeom('LineString')">Line String</button>
+					<button type="button" class="btn btn-primary" onclick="selectGeom('Polygon')">Polygon</button>
+				</div>
 			</div>
+			<div id="map" class="map" style="z-index: 0"></div>
 		</div>
-		<div class="actikonsholder" style="padding: 10px; border: 0px;">
-			<textarea id="wktStringTextArea" class="form-control" rows="4"></textarea>
-			<div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding: 10px; position: absolute; right: 0px;">
-				<label class="btn btn-secondary" title="Pan">
-					<input type="radio" name="options" id="pan" autocomplete="off">
-					<i class="fa-solid fa-map fa-2x"></i>
-				</label>
-				<label class="btn btn-success" title="Add Point">
-					<input type="radio" name="options" id="point" autocomplete="off">
-					<i class="fa-sharp fa-solid fa-location-pin fa-2x"></i>
-				</label>
-				<label class="btn btn-success" title="Add LineString">
-					<input type="radio" name="options" id="line" autocomplete="off">
-					<i class="fa-solid fa-minus fa-2x"></i>
-				</label>
-				<label class="btn btn-success" title="Add Polygon">
-					<input type="radio" name="options" id="polygon" autocomplete="off">
-					<i class="fa-solid fa-draw-polygon fa-2x"></i>
-				</label>
-				<label class="btn btn-primary" title="Modify">
-					<input type="radio" name="options" id="modify" autocomplete="off">
-					<i class="fa-solid fa-pencil fa-2x"></i>
-				</label>
-				<label class="btn btn-info" title="Copy">
-					<input type="radio" name="options" id="copy" autocomplete="off">
-					<i class="fa-solid fa-copy fa-2x"></i>
-				</label>
-				<label class="btn btn-danger" title="Delete">
-					<input type="radio" name="options" id="delete" autocomplete="off">
-					<i class="fa-solid fa-trash-can fa-2x"></i>
-				</label>
+		<div class="span12" style="padding: 10px; border:0px">
+			<textarea id="wktStringTextArea" class="form-control" rows="4" onclick="restoreDefaultColors()">
+        MULTIPOLYGON(((-108.72070312499997 34.99400375757577,-100.01953124999997 46.58906908309183,-90.79101562499996 34.92197103616377,-108.72070312499997
+        34.99400375757577),(-100.10742187499997 41.47566020027821,-102.91992187499996 37.61423141542416,-96.85546874999996
+        37.54457732085582,-100.10742187499997 41.47566020027821)),((-85.16601562499999 34.84987503195417,-80.771484375 28.497660832963476,-76.904296875
+        34.92197103616377,-85.16601562499999 34.84987503195417)))
+      </textarea>
+			<div class="btn-group btn-group-md" style="padding: 10px; position: absolute; right:0px">
+				<button type="button" class="btn btn-primary" onclick="clearMap()">Clear</button>
+				<button type="button" class="btn btn-primary" onclick="plotWKT()">Plot Shape</button>
 			</div>
 		</div>
 	</div>
+
 </body>
+
+</html>
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+openstreetmap-wkt-playground/index.html at master · clydedacruz/openstreetmap-wkt-playground
