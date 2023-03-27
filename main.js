@@ -356,6 +356,9 @@ async function pasteWKT() {
 			throw new Error('Not allowed to read clipboard.');
 		}
 		const text = await navigator.clipboard.readText();
+
+		console.log("pasteWKT", text);
+
 		if (text.indexOf('POLYGON') !== -1) {
 			$('#wktStringTextArea').val(text);
 			writeTextAreaWKT();
