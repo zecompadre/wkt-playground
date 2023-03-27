@@ -263,19 +263,6 @@ function resetColors() {
 }
 
 /**
- * Let user change the geometry type.
- * @param {Event} e Change event.
- */
-function createVector() {
-	vector = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			features: features,
-		}),
-		style: defaultStyle,
-	});
-}
-
-/**
  * Plot wkt string on map
  */
 function writeTextAreaWKT() {
@@ -319,8 +306,6 @@ function writeTextAreaWKT() {
 
 	map.addLayer(vector);
 
-	return;
-
 	console.log(features.getArray());
 
 	extent = features.getArray()[0].getGeometry().getExtent();
@@ -333,6 +318,19 @@ function writeTextAreaWKT() {
 	);
 
 	map.getView().fit(extent, map.getSize());
+}
+
+/**
+ * Let user change the geometry type.
+ * @param {Event} e Change event.
+ */
+function createVector() {
+	vector = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			features: features,
+		}),
+		style: defaultStyle,
+	});
 }
 
 function toEPSG4326(element, index, array) {
