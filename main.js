@@ -319,6 +319,8 @@ function writeTextAreaWKT() {
 
 	map.addLayer(vector);
 
+	return;
+
 	console.log(features.getArray());
 
 	extent = features.getArray()[0].getGeometry().getExtent();
