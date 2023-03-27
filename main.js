@@ -114,8 +114,8 @@ function init() {
 	}
 
 	pasteWKT();
-	//plotWKT();
-	//selectGeom('Point');
+
+	//selectGeom('Polygon');
 }
 
 function restoreDefaultColors() {
@@ -154,7 +154,7 @@ function plotWKT() {
 		style: styles
 	});
 
-	selectGeom(current_shape);
+	//selectGeom(current_shape);
 	map.addLayer(vector);
 	derived_feature = features.getArray()[0];
 	extent = derived_feature.getGeometry().getExtent();
@@ -178,7 +178,7 @@ function clearMap() {
 		source: new ol.source.Vector({ features: features }),
 		style: styles
 	});
-	selectGeom(current_shape);
+	//selectGeom(current_shape);
 	map.addLayer(vector);
 	document.getElementById("wktStringTextArea").value = "";
 	restoreDefaultColors();
