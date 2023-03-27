@@ -217,6 +217,8 @@ function init() {
 		$(this).css({ borderColor: '', backgroundColor: '' });
 	});
 
+	$('#wktStringTextArea').on("paste", pasteWKT);
+
 	document.onkeydown = function (evt) {
 		evt = evt || window.event;
 		var isEscape = false;
