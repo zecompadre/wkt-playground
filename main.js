@@ -42,7 +42,7 @@ async function pasteWKT() {
 		if (text.indexOf('POLYGON') !== -1) {
 			console.log("wktStringTextArea[text]", text);
 			$('#wktStringTextArea').val(text);
-			writeTextAreaWKT();
+			plotWKT();
 		}
 	} catch (error) {
 		console.error('pasteWKT:', error.message);
@@ -50,7 +50,7 @@ async function pasteWKT() {
 	if ($('#wktStringTextArea').val() === "") {
 		console.log("wktStringTextArea[defaultWKT]", defaultWKT);
 		$('#wktStringTextArea').val(defaultWKT);
-		writeTextAreaWKT();
+		plotWKT();
 	}
 }
 
@@ -112,8 +112,9 @@ function init() {
 	if (window.location && window.location.hash) {
 		loadWKTfromURIFragment(window.location.hash);
 	}
+
 	pasteWKT();
-	plotWKT();
+	//plotWKT();
 	//selectGeom('Point');
 }
 
