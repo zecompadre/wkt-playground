@@ -319,7 +319,10 @@ function writeTextAreaWKT() {
 
 	map.addLayer(vector);
 
+	console.log(features.getArray());
+
 	extent = features.getArray()[0].getGeometry().getExtent();
+
 	map.setView(
 		new ol.View({
 			center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
