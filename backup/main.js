@@ -217,7 +217,7 @@ function init() {
 		$(this).css({ borderColor: '', backgroundColor: '' });
 	});
 
-	$('#wktStringTextArea').bind("paste", pasteWKT);
+	$('#wktStringTextArea').on("change", pasteWKT);
 
 	document.onkeydown = function (evt) {
 		evt = evt || window.event;
