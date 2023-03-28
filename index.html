@@ -24,7 +24,7 @@
 			</li>
 		</ul>
 	</nav>
-	<div class="container-fluid" style="padding: 0px; border:0px">
+	<div class="container-fluid" style="padding: 0; border:0;">
 		<div class="span12">
 			<div id="overlay" class="row align-items-center justify-content-center" style="background-color: transparent; z-index:1; position: absolute; top:280px; right:26px">
 				<div class="btn-group-vertical ">
@@ -35,9 +35,9 @@
 			</div>
 			<div id="map" class="map" style="z-index: 0"></div>
 		</div>
-		<div class="span12" style="padding: 10px; border:0px">
-			<textarea id="wktStringTextArea" class="form-control" rows="4" onclick="app,restoreDefaultColors()"></textarea>
-			<div class="btn-group btn-group-md" style="padding: 10px; position: absolute; right:0px">
+		<div class="span12" style="padding: 10px; border:0;bottom: 0;">
+			<textarea id="wktStringTextArea" class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
+			<div class="btn-group btn-group-md" style="padding: 10px; position: absolute; right:0; bottom: 0;">
 				<button type="button" class="btn btn-primary" onclick="app.clearMap()">Limpar</button>
 				<button type="button" class="btn btn-primary" onclick="app.plotWKT()">Desenhar</button>
 			</div>
