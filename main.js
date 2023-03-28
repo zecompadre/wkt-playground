@@ -87,7 +87,7 @@ var app = (function () {
 		plotWKT: function () {
 			var new_feature;
 
-			wkt_string = textarea.value.value;
+			wkt_string = textarea.value;
 			if (wkt_string == "") {
 				textarea.style.borderColor = "red";
 				textarea.style.backgroundColor = "#F7E8F3";
