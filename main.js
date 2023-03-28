@@ -156,7 +156,7 @@ var app = (function () {
 				source: new ol.source.OSM()
 			});
 
-			$('#wktStringTextArea').on("paste", pasteWKT);
+			$('#wktStringTextArea').on("paste", this.pasteWKT);
 
 			features.on("add", function (e) {
 				this.restoreDefaultColors();
