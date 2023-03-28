@@ -37,7 +37,6 @@ var app = (function () {
 
 
 	return {
-
 		pasteWKT: async function () {
 			try {
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
@@ -82,16 +81,16 @@ var app = (function () {
 			this.addInteraction(shape);
 		},
 		restoreDefaultColors: function () {
-			textarea.value.style.borderColor = "";
-			textarea.value.style.backgroundColor = "";
+			textarea.style.borderColor = "";
+			textarea.style.backgroundColor = "";
 		},
 		plotWKT: function () {
 			var new_feature;
 
 			wkt_string = textarea.value.value;
 			if (wkt_string == "") {
-				textarea.value.style.borderColor = "red";
-				textarea.value.style.backgroundColor = "#F7E8F3";
+				textarea.style.borderColor = "red";
+				textarea.style.backgroundColor = "#F7E8F3";
 				return;
 			} else {
 				try {
@@ -101,8 +100,8 @@ var app = (function () {
 			}
 
 			if (!new_feature) {
-				textarea.value.style.borderColor = "red";
-				textarea.value.style.backgroundColor = "#F7E8F3";
+				textarea.style.borderColor = "red";
+				textarea.style.backgroundColor = "#F7E8F3";
 				return;
 			} else {
 				map.removeLayer(vector);
@@ -140,16 +139,18 @@ var app = (function () {
 			});
 			//this.selectGeom(current_shape);
 			map.addLayer(vector);
-			textarea.value.value = "";
+			textarea.value = "";
 			this.restoreDefaultColors();
 		},
 		loadWKTfromURIFragment: function (fragment) {
 			// remove first character from fragment as it contains '#'
 			var wkt = window.location.hash.slice(1);
-			textarea.value.value = decodeURI(wkt);
+			textarea.value = decodeURI(wkt);
 		},
 		init: function () {
 			var self = this;
+
+			textarea = document.getElementById("wktStringTextArea");
 
 			document.getElementById("overlay").style.display = "none";
 			this.createVector();
