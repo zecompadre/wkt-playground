@@ -150,6 +150,8 @@ var app = (function () {
 			document.getElementById("wktStringTextArea").value = decodeURI(wkt);
 		},
 		init: function () {
+			var self = this;
+
 			document.getElementById("overlay").style.display = "none";
 			this.createVector();
 			raster = new ol.layer.Tile({
@@ -159,10 +161,10 @@ var app = (function () {
 			$('#wktStringTextArea').on("paste", this.pasteWKT);
 
 			features.on("add", function (e) {
-				this.restoreDefaultColors();
-				features.forEach(this.toEPSG4326);
+				self.restoreDefaultColors();
+				features.forEach(self.toEPSG4326);
 				document.getElementById('wktStringTextArea').value = format.writeFeatures(features.getArray(), { rightHanded: true });
-				features.forEach(this.toEPSG3857);
+				features.forEach(self.toEPSG3857);
 			});
 
 			map = new ol.Map({
