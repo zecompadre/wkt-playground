@@ -129,6 +129,8 @@ var app = (function () {
 				zoom: 8
 			}));
 			map.getView().fit(extent, map.getSize());
+
+			document.querySelector('[data-for-tab="1"]').click();
 		},
 		clearMap: function () {
 			map.removeLayer(vector);
