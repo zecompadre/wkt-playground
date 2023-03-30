@@ -200,8 +200,8 @@ function setupTabs() {
 		button.addEventListener('click', () => {
 
 
-			const sidebar = button.parentElement;
-			const tabs = sidebar.parentElement;
+			const sidebar = document.querySelector(".sidebar");
+			const tabs = document.querySelector(".tabs");
 			const tabNumber = button.dataset.forTab;
 			const tabActivate = tabs.querySelector(`.tab-content[data-tab="${tabNumber}"]`)
 
