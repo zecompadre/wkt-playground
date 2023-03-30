@@ -85,6 +85,9 @@ var app = (function () {
 			textarea.style.backgroundColor = "";
 		},
 		plotWKT: function () {
+
+			document.querySelector('[data-for-tab="1"]').click();
+
 			var new_feature;
 
 			wkt_string = textarea.value;
@@ -129,8 +132,6 @@ var app = (function () {
 				zoom: 8
 			}));
 			map.getView().fit(extent, map.getSize());
-
-			document.querySelector('[data-for-tab="1"]').click();
 		},
 		clearMap: function () {
 			map.removeLayer(vector);
