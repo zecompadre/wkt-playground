@@ -92,7 +92,7 @@
 	flex-direction: column;
 	width: 100%;
 
-	height: calc(100% - 50px - 40px);
+	height: calc(100% - (50px + 40px));
 }
 
 .sidebar {
@@ -133,7 +133,7 @@
 	justify-content: center;
 	text-align: center;
 	width: 100%;
-	height: calc(100% - 60px - 40px);
+	height: calc(100% - (60px + 40px));
 	position: absolute;
 	display: none;
 }
