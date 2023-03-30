@@ -1,29 +1,29 @@
 @media only screen and (min-width: 1366px) {
-	.map {
+	.mapx {
 		height: 400px !important
 	}
 }
 
 @media only screen and (min-width: 1440px) {
-	.map {
+	.mapx {
 		height: 500px !important
 	}
 }
 
 @media only screen and (min-width: 1680px) {
-	.map {
+	.mapx {
 		height: 650px !important
 	}
 }
 
 @media only screen and (min-width: 1920px) {
-	.map {
+	.mapx {
 		height: 700px !important
 	}
 }
 
 @media only screen and (min-width: 2560px) {
-	.map {
+	.mapx {
 		height: 1050px !important
 	}
 }
