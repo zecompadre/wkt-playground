@@ -104,6 +104,13 @@
 	background-color: #005baa;
 }
 
+.sidebar .switch {
+	display: flex;
+	box-shadow: inset 0 0 0 1px rgba(109, 115, 120, .5);
+	border-radius: 4px;
+	background-color: rgba(109, 115, 120, .1);
+}
+
 .tab-btn {
 	line-height: 60px;
 	padding: 0 15px;
