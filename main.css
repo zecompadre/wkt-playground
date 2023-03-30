@@ -1,3 +1,4 @@
+/*
 .ol-attribution>ul {
 	font-size: 1rem;
 }
@@ -79,7 +80,10 @@
 		height: 950px !important;
 	}
 }
-
+*/
+.map {
+	height: 100%;
+}
 
 .tabs {
 	font-family: 'Poppins', sans-serif;
