@@ -38,6 +38,9 @@ var app = (function () {
 
 	return {
 		pasteWKT: async function () {
+
+			var self = this;
+
 			try {
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
 				if (permission.state === 'denied') {
@@ -46,14 +49,14 @@ var app = (function () {
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
 					textarea.value = text;
-					this.plotWKT();
+					self.plotWKT();
 				}
 			} catch (error) {
 				console.error('pasteWKT:', error.message);
 			}
 			if (textarea.value === "") {
 				textarea.value = defaultWKT;
-				this.plotWKT();
+				self.plotWKT();
 			}
 		},
 		addInteraction: function (shape) {
@@ -86,8 +89,6 @@ var app = (function () {
 		},
 		plotWKT: function () {
 
-			document.querySelector('[data-for-tab="1"]').click();
-
 			var new_feature;
 
 			wkt_string = textarea.value;
@@ -118,6 +119,9 @@ var app = (function () {
 			});
 
 			//this.selectGeom(current_shape);
+
+			document.querySelector('[data-for-tab="1"]').click();
+
 			map.addLayer(vector);
 			derived_feature = features.getArray()[0];
 			extent = derived_feature.getGeometry().getExtent();
@@ -181,9 +185,9 @@ var app = (function () {
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-
+			document.querySelector('[data-for-tab="2"]').click();
 			this.pasteWKT();
-
+			document.querySelector('[data-for-tab="1"]').click();
 			//this.selectGeom('Polygon');
 		}
 	};
