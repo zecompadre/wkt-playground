@@ -35,6 +35,24 @@ var app = (function () {
 		})
 	];
 
+	const select = new Select({
+		style: styles,
+	});
+
+	const modify = new Modify({
+		features: select.getFeatures(),
+		style: styles,
+		insertVertexCondition: function () {
+			// prevent new vertices to be added to the polygons
+			return !select
+				.getFeatures()
+				.getArray()
+				.every(function (feature) {
+					return /Polygon/.test(feature.getGeometry().getType());
+				});
+		},
+	});
+
 
 	return {
 		pasteWKT: async function () {
