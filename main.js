@@ -35,6 +35,7 @@ var app = (function () {
 		})
 	];
 
+
 	const select = new ol.interaction.Select({
 		style: styles,
 	});
