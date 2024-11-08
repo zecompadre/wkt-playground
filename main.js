@@ -65,6 +65,8 @@ var app = (function () {
 				type: /** @type {ol.geom.GeometryType} */ shape
 			});
 			map.addInteraction(draw);
+			snap = new Snap({ sfeatures: features });
+			map.addInteraction(snap);
 		},
 		createVector: function () {
 			vector = new ol.layer.Vector({
@@ -183,26 +185,10 @@ var app = (function () {
 				})
 			});
 
-			let drawnItems = new L.FeatureGroup();
-			map.addLayer(drawnItems);
 
-			var drawControl = new L.Control.Draw({
-				draw: {},
-				edit: {
-					featureGroup: drawnItems,
-					poly: {
-						allowIntersection: false
-					}
-				}
-			});
-			map.addControl(drawControl);
 
-			map.on("draw:edited", function (e) {
-				let layers = e.layers;
-				layers.eachLayer(function (layer) {
-					console.log(layer);
-				});
-			});
+
+
 
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
