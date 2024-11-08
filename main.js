@@ -182,6 +182,24 @@ var app = (function () {
 					zoom: 4
 				})
 			});
+
+			map.addControl(new L.Control.Draw({
+				edit: {
+					featureGroup: drawnItems,
+					poly: {
+						allowIntersection: false
+					}
+				},
+				draw: {
+					polygon: {
+						allowIntersection: false,
+						showArea: true
+					}
+				}
+			}));
+
+
+
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
