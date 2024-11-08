@@ -195,6 +195,7 @@ var app = (function () {
 			});
 
 			map = new ol.Map({
+				interactions: [select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
