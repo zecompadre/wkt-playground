@@ -35,11 +35,11 @@ var app = (function () {
 		})
 	];
 
-	const select = new Select({
+	const select = new ol.Select({
 		style: styles,
 	});
 
-	const modify = new Modify({
+	const modify = new ol.Modify({
 		features: select.getFeatures(),
 		style: styles,
 		insertVertexCondition: function () {
