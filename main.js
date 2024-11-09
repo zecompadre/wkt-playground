@@ -83,6 +83,16 @@ var app = (function () {
 		style: stylesEdit,
 	});
 
+	select.on('select', function (evt) {
+		/*
+		evt.features.forEach(function (feature) {
+			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
+		});
+		*/
+		console.log("select");
+	});
+
+
 	const modify = new ol.interaction.Modify({
 		features: select.getFeatures(),
 		style: stylesSnap,
