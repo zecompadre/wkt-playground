@@ -81,6 +81,16 @@
 	}
 }
 */
+
+.navbar-brand:before {
+	content: url('logo.png');
+	position: relative;
+	z-index: 100000;
+	left: -50px;
+	top: 10px;
+	height: 40px;
+}
+
 .map {
 	height: 100%;
 }
