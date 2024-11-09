@@ -57,11 +57,11 @@ var app = (function () {
 	];
 
 	var fillSnap = new ol.style.Fill({
-		color: 'rgba(231, 76, 60, 0.2)'
+		color: 'rgba(183, 149, 11, 0.2)'
 	});
 
 	var strokeSnap = new ol.style.Stroke({
-		color: '#e74c3c',
+		color: '#b7950b',
 		width: 2
 	});
 
@@ -81,6 +81,10 @@ var app = (function () {
 
 	const select = new ol.interaction.Select({
 		style: stylesEdit,
+	});
+
+	select.on('select', function (evt) {
+		console.log(evt);
 	});
 
 	select.on('selected', function (evt) {
