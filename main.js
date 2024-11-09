@@ -269,7 +269,7 @@ var app = (function () {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
 
-			setTimeout(this.pasteWKT, 1000);
+			setTimeout(self.pasteWKT, 1000);
 		}
 	};
 
