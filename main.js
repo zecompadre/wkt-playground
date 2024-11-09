@@ -83,15 +83,13 @@ var app = (function () {
 		style: stylesEdit,
 	});
 
-	select.on('select', function (evt) {
-		/*
-		evt.features.forEach(function (feature) {
-			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
-		});
-		*/
-		console.log("select");
+	select.on('selectstart', function (evt) {
+		console.log("select - start");
 	});
 
+	select.on('selectend', function (evt) {
+		console.log("select - end");
+	});
 
 	const modify = new ol.interaction.Modify({
 		features: select.getFeatures(),
@@ -115,7 +113,7 @@ var app = (function () {
 			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
 		});
 		*/
-		console.log("start");
+		console.log("modify - start");
 	});
 
 	modify.on('modifyend', function (evt) {
@@ -133,7 +131,7 @@ var app = (function () {
 			}
 		});
 		*/
-		console.log("end");
+		console.log("modify - end");
 	});
 
 
