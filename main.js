@@ -125,6 +125,9 @@ var app = (function () {
 			}
 		},
 		addInteraction: function (shape) {
+
+			var self = this;
+
 			draw = new ol.interaction.Draw({
 				features: features,
 				type: /** @type {ol.geom.GeometryType} */ shape
@@ -150,6 +153,8 @@ var app = (function () {
 						wkt = format.writeGeometry(feature.getGeometry().transform('EPSG:3857', 'EPSG:4326'));
 
 						console.log("wkt", wkt);
+						console.log("self", self);
+
 
 					});
 				}
