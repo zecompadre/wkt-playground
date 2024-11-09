@@ -91,6 +91,9 @@ var app = (function () {
 			var wkt;
 
 			console.log(evt);
+
+			console.log(evt.deselected[0].getGeometry());
+
 			evt.features.forEach(function (feature) {
 				wkt = format.writeGeometry(feature.getGeometry());
 
