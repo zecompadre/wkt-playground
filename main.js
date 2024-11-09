@@ -253,9 +253,13 @@ var app = (function () {
 				else {
 					console.log("select - end");
 
-					evt.deselected.forEach(self.toEPSG4326);
-					textarea.value = format.writeFeatures(evt.deselected.getArray(), { rightHanded: true });
-					evt.deselected.forEach(self.toEPSG3857);
+					var wkt;
+
+					evt.deselected.forEach(function (feature) {
+						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+						wkt = format.writeGeometry(geo);
+						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+					});
 
 				}
 			});
