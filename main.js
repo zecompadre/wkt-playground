@@ -232,9 +232,9 @@ var app = (function () {
 				if (evt.deselected.length > 0) {
 
 					console.log(evt.deselected);
-					return;
+
 					evt.deselected.forEach(self.toEPSG4326);
-					textarea.value = format.writeFeatures(evt.deselected.getArray(), { rightHanded: true });
+					textarea.value = format.writeGeometry(evt.deselected);
 					evt.deselected.forEach(self.toEPSG3857);
 					return;
 					evt.deselected.forEach(function (feature) {
