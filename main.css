@@ -12,7 +12,7 @@ body {
 }
 
 .navbar {
-	height: 50px;
+	height: 60px;
 	background-color: #333;
 	color: #fff;
 	display: flex;
@@ -23,21 +23,21 @@ body {
 
 .navbar .navbar-brand {
 	display: inline-block;
-	line-height: 40px;
+	line-height: 60px;
 	vertical-align: middle;
 }
 
 .navbar .navbar-brand:before {
 	background-image: url('logo.png');
-	background-size: 45px 25px;
+	background-size: 90px 50px;
 	display: inline-block;
-	width: 45px;
-	height: 25px;
+	width: 90px;
+	height: 50px;
 	content: "";
 }
 
 .navbar .navbar-brand .nav-link {
-	font-size: 0.75em;
+	font-size: 14px;
 }
 
 
