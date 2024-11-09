@@ -142,8 +142,6 @@ var app = (function () {
 
 			//this.selectGeom(current_shape);
 
-			document.querySelector('[data-for-tab="1"]').click();
-
 			map.addLayer(vector);
 			derived_feature = features.getArray()[0];
 			extent = derived_feature.getGeometry().getExtent();
