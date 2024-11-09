@@ -57,11 +57,11 @@ var app = (function () {
 	];
 
 	var fillSnap = new ol.style.Fill({
-		color: 'rgba(43, 204, 113,0.2)'
+		color: 'rgba(231, 76, 60, 0.2)'
 	});
 
 	var strokeSnap = new ol.style.Stroke({
-		color: '#2ecc71',
+		color: '#e74c3c',
 		width: 2
 	});
 
