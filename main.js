@@ -65,7 +65,6 @@ var app = (function () {
 		width: 2
 	});
 
-
 	var stylesSnap = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
@@ -78,21 +77,17 @@ var app = (function () {
 		})
 	];
 
-
 	const select = new ol.interaction.Select({
 		style: stylesEdit,
 	});
 
 	select.on('select', function (evt) {
-		console.log(evt);
-	});
-
-	select.on('selected', function (evt) {
-		console.log("select - start");
-	});
-
-	select.on('deselected', function (evt) {
-		console.log("select - end");
+		if (evt.selected.length > 0) {
+			console.log("select - start");
+		}
+		else {
+			console.log("select - end");
+		}
 	});
 
 	const modify = new ol.interaction.Modify({
