@@ -75,29 +75,29 @@ var app = (function () {
 				});
 		},
 	});
-
-	var originalCoordinates = {};
-	modify.on('modifystart', function (evt) {
-		evt.features.forEach(function (feature) {
-			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
+	/*
+		var originalCoordinates = {};
+		modify.on('modifystart', function (evt) {
+			evt.features.forEach(function (feature) {
+				originalCoordinates[feature] = feature.getGeometry().getCoordinates();
+			});
 		});
-	});
-
-	modify.on('modifyend', function (evt) {
-		evt.features.forEach(function (feature) {
-			if (feature in originalCoordinates && Math.random() > 0.5) {
-				feature.getGeometry().setCoordinates(
-					originalCoordinates[feature]
-				);
-				delete originalCoordinates[feature];
-
-				// remove and re-add the feature to make Modify reload it's geometry
-				selectSource.remove(feature);
-				selectSource.push(feature);
-			}
-		});
-	})
-
+	
+		modify.on('modifyend', function (evt) {
+			evt.features.forEach(function (feature) {
+				if (feature in originalCoordinates && Math.random() > 0.5) {
+					feature.getGeometry().setCoordinates(
+						originalCoordinates[feature]
+					);
+					delete originalCoordinates[feature];
+	
+					// remove and re-add the feature to make Modify reload it's geometry
+					selectSource.remove(feature);
+					selectSource.push(feature);
+				}
+			});
+		})
+	*/
 
 	return {
 		pasteWKT: async function () {

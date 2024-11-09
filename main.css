@@ -1,5 +1,9 @@
 :root {
 	--headerh: 60px;
+	--maph: 75%;
+	--resulth: 25%;
+
+
 	--indigo: #6610f2;
 	--purple: #6f42c1;
 	--pink: #e83e8c;
@@ -44,30 +48,8 @@ body {
 }
 
 .navbar {
-
-	position: relative;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	padding: .5rem 1rem;
-
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-ms-flex-flow: row nowrap;
-	flex-flow: row nowrap;
-	-webkit-box-pack: start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-
-	height: 60px;
+	padding: 0;
+	height: var(--headerh);
 	background-color: #333;
 	color: #fff;
 	display: flex;
@@ -79,6 +61,7 @@ body {
 .navbar .navbar-brand {
 	display: inline-block;
 	line-height: var(--headerh);
+	height: var(--headerh);
 	vertical-align: middle;
 }
 
@@ -108,9 +91,9 @@ body {
 
 /* Map container */
 .maincontainer .map-container {
-	flex: 0 0 75%;
+	flex: 0 0 var(--maph);
 	position: relative;
-	height: 75%;
+	height: var(--maph);
 }
 
 .maincontainer .map-container #map {
@@ -138,9 +121,9 @@ body {
 
 /* Text area container */
 .maincontainer .result-container {
-	flex: 0 0 25%;
+	flex: 0 0 var(--resulth);
 	position: relative;
-	height: 25%;
+	height: var(--resulth);
 }
 
 .maincontainer .result-container textarea {
