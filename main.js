@@ -35,9 +35,30 @@ var app = (function () {
 		})
 	];
 
+	var fillEdit = new ol.style.Fill({
+		color: 'rgba(236, 112, 99,0.2)'
+	});
+
+	var strokeEdit = new ol.style.Stroke({
+		color: '#ec7063',
+		width: 1
+	});
+
+	var stylesEdit = [
+		new ol.style.Style({
+			image: new ol.style.Circle({
+				fill: fillEdit,
+				stroke: strokeEdit,
+				radius: 1
+			}),
+			fill: fillEdit,
+			stroke: strokeEdit
+		})
+	];
+
 
 	const select = new ol.interaction.Select({
-		style: styles,
+		style: stylesEdit,
 	});
 
 	const modify = new ol.interaction.Modify({
@@ -204,46 +225,12 @@ var app = (function () {
 				})
 			});
 
-
-
-
-
-
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-			//document.querySelector('[data-for-tab="2"]').click();
+
 			this.pasteWKT();
-			//document.querySelector('[data-for-tab="1"]').click();
-			//this.selectGeom('Polygon');
 		}
 	};
 
 }());
-
-
-function setupTabs() {
-	document.querySelectorAll('.tab-btn').forEach(button => {
-		button.addEventListener('click', () => {
-
-
-			const sidebar = document.querySelector(".sidebar");
-			const tabs = document.querySelector(".tabs");
-			const tabNumber = button.dataset.forTab;
-			const tabActivate = tabs.querySelector(`.tab-content[data-tab="${tabNumber}"]`)
-
-			sidebar.querySelectorAll('.tab-btn').forEach(button => {
-				button.classList.remove('active')
-			})
-			tabs.querySelectorAll('.tab-content').forEach(tab => {
-				tab.classList.remove('tab-content-active')
-			})
-			button.classList.add('active')
-			tabActivate.classList.add('tab-content-active')
-		})
-	})
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-	//setupTabs();
-})
