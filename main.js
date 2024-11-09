@@ -214,9 +214,9 @@ var app = (function () {
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-			document.querySelector('[data-for-tab="2"]').click();
+			//document.querySelector('[data-for-tab="2"]').click();
 			this.pasteWKT();
-			document.querySelector('[data-for-tab="1"]').click();
+			//document.querySelector('[data-for-tab="1"]').click();
 			//this.selectGeom('Polygon');
 		}
 	};
