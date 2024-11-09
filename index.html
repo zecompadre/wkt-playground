@@ -24,21 +24,23 @@
 			</li>
 		</ul>
 	</nav>
-	<div class="map-container">
-		<div id="overlay" class="btns row align-items-center justify-content-center">
-			<div class="btn-group-vertical ">
-				<button type="button" class="btn btn-primary" onclick="app.selectGeom('Point')">Point</button>
-				<button type="button" class="btn btn-primary" onclick="app.selectGeom('LineString')">Line String</button>
-				<button type="button" class="btn btn-primary" onclick="app.selectGeom('Polygon')">Polygon</button>
+	<div class=container>
+		<div class="map-container">
+			<div id="overlay" class="btns row align-items-center justify-content-center">
+				<div class="btn-group-vertical ">
+					<button type="button" class="btn btn-primary" onclick="app.selectGeom('Point')">Point</button>
+					<button type="button" class="btn btn-primary" onclick="app.selectGeom('LineString')">Line String</button>
+					<button type="button" class="btn btn-primary" onclick="app.selectGeom('Polygon')">Polygon</button>
+				</div>
 			</div>
+			<div id="map" class="map" style="z-index: 0"></div>
 		</div>
-		<div id="map" class="map" style="z-index: 0"></div>
-	</div>
-	<div class="result-container">
-		<textarea id="wktStringTextArea" class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
-		<div class="btns btn-group btn-group-md">
-			<button type="button" class="btn btn-primary" onclick="app.clearMap()">Limpar</button>
-			<button type="button" class="btn btn-primary" onclick="app.plotWKT()">Desenhar</button>
+		<div class="result-container">
+			<textarea id="wktStringTextArea" class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
+			<div class="btns btn-group btn-group-md">
+				<button type="button" class="btn btn-primary" onclick="app.clearMap()">Limpar</button>
+				<button type="button" class="btn btn-primary" onclick="app.plotWKT()">Desenhar</button>
+			</div>
 		</div>
 	</div>
 </body>

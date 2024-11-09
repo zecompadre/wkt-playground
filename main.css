@@ -1,86 +1,25 @@
-/*
-.ol-attribution>ul {
-	font-size: 1rem;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-.ol-attribution button {
-	font-size: inherit;
-	height: 1.5em;
-	width: 1.5em;
+html,
+body {
+	height: 100%;
+	font-family: Arial, sans-serif;
 }
 
-.overlay {
-	display: none;
-	position: absolute;
-	background: rgba(255, 255, 255, 0.9);
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
-	padding: 15px;
-	border-radius: 10px;
-	border: 1px solid #ccc;
-	width: 180px;
-	top: -76px;
-	left: -90px;
+header {
+	height: 50px;
+	background-color: #333;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
 }
 
-.overlay:after {
-	top: 100%;
-	border: 10px solid transparent;
-	content: "";
-	height: 0;
-	width: 0;
-	position: absolute;
-	border-top-color: rgba(255, 255, 255, 0.9);
-}
-
-.overlay button+button {
-	float: right;
-}
-
-.btn-group.btn-group-toggle label {
-	min-width: 65px;
-	cursor: pointer;
-}
-
-.notactive {
-	background-color: #c0c0c0;
-	border-color: #c0c0c0;
-}
-
-#wkt-remove {
-	border-radius: 30px;
-	cursor: pointer;
-}
-
-@media only screen and (min-width: 1366px) {
-	.map {
-		height: 400px !important;
-	}
-}
-
-@media only screen and (min-width: 1440px) {
-	.map {
-		height: 500px !important;
-	}
-}
-
-@media only screen and (min-width: 1680px) {
-	.map {
-		height: 650px !important;
-	}
-}
-
-@media only screen and (min-width: 1920px) {
-	.map {
-		height: 700px !important;
-	}
-}
-
-@media only screen and (min-width: 2560px) {
-	.map {
-		height: 950px !important;
-	}
-}
-*/
 
 .navbar {
 	height: 40px;
@@ -106,13 +45,22 @@
 	font-size: 0.75em;
 }
 
+
+.container {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 50px);
+	/* Adjust the container to account for the header height */
+}
+
 .map-container {
+	flex: 0 0 75%;
+	/* Fix the map's height to 75% of the container */
 	display: inline-block;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	width: 100%;
-	height: calc(75% - 25px);
 }
 
 .map-container .map {
@@ -121,7 +69,8 @@
 	width: 100%;
 }
 
-.result-container .btns {
+
+.map-container .btns {
 	background-color: transparent;
 	z-index: 1;
 	position: absolute;
@@ -130,19 +79,28 @@
 	display: none;
 }
 
+
 .result-container {
+	flex: 1;
+	/* Takes the remaining 25% */
 	display: inline-block;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	width: 100%;
-	height: calc(25% - 25px);
 }
 
 .result-container textarea {
 	width: 100%;
 	height: 100%;
+	resize: none;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
+
+
 
 .result-container .btns {
 	padding: 10px;
