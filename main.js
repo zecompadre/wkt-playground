@@ -87,6 +87,14 @@ var app = (function () {
 		}
 		else {
 			console.log("select - end");
+
+			var feature = evt.feature,
+				wkt;
+			wkt = format.writeGeometry(feature.getGeometry());
+
+			console.log(wkt);
+
+
 		}
 	});
 
