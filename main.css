@@ -102,24 +102,18 @@
 }
 
 .map-container {
-	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	width: 100%;
 	height: calc(75% - 25px);
-	position: absolute;
 }
 
 
 .result-container {
-	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	width: 100%;
 	height: calc(25% - 25px);
-	position: absolute;
 }
