@@ -63,6 +63,8 @@ body {
 	line-height: var(--headerh);
 	height: var(--headerh);
 	vertical-align: middle;
+	margin: 0;
+	padding: 0 10px 0 0;
 }
 
 .navbar .navbar-brand:before {
@@ -77,8 +79,6 @@ body {
 .navbar .navbar-brand .nav-link {
 	font-size: 14px;
 }
-
-
 
 
 /* Container layout */
