@@ -256,8 +256,8 @@ var app = (function () {
 					var wkt;
 
 					evt.deselected.forEach(function (feature) {
-						var geo = new (feature.getGeometry());
-						wkt = format.writeGeometry(geo.transform('EPSG:3857', 'EPSG:4326'));
+						var geo = self.toEPSG4326(feature);
+						wkt = format.writeGeometry(geo);
 
 						console.log("wkt", wkt);
 
