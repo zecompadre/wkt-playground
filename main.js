@@ -22,25 +22,25 @@ var app = (function () {
 		color: '#005baa',
 		width: 2
 	});
-
-	function readClipboardFromDevTools() {
-		return new Promise((resolve, reject) => {
-			const _asyncCopyFn = (async () => {
-				try {
-					const value = await navigator.clipboard.readText();
-					console.log(`${value} is read!`);
-					resolve(value);
-				} catch (e) {
-					reject(e);
-				}
-				window.removeEventListener("focus", _asyncCopyFn);
+	/*
+		function readClipboardFromDevTools() {
+			return new Promise((resolve, reject) => {
+				const _asyncCopyFn = (async () => {
+					try {
+						const value = await navigator.clipboard.readText();
+						console.log(`${value} is read!`);
+						resolve(value);
+					} catch (e) {
+						reject(e);
+					}
+					window.removeEventListener("focus", _asyncCopyFn);
+				});
+	
+				window.addEventListener("focus", _asyncCopyFn);
+				console.log("Hit <Tab> to give focus back to document (or we will face a DOMException);");
 			});
-
-			window.addEventListener("focus", _asyncCopyFn);
-			console.log("Hit <Tab> to give focus back to document (or we will face a DOMException);");
-		});
-	}
-
+		}
+	*/
 	var stylesNormal = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
@@ -193,7 +193,8 @@ var app = (function () {
 					throw new Error('Not allowed to read clipboard.');
 				}
 
-				readClipboardFromDevTools().then((r) => console.log("Returned value: ", r));
+				//readClipboardFromDevTools().then((r) => console.log("Returned value: ", r));
+				textarea.focus();
 
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
