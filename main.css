@@ -97,8 +97,8 @@
 	content: "";
 }
 
-.map {
-	height: 100%;
+.navbar-brand .nav-link {
+	font-size: 0.75em;
 }
 
 .map-container {
@@ -109,6 +109,10 @@
 	height: calc(75% - 25px);
 }
 
+.map-container .map {
+	height: 100%;
+	width: 100%;
+}
 
 .result-container {
 	align-items: center;
