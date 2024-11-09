@@ -88,11 +88,15 @@ var app = (function () {
 		else {
 			console.log("select - end");
 
-			var feature = evt.feature,
-				wkt;
-			wkt = format.writeGeometry(feature.getGeometry());
+			var wkt;
 
-			console.log(evt, wkt);
+			console.log(evt);
+			evt.features.forEach(function (feature) {
+				wkt = format.writeGeometry(feature.getGeometry());
+
+				console.log(wkt);
+
+			});
 
 			return;
 
