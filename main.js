@@ -45,6 +45,7 @@ var app = (function () {
 		style: styles,
 		insertVertexCondition: function () {
 			// prevent new vertices to be added to the polygons
+			return true;
 			return !select
 				.getFeatures()
 				.getArray()
