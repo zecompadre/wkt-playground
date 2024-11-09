@@ -231,6 +231,8 @@ var app = (function () {
 			select.on('select', function (evt) {
 				if (evt.deselected.length > 0) {
 
+					console.log(evt.deselected);
+					return;
 					evt.deselected.forEach(self.toEPSG4326);
 					textarea.value = format.writeFeatures(evt.deselected.getArray(), { rightHanded: true });
 					evt.deselected.forEach(self.toEPSG3857);
