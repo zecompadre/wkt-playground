@@ -229,18 +229,18 @@ var app = (function () {
 			});
 
 			select.on('select', function (evt) {
-				if (evt.selected.length > 0) {
-					console.log("select - start");
-				}
-				else {
-					console.log("select - end");
+				if (evt.deselected.length > 0) {
+
+					evt.deselected.forEach(self.toEPSG4326);
+					textarea.value = format.writeFeatures(evt.deselected.getArray(), { rightHanded: true });
+					evt.deselected.forEach(self.toEPSG3857);
+					return;
 					evt.deselected.forEach(function (feature) {
 						self.restoreDefaultColors();
 						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
 						textarea.value = format.writeGeometry(geo);
 						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 					});
-
 				}
 			});
 
