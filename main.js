@@ -23,6 +23,24 @@ var app = (function () {
 		width: 2
 	});
 
+	function readClipboardFromDevTools() {
+		return new Promise((resolve, reject) => {
+			const _asyncCopyFn = (async () => {
+				try {
+					const value = await navigator.clipboard.readText();
+					console.log(`${value} is read!`);
+					resolve(value);
+				} catch (e) {
+					reject(e);
+				}
+				window.removeEventListener("focus", _asyncCopyFn);
+			});
+
+			window.addEventListener("focus", _asyncCopyFn);
+			console.log("Hit <Tab> to give focus back to document (or we will face a DOMException);");
+		});
+	}
+
 	var stylesNormal = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
@@ -174,6 +192,9 @@ var app = (function () {
 				if (permission.state === 'denied') {
 					throw new Error('Not allowed to read clipboard.');
 				}
+
+				readClipboardFromDevTools().then((r) => console.log("Returned value: ", r));
+
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
 					textarea.value = text;
