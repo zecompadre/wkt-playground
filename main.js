@@ -41,7 +41,7 @@ var app = (function () {
 
 	var strokeEdit = new ol.style.Stroke({
 		color: '#ec7063',
-		width: 1
+		width: 2
 	});
 
 	var stylesEdit = [
@@ -74,6 +74,13 @@ var app = (function () {
 					return /Polygon/.test(feature.getGeometry().getType());
 				});
 		},
+	});
+
+	var originalCoordinates = {};
+	modify.on('modifystart', function (evt) {
+		evt.features.forEach(function (feature) {
+			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
+		});
 	});
 
 	modify.on('modifyend', function (evt) {
