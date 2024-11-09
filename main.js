@@ -14,24 +14,24 @@ var app = (function () {
 
 	var textarea = document.getElementById("wktStringTextArea");
 
-	var fill = new ol.style.Fill({
+	var fillNormal = new ol.style.Fill({
 		color: 'rgba(0, 91, 170,0.2)'
 	});
 
-	var stroke = new ol.style.Stroke({
+	var strokeNormal = new ol.style.Stroke({
 		color: '#005baa',
 		width: 2
 	});
 
-	var styles = [
+	var stylesNormal = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
-				fill: fill,
-				stroke: stroke,
+				fill: fillNormal,
+				stroke: strokeNormal,
 				radius: 5
 			}),
-			fill: fill,
-			stroke: stroke
+			fill: fillNormal,
+			stroke: strokeNormal
 		})
 	];
 
@@ -63,7 +63,7 @@ var app = (function () {
 
 	const modify = new ol.interaction.Modify({
 		features: select.getFeatures(),
-		style: styles,
+		style: stylesNormal,
 		insertVertexCondition: function () {
 			// prevent new vertices to be added to the polygons
 			return true;
@@ -75,29 +75,35 @@ var app = (function () {
 				});
 		},
 	});
-	/*
-		var originalCoordinates = {};
-		modify.on('modifystart', function (evt) {
-			evt.features.forEach(function (feature) {
-				originalCoordinates[feature] = feature.getGeometry().getCoordinates();
-			});
+
+	var originalCoordinates = {};
+	modify.on('modifystart', function (evt) {
+		/*
+		evt.features.forEach(function (feature) {
+			originalCoordinates[feature] = feature.getGeometry().getCoordinates();
 		});
+		*/
+		console.log("start");
+	});
+
+	modify.on('modifyend', function (evt) {
+		/*
+		evt.features.forEach(function (feature) {
+			if (feature in originalCoordinates && Math.random() > 0.5) {
+				feature.getGeometry().setCoordinates(
+					originalCoordinates[feature]
+				);
+				delete originalCoordinates[feature];
 	
-		modify.on('modifyend', function (evt) {
-			evt.features.forEach(function (feature) {
-				if (feature in originalCoordinates && Math.random() > 0.5) {
-					feature.getGeometry().setCoordinates(
-						originalCoordinates[feature]
-					);
-					delete originalCoordinates[feature];
-	
-					// remove and re-add the feature to make Modify reload it's geometry
-					selectSource.remove(feature);
-					selectSource.push(feature);
-				}
-			});
-		})
-	*/
+				// remove and re-add the feature to make Modify reload it's geometry
+				selectSource.remove(feature);
+				selectSource.push(feature);
+			}
+		});
+		*/
+		console.log("end");
+	});
+
 
 	return {
 		pasteWKT: async function () {
@@ -134,7 +140,7 @@ var app = (function () {
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				style: styles
+				style: stylesNormal
 			});
 		},
 		toEPSG4326: function (element, index, array) {
@@ -180,7 +186,7 @@ var app = (function () {
 			}
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				style: styles
+				style: stylesNormal
 			});
 
 			//this.selectGeom(current_shape);
@@ -205,7 +211,7 @@ var app = (function () {
 			features.clear();
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				style: styles
+				style: stylesNormal
 			});
 			//this.selectGeom(current_shape);
 			map.addLayer(vector);
