@@ -24,25 +24,7 @@ var app = (function () {
 		color: '#005baa',
 		width: 2
 	});
-	/*
-		function readClipboardFromDevTools() {
-			return new Promise((resolve, reject) => {
-				const _asyncCopyFn = (async () => {
-					try {
-						const value = await navigator.clipboard.readText();
-						console.log(`${value} is read!`);
-						resolve(value);
-					} catch (e) {
-						reject(e);
-					}
-					window.removeEventListener("focus", _asyncCopyFn);
-				});
-	
-				window.addEventListener("focus", _asyncCopyFn);
-				console.log("Hit <Tab> to give focus back to document (or we will face a DOMException);");
-			});
-		}
-	*/
+
 	var stylesNormal = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
@@ -77,11 +59,11 @@ var app = (function () {
 	];
 
 	var fillSnap = new ol.style.Fill({
-		color: 'rgba(183, 149, 11, 0.2)'
+		color: 'rgba(52, 73, 94, 0.2)'
 	});
 
 	var strokeSnap = new ol.style.Stroke({
-		color: '#b7950b',
+		color: '#34495e',
 		width: 2
 	});
 
