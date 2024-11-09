@@ -11,7 +11,7 @@ body {
 	font-family: Arial, sans-serif;
 }
 
-nav {
+.navbar {
 	height: 50px;
 	background-color: #333;
 	color: #fff;
@@ -21,18 +21,13 @@ nav {
 	font-size: 18px;
 }
 
-nav .navbar {
-	height: 40px;
-	line-height: 0.5;
-}
-
-nav .navbar-brand {
+.navbar .navbar-brand {
 	display: inline-block;
 	line-height: 40px;
 	vertical-align: middle;
 }
 
-nav .navbar-brand:before {
+.navbar .navbar-brand:before {
 	background-image: url('logo.png');
 	background-size: 45px 25px;
 	display: inline-block;
@@ -41,7 +36,7 @@ nav .navbar-brand:before {
 	content: "";
 }
 
-nav .navbar-brand .nav-link {
+.navbar .navbar-brand .nav-link {
 	font-size: 0.75em;
 }
 
