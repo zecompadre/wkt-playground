@@ -92,7 +92,22 @@ var app = (function () {
 				wkt;
 			wkt = format.writeGeometry(feature.getGeometry());
 
-			console.log(wkt);
+			console.log(evt, wkt);
+
+			return;
+
+			evt.features.forEach(function (feature) {
+				if (feature in originalCoordinates && Math.random() > 0.5) {
+					feature.getGeometry().setCoordinates(
+						originalCoordinates[feature]
+					);
+					delete originalCoordinates[feature];
+
+					// remove and re-add the feature to make Modify reload it's geometry
+					selectSource.remove(feature);
+					selectSource.push(feature);
+				}
+			});
 
 
 		}
