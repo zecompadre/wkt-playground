@@ -233,9 +233,9 @@ var app = (function () {
 
 					console.log(evt.deselected);
 
-					evt.deselected.forEach(self.toEPSG4326);
-					textarea.value = format.writeGeometry(evt.deselected);
-					evt.deselected.forEach(self.toEPSG3857);
+					self.toEPSG4326(evt.deselected[0]);
+					textarea.value = format.writeGeometry(evt.deselected[0]);
+					self.toEPSG3857(evt.deselected[0]);
 					return;
 					evt.deselected.forEach(function (feature) {
 						self.restoreDefaultColors();
