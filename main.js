@@ -56,15 +56,25 @@ var app = (function () {
 		})
 	];
 
+	var fillSnap = new ol.style.Fill({
+		color: 'rgba(43, 204, 113,0.2)'
+	});
+
+	var strokeSnap = new ol.style.Stroke({
+		color: '#2ecc71',
+		width: 2
+	});
+
+
 	var stylesSnap = [
 		new ol.style.Style({
 			image: new ol.style.Circle({
-				fill: fillEdit,
-				stroke: strokeEdit,
+				fill: fillSnap,
+				stroke: strokeSnap,
 				radius: 1
 			}),
-			fill: fillEdit,
-			stroke: strokeEdit
+			fill: fillSnap,
+			stroke: strokeSnap
 		})
 	];
 
