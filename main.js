@@ -233,9 +233,9 @@ var app = (function () {
 
 					evt.deselected.forEach(function (feature) {
 						self.restoreDefaultColors();
-						self.toEPSG4326(feature);
-						textarea.value = format.writeGeometry(feature);
-						self.toEPSG3857(feature);
+						var geo = self.toEPSG4326(feature);
+						textarea.value = format.writeGeometry(geo);
+						var geo = self.toEPSG3857(feature);
 					});
 				}
 			});
