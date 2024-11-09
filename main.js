@@ -231,17 +231,11 @@ var app = (function () {
 			select.on('select', function (evt) {
 				if (evt.deselected.length > 0) {
 
-					console.log(evt.deselected);
-
-					self.toEPSG4326(evt.deselected[0]);
-					textarea.value = format.writeGeometry(evt.deselected[0]);
-					self.toEPSG3857(evt.deselected[0]);
-					return;
 					evt.deselected.forEach(function (feature) {
 						self.restoreDefaultColors();
-						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-						textarea.value = format.writeGeometry(geo);
-						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+						self.toEPSG4326(feature);
+						textarea.value = format.writeGeometry(feature);
+						self.toEPSG3857(feature);
 					});
 				}
 			});
