@@ -1,4 +1,153 @@
-/* Global reset */
+:root {
+	--blue: #007bff;
+	--indigo: #6610f2;
+	--purple: #6f42c1;
+	--pink: #e83e8c;
+	--red: #dc3545;
+	--orange: #fd7e14;
+	--yellow: #ffc107;
+	--green: #28a745;
+	--teal: #20c997;
+	--cyan: #17a2b8;
+	--white: #fff;
+	--gray: #6c757d;
+	--gray-dark: #343a40;
+	--primary: #007bff;
+	--secondary: #6c757d;
+	--success: #28a745;
+	--info: #17a2b8;
+	--warning: #ffc107;
+	--danger: #dc3545;
+	--light: #f8f9fa;
+	--dark: #343a40;
+	--breakpoint-xs: 0;
+	--breakpoint-sm: 576px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 992px;
+	--breakpoint-xl: 1200px;
+	--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+
+
+.btn-group>.btn-group:not(:last-child)>.btn,
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.btn-group>.btn:first-child {
+	margin-left: 0;
+}
+
+.btn:not(:disabled):not(.disabled) {
+	cursor: pointer;
+}
+
+.btn-group-vertical>.btn,
+.btn-group>.btn {
+	position: relative;
+	-webkit-box-flex: 0;
+	-ms-flex: 0 1 auto;
+	flex: 0 1 auto;
+}
+
+[type=reset],
+[type=submit],
+button,
+html [type=button] {
+	-webkit-appearance: button;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: .25rem;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+button,
+select {
+	text-transform: none;
+}
+
+button,
+input {
+	overflow: visible;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+	margin: 0;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+button {
+	border-radius: 0;
+}
+
+
+.btn-primary:hover {
+	color: #fff;
+	background-color: #0069d9;
+	border-color: #0062cc;
+}
+
+.btn:focus,
+.btn:hover {
+	text-decoration: none;
+}
+
+.navbar .navbar-brand {
+	display: inline-block;
+	line-height: 60px;
+	vertical-align: middle;
+}
+
+.navbar-dark .navbar-brand {
+	color: #fff;
+}
+
+.navbar-brand {
+	display: inline-block;
+	padding-top: .3125rem;
+	padding-bottom: .3125rem;
+	margin-right: 1rem;
+	font-size: 1.25rem;
+	line-height: inherit;
+	white-space: nowrap;
+}
+
+
+
+
+
+
+
+
 * {
 	margin: 0;
 	padding: 0;
@@ -12,12 +161,35 @@ body {
 }
 
 .navbar {
+
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: .5rem 1rem;
+
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+
 	height: 60px;
 	background-color: #333;
 	color: #fff;
 	display: flex;
 	align-items: center;
-	dfs justify-content: center;
+	justify-content: center;
 	font-size: 18px;
 }
 
