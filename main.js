@@ -125,9 +125,6 @@ var app = (function () {
 			}
 		},
 		addInteraction: function (shape) {
-
-			var self = this;
-
 			draw = new ol.interaction.Draw({
 				features: features,
 				type: /** @type {ol.geom.GeometryType} */ shape
@@ -136,48 +133,6 @@ var app = (function () {
 			snap = new Snap({ sfeatures: features });
 			map.addInteraction(snap);
 
-			select = new ol.interaction.Select({
-				style: stylesEdit,
-			});
-
-			select.on('select', function (evt) {
-				if (evt.selected.length > 0) {
-					console.log("select - start");
-				}
-				else {
-					console.log("select - end");
-
-					var wkt;
-
-					evt.deselected.forEach(function (feature) {
-						wkt = format.writeGeometry(feature.getGeometry().transform('EPSG:3857', 'EPSG:4326'));
-
-						console.log("wkt", wkt);
-						console.log("self", self);
-
-
-					});
-				}
-			});
-
-			map.addInteraction(select);
-
-			modify = new ol.interaction.Modify({
-				features: select.getFeatures(),
-				style: stylesSnap,
-				insertVertexCondition: function () {
-					// prevent new vertices to be added to the polygons
-					return true;
-					return !select
-						.getFeatures()
-						.getArray()
-						.every(function (feature) {
-							return /Polygon/.test(feature.getGeometry().getType());
-						});
-				},
-			});
-
-			map.addInteraction(modify);
 
 		},
 		createVector: function () {
@@ -286,7 +241,46 @@ var app = (function () {
 				features.forEach(self.toEPSG3857);
 			});
 
+
+			select = new ol.interaction.Select({
+				style: stylesEdit,
+			});
+
+			select.on('select', function (evt) {
+				if (evt.selected.length > 0) {
+					console.log("select - start");
+				}
+				else {
+					console.log("select - end");
+
+					var wkt;
+
+					evt.deselected.forEach(function (feature) {
+						wkt = format.writeGeometry(feature.getGeometry().transform('EPSG:3857', 'EPSG:4326'));
+
+						console.log("wkt", wkt);
+
+					});
+				}
+			});
+
+			modify = new ol.interaction.Modify({
+				features: select.getFeatures(),
+				style: stylesSnap,
+				insertVertexCondition: function () {
+					// prevent new vertices to be added to the polygons
+					return true;
+					return !select
+						.getFeatures()
+						.getArray()
+						.every(function (feature) {
+							return /Polygon/.test(feature.getGeometry().getType());
+						});
+				},
+			});
+
 			map = new ol.Map({
+				interactions: [select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
