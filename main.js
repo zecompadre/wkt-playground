@@ -252,12 +252,10 @@ var app = (function () {
 				}
 				else {
 					console.log("select - end");
-
-					var wkt;
-
 					evt.deselected.forEach(function (feature) {
+						self.restoreDefaultColors();
 						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-						wkt = format.writeGeometry(geo);
+						textarea.value = format.writeGeometry(geo);
 						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 					});
 
