@@ -49,6 +49,18 @@ var app = (function () {
 			image: new ol.style.Circle({
 				fill: fillEdit,
 				stroke: strokeEdit,
+				radius: 5
+			}),
+			fill: fillEdit,
+			stroke: strokeEdit
+		})
+	];
+
+	var stylesSnap = [
+		new ol.style.Style({
+			image: new ol.style.Circle({
+				fill: fillEdit,
+				stroke: strokeEdit,
 				radius: 1
 			}),
 			fill: fillEdit,
@@ -63,7 +75,7 @@ var app = (function () {
 
 	const modify = new ol.interaction.Modify({
 		features: select.getFeatures(),
-		style: stylesNormal,
+		style: stylesSnap,
 		insertVertexCondition: function () {
 			// prevent new vertices to be added to the polygons
 			return true;
