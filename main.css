@@ -107,6 +107,7 @@
 }
 
 .map-container {
+	display: inline-block;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -115,11 +116,13 @@
 }
 
 .map-container .map {
+	display: inline-block;
 	height: 100%;
 	width: 100%;
 }
 
 .result-container .btns {
+	display: inline-block;
 	background-color: transparent;
 	z-index: 1;
 	position: absolute;
