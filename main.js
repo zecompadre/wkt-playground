@@ -71,7 +71,7 @@ var app = (function () {
 			image: new ol.style.Circle({
 				fill: fillSnap,
 				stroke: strokeSnap,
-				radius: 3
+				radius: 5
 			}),
 			fill: fillSnap,
 			stroke: strokeSnap
