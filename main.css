@@ -1,5 +1,5 @@
 :root {
-	--blue: #007bff;
+	--headerh: 60px;
 	--indigo: #6610f2;
 	--purple: #6f42c1;
 	--pink: #e83e8c;
@@ -28,123 +28,6 @@
 	--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-
-
-
-.btn-group>.btn-group:not(:last-child)>.btn,
-.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.btn-group>.btn:first-child {
-	margin-left: 0;
-}
-
-.btn:not(:disabled):not(.disabled) {
-	cursor: pointer;
-}
-
-.btn-group-vertical>.btn,
-.btn-group>.btn {
-	position: relative;
-	-webkit-box-flex: 0;
-	-ms-flex: 0 1 auto;
-	flex: 0 1 auto;
-}
-
-[type=reset],
-[type=submit],
-button,
-html [type=button] {
-	-webkit-appearance: button;
-}
-
-.btn-primary {
-	color: #fff;
-	background-color: #007bff;
-	border-color: #007bff;
-}
-
-.btn {
-	display: inline-block;
-	font-weight: 400;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	border: 1px solid transparent;
-	padding: .375rem .75rem;
-	font-size: 1rem;
-	line-height: 1.5;
-	border-radius: .25rem;
-	transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-button,
-select {
-	text-transform: none;
-}
-
-button,
-input {
-	overflow: visible;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-	margin: 0;
-	font-family: inherit;
-	font-size: inherit;
-	line-height: inherit;
-}
-
-button {
-	border-radius: 0;
-}
-
-
-.btn-primary:hover {
-	color: #fff;
-	background-color: #0069d9;
-	border-color: #0062cc;
-}
-
-.btn:focus,
-.btn:hover {
-	text-decoration: none;
-}
-
-.navbar .navbar-brand {
-	display: inline-block;
-	line-height: 60px;
-	vertical-align: middle;
-}
-
-.navbar-dark .navbar-brand {
-	color: #fff;
-}
-
-.navbar-brand {
-	display: inline-block;
-	padding-top: .3125rem;
-	padding-bottom: .3125rem;
-	margin-right: 1rem;
-	font-size: 1.25rem;
-	line-height: inherit;
-	white-space: nowrap;
-}
-
-
-
-
-
 
 
 
@@ -195,7 +78,7 @@ body {
 
 .navbar .navbar-brand {
 	display: inline-block;
-	line-height: 60px;
+	line-height: var(--headerh);
 	vertical-align: middle;
 }
 
@@ -219,7 +102,7 @@ body {
 .maincontainer {
 	display: flex;
 	flex-direction: column;
-	height: calc(100% - 60px);
+	height: calc(100% - var(--headerh));
 	max-width: 100%;
 }
 
