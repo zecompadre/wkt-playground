@@ -83,11 +83,11 @@ var app = (function () {
 		style: stylesEdit,
 	});
 
-	select.on('selectstart', function (evt) {
+	select.on('selected', function (evt) {
 		console.log("select - start");
 	});
 
-	select.on('selectend', function (evt) {
+	select.on('deselected', function (evt) {
 		console.log("select - end");
 	});
 
