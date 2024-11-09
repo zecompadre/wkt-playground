@@ -268,8 +268,9 @@ var app = (function () {
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-
-			setTimeout(function () { self.pasteWKT() }, 1000);
+			document.addEventListener('DOMContentLoaded', function () {
+				this.pasteWKT();
+			});
 		}
 	};
 
