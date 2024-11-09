@@ -47,7 +47,7 @@ body {
 	font-family: Arial, sans-serif;
 }
 
-.navbar {
+.headercontainer {
 	padding: 0;
 	height: var(--headerh);
 	background-color: #333;
@@ -58,26 +58,23 @@ body {
 	font-size: 18px;
 }
 
-.navbar .navbar-brand {
+.headercontainer .title {
 	display: inline-block;
 	line-height: var(--headerh);
 	height: var(--headerh);
 	vertical-align: middle;
 	margin: 0;
 	padding: 0 10px 0 0;
+	color: #fff;
 }
 
-.navbar .navbar-brand:before {
-	background-image: url('logo.png');
-	background-size: 90px 50px;
+.headercontainer .inspired {
 	display: inline-block;
-	width: 90px;
-	height: 50px;
-	content: "";
-}
-
-.navbar .navbar-brand .nav-link {
+	line-height: var(--headerh);
+	height: var(--headerh);
 	font-size: 14px;
+	vertical-align: middle;
+	color: rgba(255, 255, 255, .5);
 }
 
 
