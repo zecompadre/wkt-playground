@@ -122,7 +122,6 @@
 }
 
 .result-container .btns {
-	display: inline-block;
 	background-color: transparent;
 	z-index: 1;
 	position: absolute;
@@ -132,6 +131,7 @@
 }
 
 .result-container {
+	display: inline-block;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
