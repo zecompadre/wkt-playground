@@ -252,16 +252,17 @@ var app = (function () {
 				}
 				else {
 					console.log("select - end");
-					/*
-										var wkt;
-					
-										evt.deselected.forEach(function (feature) {
-											wkt = format.writeGeometry(feature.getGeometry().transform('EPSG:3857', 'EPSG:4326'));
-					
-											console.log("wkt", wkt);
-					
-										});
-										*/
+
+					var wkt;
+
+					evt.deselected.forEach(function (feature) {
+						var geo = new (feature.getGeometry());
+						wkt = format.writeGeometry(geo.transform('EPSG:3857', 'EPSG:4326'));
+
+						console.log("wkt", wkt);
+
+					});
+
 				}
 			});
 
