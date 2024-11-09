@@ -253,15 +253,9 @@ var app = (function () {
 				else {
 					console.log("select - end");
 
-					var wkt;
-
-					evt.deselected.forEach(function (feature) {
-						var geo = self.toEPSG4326(feature);
-						wkt = format.writeGeometry(geo);
-
-						console.log("wkt", wkt);
-
-					});
+					evt.deselected.forEach(self.toEPSG4326);
+					textarea.value = format.writeFeatures(evt.deselected.getArray(), { rightHanded: true });
+					evt.deselected.forEach(self.toEPSG3857);
 
 				}
 			});
