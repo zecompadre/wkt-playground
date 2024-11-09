@@ -108,12 +108,12 @@ var app = (function () {
 
 			var wkt;
 
-			console.log(evt);
+			//console.log(evt);
 
 			evt.deselected.forEach(function (feature) {
 				wkt = format.writeGeometry(feature.getGeometry().transform('EPSG:3857', 'EPSG:4326'));
 
-				console.log(wkt);
+				console.log("wkt", wkt);
 
 			});
 
