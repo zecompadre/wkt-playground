@@ -93,8 +93,6 @@ var app = (function () {
 			map.addInteraction(draw);
 			snap = new Snap({ sfeatures: features });
 			map.addInteraction(snap);
-
-
 		},
 		createVector: function () {
 			vector = new ol.layer.Vector({
@@ -221,7 +219,7 @@ var app = (function () {
 
 			modify = new ol.interaction.Modify({
 				features: select.getFeatures(),
-				style: styles(normalSnap),
+				style: styles(snapColor),
 				insertVertexCondition: function () {
 					// prevent new vertices to be added to the polygons
 					return true;
