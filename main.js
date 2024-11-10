@@ -63,7 +63,9 @@ var app = (function () {
 		copyWKT: async function () {
 			textarea.select();
 			document.execCommand("copy");
-			document.focus();
+			textarea.blur();
+
+			this.restoreDefaultColors();
 		},
 		pasteWKT: async function () {
 
