@@ -80,9 +80,36 @@ var app = (function () {
 	];
 
 	return {
+
+		readClipboardFromDevTools: function () {
+			return new Promise((resolve, reject) => {
+				const _asyncCopyFn = (async () => {
+					try {
+						const value = await navigator.clipboard.readText();
+						console.log(`${value} is read!`);
+						resolve(value);
+					} catch (e) {
+						reject(e);
+					}
+					window.removeEventListener("focus", _asyncCopyFn);
+				});
+
+				window.addEventListener("focus", _asyncCopyFn);
+				console.log("Hit <Tab> to give focus back to document (or we will face a DOMException);");
+			});
+		},
 		pasteWKT: async function () {
 
 			var self = this;
+
+			readClipboardFromDevTools().then(function (text) {
+				if (text.indexOf('POLYGON') !== -1) {
+					textarea.value = text;
+					self.plotWKT();
+				}
+			});
+
+			return;
 
 			try {
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
@@ -268,9 +295,7 @@ var app = (function () {
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-			document.addEventListener('DOMContentLoaded', function () {
-				this.pasteWKT();
-			});
+			self.pasteWKT();
 		}
 	};
 
