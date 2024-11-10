@@ -102,7 +102,7 @@ var app = (function () {
 
 			var self = this;
 
-			readClipboardFromDevTools().then(function (text) {
+			self.readClipboardFromDevTools().then(function (text) {
 				if (text.indexOf('POLYGON') !== -1) {
 					textarea.value = text;
 					self.plotWKT();
