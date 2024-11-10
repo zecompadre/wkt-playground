@@ -9,6 +9,7 @@ var app = (function () {
 	var drag;
 	var select;
 	var modify;
+	var mousewheelzoom;
 	var features = new ol.Collection();
 	var format = new ol.format.WKT();
 	var current_shape = "polygon";
@@ -238,8 +239,14 @@ var app = (function () {
 				}
 			});
 
+			mousewheelzoom = new ol.interaction.MouseWheelZoom({
+				condition: function (event) {
+					return true;
+				}
+			});
+
 			map = new ol.Map({
-				interactions: [drag, select, modify],
+				interactions: [mousewheelzoom, drag, select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
