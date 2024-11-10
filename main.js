@@ -257,7 +257,7 @@ var app = (function () {
 
 			drag = new ol.interaction.DragPan({
 				condition: function (event) {
-					return event.originalEvent.ctrlKey
+					return true;
 				}
 			});
 
