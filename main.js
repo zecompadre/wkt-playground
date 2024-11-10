@@ -59,6 +59,7 @@ var app = (function () {
 		];
 	}
 
+
 	return {
 		copyWKT: async function () {
 			textarea.select();
