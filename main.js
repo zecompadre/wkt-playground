@@ -143,7 +143,7 @@ var app = (function () {
 			}
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				style: stylesNormal
+				style: styles(normalColor)
 			});
 
 			//this.selectGeom(current_shape);
