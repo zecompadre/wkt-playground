@@ -63,7 +63,7 @@ var app = (function () {
 		copyWKT: async function () {
 			textarea.select();
 			document.execCommand("copy");
-			textarea.focus();
+			document.focus();
 		},
 		pasteWKT: async function () {
 
