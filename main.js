@@ -255,8 +255,14 @@ var app = (function () {
 				},
 			});
 
+			drag = new ol.interaction.DragPan({
+				condition: function (event) {
+					return event.originalEvent.ctrlKey
+				}
+			});
+
 			map = new ol.Map({
-				interactions: [select, modify],
+				interactions: [drag, select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
