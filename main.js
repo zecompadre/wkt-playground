@@ -13,7 +13,7 @@ var app = (function () {
 	var format = new ol.format.WKT();
 	var current_shape = "polygon";
 
-	var normalColor = '#005baa';
+	var normalColor = '#141414'; //'#005baa';
 	var editColor = '#ec7063';
 	var snapColor = '#34495e';
 
