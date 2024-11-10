@@ -60,6 +60,10 @@ var app = (function () {
 	}
 
 	return {
+		copyWKT: async function () {
+			textarea.select();
+			document.execCommand("copy");
+		},
 		pasteWKT: async function () {
 
 			var self = this;

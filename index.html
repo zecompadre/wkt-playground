@@ -11,8 +11,8 @@
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
 	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
-	<script src="main.js?v=202411101510"></script>
-	<link rel="stylesheet" href="/main.css?v=202411101510">
+	<script src="main.js?v=202411101545"></script>
+	<link rel="stylesheet" href="/main.css?v=202411101545">
 </head>
 
 <body onload="app.init()">
@@ -36,6 +36,7 @@
 			<textarea id="wktStringTextArea" class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
 			<div class="btns btn-group btn-group-md">
 				<button type="button" class="btn btn-primary" onclick="app.clearMap()">Limpar</button>
+				<button type="button" class="btn btn-primary" onclick="app.copyWKT()">Copiar</button>
 				<button type="button" class="btn btn-primary" onclick="app.plotWKT()">Desenhar</button>
 			</div>
 		</div>
