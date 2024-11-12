@@ -93,7 +93,7 @@ var app = (function () {
 					btnplot.innerHTML = "Apply";
 					break;
 			}
-
+			btnclear.style.display = "none";
 		},
 		copyWKT: async function () {
 			textarea.select();
