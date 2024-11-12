@@ -75,6 +75,18 @@ var app = (function () {
 					btnclear.innerHTML = "Limpar";
 					btnplot.innerHTML = "Aplicar";
 					break;
+				case "fr-FR":
+				case "fr":
+					btncopy.innerHTML = "Copier";
+					btnclear.innerHTML = "Effacer";
+					btnplot.innerHTML = "Appliquer";
+					break;
+				case "es-ES":
+				case "es":
+					btncopy.innerHTML = "Copiar";
+					btnclear.innerHTML = "Limpiar";
+					btnplot.innerHTML = "Aplicar";
+					break;
 				default:
 					btncopy.innerHTML = "Copy";
 					btnclear.innerHTML = "Clear";
