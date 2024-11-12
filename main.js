@@ -69,6 +69,7 @@ var app = (function () {
 	return {
 		translateBtns: function () {
 			switch (language) {
+				case "pt-PT":
 				case "pt":
 					btncopy.innerHTML = "Copiar";
 					btnclear.innerHTML = "Limpar";
