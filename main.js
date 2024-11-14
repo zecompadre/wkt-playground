@@ -224,6 +224,8 @@ var app = (function () {
 		},
 		loadWKTs: function (wkts) {
 
+			var self = this;
+
 			self.pasteWKT();
 
 			textarea.value = wkts;
