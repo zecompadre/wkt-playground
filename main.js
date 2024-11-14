@@ -222,6 +222,12 @@ var app = (function () {
 			var wkt = window.location.hash.slice(1);
 			textarea.value = decodeURI(wkt);
 		},
+		loadWKTs: function (wkts) {
+
+			self.pasteWKT();
+
+			textarea.value = wkts;
+		},
 		init: function () {
 			var self = this;
 
@@ -302,8 +308,12 @@ var app = (function () {
 			if (window.location && window.location.hash) {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
-			self.pasteWKT();
-			//self.translateBtns();
+
+			localforage
+				.getItem("zecompadre-wkt")
+				.then((wkts) => self.loadWKTs(wkts))
+				.catch((error) => console.error("Error retrieving wkts:", error));
+
 		}
 	};
 
