@@ -262,7 +262,7 @@ var app = (function () {
 			var exists = false;
 			wkts.forEach(item => {
 				const clonedElement = wktdefault.cloneNode(true);
-				wktdefault.parentNode.insertAfter(clonedElement, wktdefault.nextSibling);
+				wktdefault.parentNode.insertBefore(clonedElement, wktdefault.nextSibling);
 
 				clonedElement.id = item.id;
 				clonedElement.querySelector("textarea").value = item.wkt;
@@ -273,7 +273,7 @@ var app = (function () {
 
 			if (!exists) {
 				const clonedElement = wktdefault.cloneNode(true);
-				wktdefault.parentNode.insertAfter(clonedElement, wktdefault.nextSibling);
+				wktdefault.parentNode.insertBefore(clonedElement, wktdefault.nextSibling);
 
 				clonedElement.id = checksum;
 				clonedElement.querySelector("textarea").value = wkt;
