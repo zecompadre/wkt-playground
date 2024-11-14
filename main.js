@@ -246,7 +246,7 @@ var app = (function () {
 
 			var self = this;
 
-			var wktdefault = document.getElementById("wktdefaul");
+			var wktdefault = document.getElementById("wktdefault");
 			wktdefault.focus();
 
 			var wkt = await self.clipboardWKT();
