@@ -95,46 +95,7 @@ var app = (function () {
 			}
 			btnclear.style.display = "none";
 		},
-		copyWKT: async function () {
-			textarea.select();
-			document.execCommand("copy");
-			textarea.blur();
 
-			this.restoreDefaultColors();
-		},
-		clipboardWKT: async function () {
-
-			var self = this;
-			var returnVal = defaultWKT;
-
-			try {
-				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
-				if (permission.state === 'denied') {
-					throw new Error('Not allowed to read clipboard.');
-				}
-
-				textarea.focus();
-
-				const text = await navigator.clipboard.readText();
-				if (text.indexOf('POLYGON') !== -1) {
-					returnVal = text;
-				}
-			} catch (error) {
-				console.error('pasteWKT:', error.message);
-			}
-
-			return returnVal;
-		},
-		pasteWKT: async function (wkt) {
-
-			var self = this;
-
-			textarea.focus();
-
-			wkt = wkt || await self.clipboardWKT();
-			textarea.value = wkt;
-			self.plotWKT();
-		},
 		addInteraction: function (shape) {
 			draw = new ol.interaction.Draw({
 				features: features,
@@ -238,13 +199,53 @@ var app = (function () {
 			var wkt = window.location.hash.slice(1);
 			textarea.value = decodeURI(wkt);
 		},
+		copyWKT: async function () {
+			textarea.select();
+			document.execCommand("copy");
+			textarea.blur();
+
+			this.restoreDefaultColors();
+		},
+		clipboardWKT: async function () {
+
+			var self = this;
+			var returnVal = defaultWKT;
+
+			try {
+				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
+				if (permission.state === 'denied') {
+					throw new Error('Not allowed to read clipboard.');
+				}
+
+				textarea.focus();
+
+				const text = await navigator.clipboard.readText();
+				if (text.indexOf('POLYGON') !== -1) {
+					returnVal = text;
+				}
+			} catch (error) {
+				console.error('pasteWKT:', error.message);
+			}
+
+			return returnVal;
+		},
+		pasteWKT: async function (wkt) {
+
+			var self = this;
+
+			textarea.focus();
+
+			wkt = wkt || await self.clipboardWKT();
+			textarea.value = wkt;
+			self.plotWKT();
+		},
 		loadWKTs: async function (wkts) {
 
 			var self = this;
 
 			var wkt = await self.clipboardWKT();
 
-			self.pasteWKT(wkt);
+			await self.pasteWKT(wkt);
 
 			self.generateChecksum(wkt)
 				.then(checksum => console.log("SHA-256 Checksum:", checksum))
