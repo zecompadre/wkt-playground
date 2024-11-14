@@ -102,9 +102,10 @@ var app = (function () {
 
 			this.restoreDefaultColors();
 		},
-		pasteWKT: async function () {
+		clipboardWKT: async function () {
 
 			var self = this;
+			var returnVal = defaultWKT;
 
 			try {
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
@@ -116,16 +117,27 @@ var app = (function () {
 
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
-					textarea.value = text;
-					self.plotWKT();
+					returnVal = text;
 				}
 			} catch (error) {
 				console.error('pasteWKT:', error.message);
 			}
-			if (textarea.value === "") {
-				textarea.value = defaultWKT;
-				self.plotWKT();
+
+			return returnVal;
+		},
+		pasteWKT: async function (wkt) {
+
+			var self = this;
+
+			textarea.focus();
+
+			if (wkt !== undefined) {
+				textarea.value = wkt;
 			}
+			else {
+				textarea.value = self.clipboardWKT();
+			}
+			self.plotWKT();
 		},
 		addInteraction: function (shape) {
 			draw = new ol.interaction.Draw({
@@ -156,6 +168,14 @@ var app = (function () {
 		restoreDefaultColors: function () {
 			textarea.style.borderColor = "";
 			textarea.style.backgroundColor = "";
+		},
+		generateChecksum: async function generateChecksum(inputString) {
+			const encoder = new TextEncoder();
+			const data = encoder.encode(inputString);
+			const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+			const hashArray = Array.from(new Uint8Array(hashBuffer));
+			const checksum = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+			return checksum;
 		},
 		plotWKT: function () {
 
@@ -226,7 +246,13 @@ var app = (function () {
 
 			var self = this;
 
-			self.pasteWKT();
+			var wkt = self.clipboardWKT();
+
+			self.pasteWKT(wkt);
+
+			self.generateChecksum(wkt)
+				.then(checksum => console.log("SHA-256 Checksum:", checksum))
+				.catch(error => console.error(error));
 
 			textarea.value = wkts;
 		},
