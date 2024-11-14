@@ -235,7 +235,12 @@ var app = (function () {
 
 			textarea.focus();
 
+			console.error(wkt);
+
 			wkt = wkt || await self.clipboardWKT();
+
+			console.error(wkt);
+
 			textarea.value = wkt;
 			self.plotWKT();
 		},
