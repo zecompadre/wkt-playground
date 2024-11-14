@@ -303,7 +303,7 @@ var app = (function () {
 				this.loadWKTfromURIFragment(window.location.hash);
 			}
 			self.pasteWKT();
-			self.translateBtns();
+			//self.translateBtns();
 		}
 	};
 
