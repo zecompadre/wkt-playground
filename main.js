@@ -237,11 +237,11 @@ var app = (function () {
 
 			console.error(wkt);
 
-			wkt = wkt || await self.clipboardWKT();
+			if (wkt === undefined)
+				textarea.value = await self.clipboardWKT();
+			else
+				textarea.value = wkt;
 
-			console.error(wkt);
-
-			textarea.value = wkt;
 			self.plotWKT();
 		},
 		loadWKTs: async function (wkts) {
