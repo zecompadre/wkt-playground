@@ -246,13 +246,12 @@ var app = (function () {
 
 			var self = this;
 
-			textarea.focus();
+			var wktdefault = document.getElementById("wktdefaul");
+			wktdefault.focus();
 
 			var wkt = await self.clipboardWKT();
 
 			var checksum = await self.generateChecksum(wkt);
-
-			var wktdefault = document.getElementById("wktdefaul");
 
 			if (wkts == null || wkts == undefined)
 				wkts = [];
@@ -279,6 +278,8 @@ var app = (function () {
 
 				textarea.value = wkt;
 			}
+
+			wktdefault.style.display = "none";
 		},
 		init: function () {
 			var self = this;
