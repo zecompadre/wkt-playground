@@ -217,8 +217,6 @@ var app = (function () {
 					throw new Error('Not allowed to read clipboard.');
 				}
 
-				textarea.focus();
-
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
 					returnVal = text;
@@ -273,7 +271,11 @@ var app = (function () {
 			if (!exists) {
 				wkts.push({ id: checksum, wkt: wkt });
 				clonedElement.id = checksum;
-				clonedElement.querySelector("textarea").value = wkt;
+
+				textarea = clonedElement.querySelector("textarea");
+				textarea.focus();
+
+				textarea.value = wkt;
 			}
 		},
 		init: function () {
