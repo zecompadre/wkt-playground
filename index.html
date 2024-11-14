@@ -5,6 +5,7 @@
 	<title>WKT Playground</title>
 	<linkx rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
@@ -33,11 +34,13 @@
 			<div id="map" class="map" style="z-index: 0"></div>
 		</div>
 		<div class="result-container">
-			<textarea id="wktStringTextArea" class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
-			<div class="btns btn-group btn-group-md">
-				<button id="btn-clear" type="button" class="btn btn-small btn-primary" onclick="app.clearMap()">Limpar</button>
-				<button id="btn-copy" type="button" class="btn btn-small btn-primary" onclick="app.copyWKT()">Copiar</button>
-				<button id="btn-plot" type="button" class="btn btn-small btn-primary" onclick="app.plotWKT()">Aplicar</button>
+			<div id="wkt1">
+				<textarea class="form-control" rows="5" onclick="app,restoreDefaultColors()"></textarea>
+				<div class="btns btn-group btn-group-md">
+					<button id="btn-clear" type="button" class="btn btn-small btn-primary" onclick="app.clearMap()">Limpar</button>
+					<button id="btn-copy" type="button" class="btn btn-small btn-primary" onclick="app.copyWKT()">Copiar</button>
+					<button id="btn-plot" type="button" class="btn btn-small btn-primary" onclick="app.plotWKT()">Aplicar</button>
+				</div>
 			</div>
 		</div>
 	</div>
