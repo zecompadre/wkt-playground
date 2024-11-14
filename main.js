@@ -270,6 +270,7 @@ var app = (function () {
 			});
 
 			if (!exists) {
+				const clonedElement = wktdefault.cloneNode(true);
 				wkts.push({ id: checksum, wkt: wkt });
 				clonedElement.id = checksum;
 
