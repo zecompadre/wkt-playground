@@ -213,8 +213,6 @@ var app = (function () {
 
 			try {
 
-				textarea.focus();
-
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
 				if (permission.state === 'denied') {
 					throw new Error('Not allowed to read clipboard.');
@@ -247,6 +245,8 @@ var app = (function () {
 		loadWKTs: async function (wkts) {
 
 			var self = this;
+
+			textarea.focus();
 
 			var wkt = await self.clipboardWKT();
 
