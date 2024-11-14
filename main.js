@@ -131,12 +131,8 @@ var app = (function () {
 
 			textarea.focus();
 
-			if (wkt !== undefined) {
-				textarea.value = wkt;
-			}
-			else {
-				textarea.value = self.clipboardWKT();
-			}
+			wkt = wkt || await self.clipboardWKT();
+			textarea.value = wkt;
 			self.plotWKT();
 		},
 		addInteraction: function (shape) {
