@@ -262,8 +262,7 @@ var app = (function () {
 			var exists = false;
 			wkts.forEach(item => {
 				const clonedElement = wktdefault.cloneNode(true);
-
-				originalElement.parentNode.insertAfter(clonedElement, originalElement.nextSibling);
+				wktdefault.parentNode.insertAfter(clonedElement, wktdefault.nextSibling);
 
 				clonedElement.id = item.id;
 				clonedElement.querySelector("textarea").value = item.wkt;
@@ -274,13 +273,12 @@ var app = (function () {
 
 			if (!exists) {
 				const clonedElement = wktdefault.cloneNode(true);
-				wkts.push({ id: checksum, wkt: wkt });
+				wktdefault.parentNode.insertAfter(clonedElement, wktdefault.nextSibling);
+
 				clonedElement.id = checksum;
+				clonedElement.querySelector("textarea").value = wkt;
 
-				textarea = clonedElement.querySelector("textarea");
-				textarea.focus();
-
-				textarea.value = wkt;
+				wkts.push({ id: checksum, wkt: wkt });
 			}
 
 			wktdefault.style.display = "none";
