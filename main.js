@@ -250,8 +250,6 @@ var app = (function () {
 
 			var wkt = await self.clipboardWKT();
 
-			await self.pasteWKT(wkt);
-
 			var checksum = await self.generateChecksum(wkt);
 
 			var wktdefault = document.getElementById("wktdefaul");
