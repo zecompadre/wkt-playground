@@ -257,7 +257,7 @@ var app = (function () {
 				wkts = [];
 
 			var exists = false;
-			jsonArray.forEach(item => {
+			wkts.forEach(item => {
 				const clonedElement = wktdefault.cloneNode(true);
 
 				originalElement.parentNode.insertAfter(clonedElement, originalElement.nextSibling);
