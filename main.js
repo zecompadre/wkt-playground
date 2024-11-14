@@ -238,11 +238,11 @@ var app = (function () {
 			var wkt = window.location.hash.slice(1);
 			textarea.value = decodeURI(wkt);
 		},
-		loadWKTs: function (wkts) {
+		loadWKTs: async function (wkts) {
 
 			var self = this;
 
-			var wkt = self.clipboardWKT();
+			var wkt = await self.clipboardWKT();
 
 			self.pasteWKT(wkt);
 
