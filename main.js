@@ -252,11 +252,31 @@ var app = (function () {
 
 			await self.pasteWKT(wkt);
 
-			self.generateChecksum(wkt)
-				.then(checksum => console.log("SHA-256 Checksum:", checksum))
-				.catch(error => console.error(error));
+			var checksum = await self.generateChecksum(wkt);
 
-			textarea.value = wkts;
+			var wktdefault = document.getElementById("wktdefaul");
+
+			if (wkts == null || wkts == undefined)
+				wkts = [];
+
+			var exists = false;
+			jsonArray.forEach(item => {
+				const clonedElement = wktdefault.cloneNode(true);
+
+				originalElement.parentNode.insertAfter(clonedElement, originalElement.nextSibling);
+
+				clonedElement.id = item.id;
+				clonedElement.querySelector("textarea").value = item.wkt;
+
+				if (item.id === checksum)
+					exists = true;
+			});
+
+			if (!exists) {
+				wkts.push({ id: checksum, wkt: wkt });
+				clonedElement.id = checksum;
+				clonedElement.querySelector("textarea").value = wkt;
+			}
 		},
 		init: function () {
 			var self = this;
