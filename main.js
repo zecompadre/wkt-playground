@@ -652,6 +652,8 @@ var app = (function () {
 				edition: false,
 				interactions: {
 					Select: true,
+					Draw: true,
+					Modify: true,
 					Info: false,
 					Split: false,
 					Offset: false
