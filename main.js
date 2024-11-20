@@ -317,6 +317,8 @@ var app = (function () {
 		}
 	}
 
+
+
 	function styles(color) {
 		return [
 			new ol.style.Style({
@@ -624,7 +626,6 @@ var app = (function () {
 				});
 			});
 
-
 			map = new ol.Map({
 				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
 				interactions: [mousewheelzoom, drag, select, modify],
@@ -635,6 +636,61 @@ var app = (function () {
 					zoom: 6
 				})
 			});
+
+
+
+			// Editbar
+			var editbar = new ol.control.EditBar({
+				source: vector.getSource(),
+				edition: false,
+				interactions: { Select: true, Info: false, Split: false, Offset: false }
+			});
+			mainbar.addControl(editbar);
+
+			// Undo redo interaction
+			var undoInteraction = new ol.interaction.UndoRedo();
+			map.addInteraction(undoInteraction);
+
+			// Add buttons to the bar
+			var bar = new ol.control.Bar({
+				group: true,
+				controls: [
+					new ol.control.Button({
+						html: '<i class="fa fa-undo" ></i>',
+						title: 'undo...',
+						handleClick: function () {
+							undoInteraction.undo();
+						}
+					}),
+					new ol.control.Button({
+						html: '<i class="fa fa-repeat" ></i>',
+						title: 'redo...',
+						handleClick: function () {
+							undoInteraction.redo();
+						}
+					})
+				]
+			});
+			mainbar.addControl(bar);
+
+			/* undo/redo custom */
+			var style;
+			// Define undo redo for the style
+			undoInteraction.define(
+				'style',
+				// undo function: set previous style
+				function (s) {
+					style = s.before;
+					vector.changed();
+				},
+				// redo function: reset the style
+				function (s) {
+					style = s.after;
+					vector.changed();
+				}
+			);
+
+
 
 			document.addEventListener('keydown', function (evt) {
 				switch (evt.key) {
