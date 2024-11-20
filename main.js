@@ -185,9 +185,9 @@ var app = (function () {
 		},
 		set: function (feature) {
 			app.restoreDefaultColors();
-			var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			//var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
 			textarea.value = format.writeGeometry(geo);
-			var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+			//var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 		}
 	};
 
@@ -402,7 +402,7 @@ var app = (function () {
 				textarea.style.backgroundColor = "#F7E8F3";
 				return;
 			} else {
-				new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+				//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 				new_feature.setId(id);
 				features.push(new_feature);
 			}
@@ -519,7 +519,7 @@ var app = (function () {
 
 							console.log("multi", multi);
 
-							var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+							//var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
 							textarea.value = format.writeGeometry(geo);
 						});
 
