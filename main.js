@@ -491,11 +491,11 @@ var app = (function () {
 
 			var interactions = {
 				draw: new ol.interaction.Draw({
-					features: features,
+					features: vector.getSource(),
 					type: /** @type {ol.geom.GeometryType} */ shape
 				}),
 				modify: new ol.interaction.Modify({
-					features: select.getFeatures(),
+					features: vector.getSource(),
 					insertVertexCondition: true
 				}),
 				modifyfeature: new ol.interaction.ModifyFeature({
