@@ -12,6 +12,8 @@ var app = (function () {
 	var features = new ol.Collection();
 	var format = new ol.format.WKT();
 
+	var interactions = {};
+
 	var current_wkts = [];
 
 	var shape = "Polygon";
@@ -286,15 +288,15 @@ var app = (function () {
 	}
 
 	return {
-		addInteraction: function (shape) {
-			draw = new ol.interaction.Draw({
-				features: features,
-				type: /** @type {ol.geom.GeometryType} */ shape
-			});
-			map.addInteraction(draw);
-			snap = new Snap({ sfeatures: features });
-			map.addInteraction(snap);
-		},
+		// addInteraction: function (shape) {
+		// 	draw = new ol.interaction.Draw({
+		// 		features: features,
+		// 		type: /** @type {ol.geom.GeometryType} */ shape
+		// 	});
+		// 	map.addInteraction(draw);
+		// 	snap = new Snap({ sfeatures: features });
+		// 	map.addInteraction(snap);
+		// },
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
@@ -309,9 +311,9 @@ var app = (function () {
 		},
 		selectGeom: function (shape) {
 			current_shape = shape;
-			map.removeInteraction(draw);
+			map.removeInteraction(interactions.draw);
 			this.addInteraction(shape);
-			console.log(shape);
+			console.log(interactions.shape);
 
 		},
 		restoreDefaultColors: function () {
@@ -357,9 +359,9 @@ var app = (function () {
 		},
 		removeWKT: async function () {
 
-			if (select.getFeatures().item.length > 0) {
+			if (interactions.select.getFeatures().item.length > 0) {
 
-				var current = select.getFeatures().item(0);
+				var current = interactions.select.getFeatures().item(0);
 
 				LS_WKTs.remove(current.getId());
 
@@ -370,8 +372,8 @@ var app = (function () {
 
 			console.log("addWKT");
 
-			map.removeInteraction(select);
-			map.addInteraction(draw);
+			map.removeInteraction(interactions.select);
+			map.addInteraction(interactions.draw);
 			textarea.value = "";
 		},
 		copyWKT: async function () {
@@ -673,7 +675,7 @@ var app = (function () {
 			document.addEventListener('keydown', function (evt) {
 				switch (evt.key) {
 					case 'Escape':
-						map.removeInteraction(draw);
+						map.removeInteraction(interactions.draw);
 						break;
 					case 'Delete':
 						app.removeWKT();
