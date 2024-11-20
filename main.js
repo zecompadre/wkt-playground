@@ -668,10 +668,8 @@ var app = (function () {
 						html: '<i class="fa-solid fa-plus"></i>',
 						title: 'Add...',
 						handleClick: function () {
-
 							console.log(this)
 							app.addWKT.bind(this)
-							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
@@ -679,7 +677,6 @@ var app = (function () {
 						title: 'Copy...',
 						handleClick: function () {
 							app.copyWKT.bind(this)
-							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
@@ -687,18 +684,17 @@ var app = (function () {
 						title: 'Remove...',
 						handleClick: function () {
 							app.removeWKT.bind(this)
-							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
-						html: '<i class="fa fa-undo" aria-hidden="true"></i>',
+						html: '<i class="fa-solid fa-rotate-left"></i>',
 						title: 'Undo...',
 						handleClick: function () {
 							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
-						html: '<i class="fa fa-repeat" aria-hidden="true"></i>',
+						html: '<i class="fa-solid fa-rotate-right"></i>',
 						title: 'Redo...',
 						handleClick: function () {
 							undoInteraction.redo();
