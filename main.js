@@ -262,63 +262,6 @@ var app = (function () {
 		}
 	}
 
-	class EditorControl extends ol.control.Control {
-		/**
-		 * @param {Object} [opt_options] Control options.
-		 */
-		constructor(opt_options) {
-			const options = opt_options || {};
-
-			const buttonClear = document.createElement('button');
-			buttonClear.innerHTML = '<i class="fa-solid fa-trash fa-sm"></i>';
-			buttonClear.classList.add('btn', 'btn-danger');
-
-			const buttonCopy = document.createElement('button');
-			buttonCopy.innerHTML = '<i class="fa-regular fa-clipboard fa-sm"></i>';
-			buttonCopy.classList.add('btn', 'btn-warning');
-
-			const buttonPlot = document.createElement('button');
-			buttonPlot.innerHTML = '<i class="fa-solid fa-plus fa-sm"></i>';
-			buttonPlot.classList.add('btn', 'btn-primary');
-
-			const element = document.createElement('div');
-			element.className = 'ol-top-right ol-unselectable ol-control';
-			element.appendChild(buttonClear);
-			element.appendChild(buttonCopy);
-			element.appendChild(buttonPlot);
-
-			super({
-				element: element,
-				target: options.target,
-			});
-
-			buttonClear.addEventListener('click', app.removeWKT.bind(this), false);
-			buttonCopy.addEventListener('click', app.copyWKT.bind(this), false);
-			buttonPlot.addEventListener('click', app.addWKT.bind(this), false);
-
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "none";
-			buttons[1].style.display = "none";
-			buttons[2].style.display = "";
-		}
-
-		hide() {
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "none";
-			buttons[1].style.display = "none";
-			buttons[2].style.display = "";
-		}
-
-		show() {
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "";
-			buttons[1].style.display = "";
-			buttons[2].style.display = "none";
-		}
-	}
-
-
-
 	function styles(color) {
 		return [
 			new ol.style.Style({
@@ -546,101 +489,106 @@ var app = (function () {
 				source: new ol.source.OSM()
 			});
 
-			select = new ol.interaction.Select({
-				style: styles(editColor),
-			});
+			var interactions = {
+				draw: new ol.interaction.Draw({
+					features: features,
+					type: /** @type {ol.geom.GeometryType} */ shape
+				}),
+				modify: new ol.interaction.Modify({
+					features: select.getFeatures(),
+					insertVertexCondition: true
+				}),
+				modifyfeature: new ol.interaction.ModifyFeature({
+					sources: vector.getSource(),
+					cursor: 'pointer',
+				}),
+				drag: new ol.interaction.DragPan({
+					condition: function (event) {
+						return true;
+					}
+				}),
+				mousewheelzoom: new ol.interaction.MouseWheelZoom({
+					condition: function (event) {
+						return true;
+					}
+				}),
+				select: new ol.interaction.Select({
+					//style: styles(editColor),
+				})
+			}
+			for (var i in interactions) map.addInteraction(interactions[i]);
 
-			select.on('select', function (evt) {
 
-				if (evt.deselected.length > 0) {
 
-					evt.deselected.forEach(function (feature) {
+			/*
+						select.on('select', function (evt) {
+			
+							if (evt.deselected.length > 0) {
+			
+								evt.deselected.forEach(function (feature) {
+			
+									self.restoreDefaultColors();
+									var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+									textarea.value = format.writeGeometry(geo);
+									var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+			
+									LS_WKTs.update(feature.getId(), textarea.value);
+			
+									var multi = featuresToMultiPolygon();
+									var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+									textarea.value = format.writeGeometry(geo);
+								});
+			
+								map.getControls().forEach(function (control) {
+									if (control instanceof EditorControl) {
+										control.hide();
+									}
+								});
+							}
+			
+							if (evt.selected.length > 0) {
+			
+								map.getControls().forEach(function (control) {
+									if (control instanceof EditorControl) {
+										control.show();
+									}
+								});
+			
+								evt.selected.forEach(function (feature) {
+									CurrentTextarea.set(feature);
+								});
+							}
+						});
+			*/
 
-						self.restoreDefaultColors();
-						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-						textarea.value = format.writeGeometry(geo);
-						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
 
-						LS_WKTs.update(feature.getId(), textarea.value);
-
-						var multi = featuresToMultiPolygon();
-						var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-						textarea.value = format.writeGeometry(geo);
-					});
-
-					map.getControls().forEach(function (control) {
-						if (control instanceof EditorControl) {
-							control.hide();
-						}
-					});
-				}
-
-				if (evt.selected.length > 0) {
-
-					map.getControls().forEach(function (control) {
-						if (control instanceof EditorControl) {
-							control.show();
-						}
-					});
-
-					evt.selected.forEach(function (feature) {
-						CurrentTextarea.set(feature);
-					});
-				}
-			});
-
-			modify = new ol.interaction.Modify({
-				features: select.getFeatures(),
-				style: styles(snapColor),
-				insertVertexCondition: function () {
-					return true;
-				},
-			});
-
-			drag = new ol.interaction.DragPan({
-				condition: function (event) {
-					return true;
-				}
-			});
-
-			mousewheelzoom = new ol.interaction.MouseWheelZoom({
-				condition: function (event) {
-					return true;
-				}
-			});
-
-			draw = new ol.interaction.Draw({
-				features: features,
-				type: /** @type {ol.geom.GeometryType} */ shape
-			});
-
-			draw.on('drawend', async function (evt) {
-
-				var geo = evt.feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-				var wkt = format.writeGeometry(geo);
-
-				await LS_WKTs.add(wkt).then(async function (result) {
-					await app.loadWKTs(false).then(function () {
-						map.removeInteraction(draw);
-						map.addInteraction(select);
-						//centerOnFeature(evt.feature);
-						//imageCanvas(evt.feature);
-					});
-				});
-			});
-
+			/*
+						draw.on('drawend', async function (evt) {
+			
+							var geo = evt.feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+							var wkt = format.writeGeometry(geo);
+			
+							await LS_WKTs.add(wkt).then(async function (result) {
+								await app.loadWKTs(false).then(function () {
+									map.removeInteraction(draw);
+									map.addInteraction(select);
+									//centerOnFeature(evt.feature);
+									//imageCanvas(evt.feature);
+								});
+							});
+						});
+			*/
 			map = new ol.Map({
 				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
 				interactions: [mousewheelzoom, drag, select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
+					projection: 'EPSG:4326',
 					center: defaultCenter,
 					zoom: 6
 				})
 			});
-
-
 
 			// Main control bar
 			var mainbar = new ol.control.Bar();
