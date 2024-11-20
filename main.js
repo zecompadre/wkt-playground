@@ -639,6 +639,10 @@ var app = (function () {
 
 
 
+			// Main control bar
+			var mainbar = new ol.control.Bar();
+			map.addControl(mainbar);
+
 			// Editbar
 			var editbar = new ol.control.EditBar({
 				source: vector.getSource(),
