@@ -647,7 +647,12 @@ var app = (function () {
 			var editbar = new ol.control.EditBar({
 				source: vector.getSource(),
 				edition: false,
-				interactions: { Select: true, Info: false, Split: false, Offset: false }
+				interactions: {
+					Select: true,
+					Info: false,
+					Split: false,
+					Offset: false
+				}
 			});
 			mainbar.addControl(editbar);
 
@@ -660,15 +665,39 @@ var app = (function () {
 				group: true,
 				controls: [
 					new ol.control.Button({
-						html: '<i class="fa fa-undo" ></i>',
-						title: 'undo...',
+						html: '<i class="fa-solid fa-plus fa-sm"></i>',
+						title: 'Add...',
+						handleClick: function () {
+							app.addWKT.bind(this)
+							undoInteraction.undo();
+						}
+					}),
+					new ol.control.Button({
+						html: '<i class="fa-regular fa-clipboard fa-sm"></i>',
+						title: 'Copy...',
+						handleClick: function () {
+							app.copyWKT.bind(this)
+							undoInteraction.undo();
+						}
+					}),
+					new ol.control.Button({
+						html: '<i class="fa-solid fa-trash fa-sm"></i>',
+						title: 'Remove...',
+						handleClick: function () {
+							app.removeWKT.bind(this)
+							undoInteraction.undo();
+						}
+					}),
+					new ol.control.Button({
+						html: '<i class="fa fa-undo" aria-hidden="true"></i>',
+						title: 'Undo...',
 						handleClick: function () {
 							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
-						html: '<i class="fa fa-repeat" ></i>',
-						title: 'redo...',
+						html: '<i class="fa fa-repeat" aria-hidden="true"></i>',
+						title: 'Redo...',
 						handleClick: function () {
 							undoInteraction.redo();
 						}
