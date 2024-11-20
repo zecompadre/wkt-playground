@@ -425,6 +425,9 @@ var app = (function () {
 			}
 		},
 		addWKT: function () {
+
+			console.log("addWKT");
+
 			map.removeInteraction(select);
 			map.addInteraction(draw);
 			textarea.value = "";
