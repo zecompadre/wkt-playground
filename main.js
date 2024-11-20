@@ -488,7 +488,6 @@ var app = (function () {
 			});
 
 			map = new ol.Map({
-				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
