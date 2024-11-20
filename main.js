@@ -12,8 +12,6 @@ var app = (function () {
 	var features = new ol.Collection();
 	var format = new ol.format.WKT();
 
-	var interactions = {};
-
 	var current_wkts = [];
 
 	var shape = "Polygon";
@@ -74,14 +72,14 @@ var app = (function () {
 			});
 	}
 
-	// function deselectFeature() {
-	// 	select.getFeatures().clear();
-	// 	map.getControls().forEach(function (control) {
-	// 		if (control instanceof EditorControl) {
-	// 			control.hide();
-	// 		}
-	// 	});
-	// }
+	function deselectFeature() {
+		select.getFeatures().clear();
+		map.getControls().forEach(function (control) {
+			if (control instanceof EditorControl) {
+				control.hide();
+			}
+		});
+	}
 
 	async function getIP() {
 		try {
@@ -209,6 +207,7 @@ var app = (function () {
 			}
 		}).flat();
 
+
 		// Create a MultiPolygon geometry
 		const multiPolygonGeometry = new ol.geom.MultiPolygon(polygonCoordinates);
 
@@ -263,6 +262,63 @@ var app = (function () {
 		}
 	}
 
+	class EditorControl extends ol.control.Control {
+		/**
+		 * @param {Object} [opt_options] Control options.
+		 */
+		constructor(opt_options) {
+			const options = opt_options || {};
+
+			const buttonClear = document.createElement('button');
+			buttonClear.innerHTML = '<i class="fa-solid fa-trash fa-sm"></i>';
+			buttonClear.classList.add('btn', 'btn-danger');
+
+			const buttonCopy = document.createElement('button');
+			buttonCopy.innerHTML = '<i class="fa-regular fa-clipboard fa-sm"></i>';
+			buttonCopy.classList.add('btn', 'btn-warning');
+
+			const buttonPlot = document.createElement('button');
+			buttonPlot.innerHTML = '<i class="fa-solid fa-plus fa-sm"></i>';
+			buttonPlot.classList.add('btn', 'btn-primary');
+
+			const element = document.createElement('div');
+			element.className = 'ol-top-right ol-unselectable ol-control';
+			element.appendChild(buttonClear);
+			element.appendChild(buttonCopy);
+			element.appendChild(buttonPlot);
+
+			super({
+				element: element,
+				target: options.target,
+			});
+
+			buttonClear.addEventListener('click', app.removeWKT.bind(this), false);
+			buttonCopy.addEventListener('click', app.copyWKT.bind(this), false);
+			buttonPlot.addEventListener('click', app.addWKT.bind(this), false);
+
+			var buttons = this.element.querySelectorAll("button");
+			buttons[0].style.display = "none";
+			buttons[1].style.display = "none";
+			buttons[2].style.display = "";
+		}
+
+		hide() {
+			var buttons = this.element.querySelectorAll("button");
+			buttons[0].style.display = "none";
+			buttons[1].style.display = "none";
+			buttons[2].style.display = "";
+		}
+
+		show() {
+			var buttons = this.element.querySelectorAll("button");
+			buttons[0].style.display = "";
+			buttons[1].style.display = "";
+			buttons[2].style.display = "none";
+		}
+	}
+
+
+
 	function styles(color) {
 		return [
 			new ol.style.Style({
@@ -288,15 +344,15 @@ var app = (function () {
 	}
 
 	return {
-		// addInteraction: function (shape) {
-		// 	draw = new ol.interaction.Draw({
-		// 		features: features,
-		// 		type: /** @type {ol.geom.GeometryType} */ shape
-		// 	});
-		// 	map.addInteraction(draw);
-		// 	snap = new Snap({ sfeatures: features });
-		// 	map.addInteraction(snap);
-		// },
+		addInteraction: function (shape) {
+			draw = new ol.interaction.Draw({
+				features: features,
+				type: /** @type {ol.geom.GeometryType} */ shape
+			});
+			map.addInteraction(draw);
+			snap = new Snap({ sfeatures: features });
+			map.addInteraction(snap);
+		},
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
@@ -311,9 +367,9 @@ var app = (function () {
 		},
 		selectGeom: function (shape) {
 			current_shape = shape;
-			map.removeInteraction(interactions.draw);
+			map.removeInteraction(draw);
 			this.addInteraction(shape);
-			console.log(interactions.shape);
+			console.log(shape);
 
 		},
 		restoreDefaultColors: function () {
@@ -331,7 +387,7 @@ var app = (function () {
 		resetFeatures: async function () {
 			features = new ol.Collection();
 			map.removeLayer(vector);
-			//deselectFeature()
+			deselectFeature()
 		},
 		plotWKT: function (id, wkt) {
 
@@ -359,9 +415,9 @@ var app = (function () {
 		},
 		removeWKT: async function () {
 
-			if (interactions.select.getFeatures().item.length > 0) {
+			if (select.getFeatures().item.length > 0) {
 
-				var current = interactions.select.getFeatures().item(0);
+				var current = select.getFeatures().item(0);
 
 				LS_WKTs.remove(current.getId());
 
@@ -372,17 +428,18 @@ var app = (function () {
 
 			console.log("addWKT");
 
-			//map.removeInteraction(interactions.select);
-			//map.addInteraction(interactions.draw);
+			map.removeInteraction(select);
+			map.addInteraction(draw);
 			textarea.value = "";
 		},
 		copyWKT: async function () {
+
 
 			textarea.select();
 			document.execCommand("copy");
 			textarea.blur();
 
-			//deselectFeature();
+			deselectFeature();
 
 			app.restoreDefaultColors();
 		},
@@ -489,104 +546,101 @@ var app = (function () {
 				source: new ol.source.OSM()
 			});
 
+			select = new ol.interaction.Select({
+				style: styles(editColor),
+			});
+
+			select.on('select', function (evt) {
+
+				if (evt.deselected.length > 0) {
+
+					evt.deselected.forEach(function (feature) {
+
+						self.restoreDefaultColors();
+						var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+						textarea.value = format.writeGeometry(geo);
+						var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+						LS_WKTs.update(feature.getId(), textarea.value);
+
+						var multi = featuresToMultiPolygon();
+						var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+						textarea.value = format.writeGeometry(geo);
+					});
+
+					map.getControls().forEach(function (control) {
+						if (control instanceof EditorControl) {
+							control.hide();
+						}
+					});
+				}
+
+				if (evt.selected.length > 0) {
+
+					map.getControls().forEach(function (control) {
+						if (control instanceof EditorControl) {
+							control.show();
+						}
+					});
+
+					evt.selected.forEach(function (feature) {
+						CurrentTextarea.set(feature);
+					});
+				}
+			});
+
+			modify = new ol.interaction.Modify({
+				features: select.getFeatures(),
+				style: styles(snapColor),
+				insertVertexCondition: function () {
+					return true;
+				},
+			});
+
+			drag = new ol.interaction.DragPan({
+				condition: function (event) {
+					return true;
+				}
+			});
+
+			mousewheelzoom = new ol.interaction.MouseWheelZoom({
+				condition: function (event) {
+					return true;
+				}
+			});
+
+			draw = new ol.interaction.Draw({
+				features: features,
+				type: /** @type {ol.geom.GeometryType} */ shape
+			});
+
+			draw.on('drawend', async function (evt) {
+
+				var geo = evt.feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+				var wkt = format.writeGeometry(geo);
+
+				await LS_WKTs.add(wkt).then(async function (result) {
+					await app.loadWKTs(false).then(function () {
+						map.removeInteraction(draw);
+						map.addInteraction(select);
+						//centerOnFeature(evt.feature);
+						//imageCanvas(evt.feature);
+					});
+				});
+			});
+
 			map = new ol.Map({
+				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
+				interactions: [mousewheelzoom, drag, select, modify],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
-					//projection: 'EPSG:4326',
 					center: defaultCenter,
 					zoom: 6
 				})
 			});
 
-			var interactions = {
-				draw: new ol.interaction.Draw({
-					source: vector.getSource(),
-					type: /** @type {ol.geom.GeometryType} */ shape
-				}),
-				modify: new ol.interaction.Modify({
-					source: vector.getSource(),
-					insertVertexCondition: function () {
-						return true;
-					}
-				}),
-				modifyfeature: new ol.interaction.ModifyFeature({
-					sources: vector.getSource(),
-					cursor: 'pointer',
-				}),
-				drag: new ol.interaction.DragPan({
-					condition: function (event) {
-						return true;
-					}
-				}),
-				mousewheelzoom: new ol.interaction.MouseWheelZoom({
-					condition: function (event) {
-						return true;
-					}
-				}),
-				select: new ol.interaction.Select({
-					//style: styles(editColor),
-				})
-			}
-			for (var i in interactions) map.addInteraction(interactions[i]);
 
-			/*
-						select.on('select', function (evt) {
-			
-							if (evt.deselected.length > 0) {
-			
-								evt.deselected.forEach(function (feature) {
-			
-									self.restoreDefaultColors();
-									var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-									textarea.value = format.writeGeometry(geo);
-									var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-			
-									LS_WKTs.update(feature.getId(), textarea.value);
-			
-									var multi = featuresToMultiPolygon();
-									var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-									textarea.value = format.writeGeometry(geo);
-								});
-			
-								map.getControls().forEach(function (control) {
-									if (control instanceof EditorControl) {
-										control.hide();
-									}
-								});
-							}
-			
-							if (evt.selected.length > 0) {
-			
-								map.getControls().forEach(function (control) {
-									if (control instanceof EditorControl) {
-										control.show();
-									}
-								});
-			
-								evt.selected.forEach(function (feature) {
-									CurrentTextarea.set(feature);
-								});
-							}
-						});
-			*/
-
-			/*
-						draw.on('drawend', async function (evt) {
-			
-							var geo = evt.feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-							var wkt = format.writeGeometry(geo);
-			
-							await LS_WKTs.add(wkt).then(async function (result) {
-								await app.loadWKTs(false).then(function () {
-									map.removeInteraction(draw);
-									map.addInteraction(select);
-									//centerOnFeature(evt.feature);
-									//imageCanvas(evt.feature);
-								});
-							});
-						});
-			*/
 
 			// Main control bar
 			var mainbar = new ol.control.Bar();
@@ -620,21 +674,21 @@ var app = (function () {
 						title: 'Add...',
 						handleClick: function () {
 							console.log(this)
-							app.addWKT(this)
+							app.addWKT.bind(this)
 						}
 					}),
 					new ol.control.Button({
 						html: '<i class="fa-regular fa-clipboard"></i>',
 						title: 'Copy...',
 						handleClick: function () {
-							app.copyWKT(this)
+							app.copyWKT.bind(this)
 						}
 					}),
 					new ol.control.Button({
 						html: '<i class="fa-solid fa-trash"></i>',
 						title: 'Remove...',
 						handleClick: function () {
-							app.removeWKT(this)
+							app.removeWKT.bind(this)
 						}
 					}),
 					new ol.control.Button({
@@ -672,16 +726,18 @@ var app = (function () {
 				}
 			);
 
-			// document.addEventListener('keydown', function (evt) {
-			// 	switch (evt.key) {
-			// 		case 'Escape':
-			// 			map.removeInteraction(interactions.draw);
-			// 			break;
-			// 		case 'Delete':
-			// 			app.removeWKT();
-			// 			break;
-			// 	}
-			// }, false);
+
+
+			document.addEventListener('keydown', function (evt) {
+				switch (evt.key) {
+					case 'Escape':
+						map.removeInteraction(draw);
+						break;
+					case 'Delete':
+						app.removeWKT();
+						break;
+				}
+			}, false);
 		},
 
 		init: function () {
@@ -696,6 +752,7 @@ var app = (function () {
 
 				self.loadWKTs(true);
 			});
+
 
 			getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
