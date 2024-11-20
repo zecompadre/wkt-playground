@@ -665,15 +665,17 @@ var app = (function () {
 				group: true,
 				controls: [
 					new ol.control.Button({
-						html: '<i class="fa-solid fa-plus fa-sm"></i>',
+						html: '<i class="fa-solid fa-plus"></i>',
 						title: 'Add...',
 						handleClick: function () {
+
+							console.log(this)
 							app.addWKT.bind(this)
 							undoInteraction.undo();
 						}
 					}),
 					new ol.control.Button({
-						html: '<i class="fa-regular fa-clipboard fa-sm"></i>',
+						html: '<i class="fa-regular fa-clipboard"></i>',
 						title: 'Copy...',
 						handleClick: function () {
 							app.copyWKT.bind(this)
@@ -681,7 +683,7 @@ var app = (function () {
 						}
 					}),
 					new ol.control.Button({
-						html: '<i class="fa-solid fa-trash fa-sm"></i>',
+						html: '<i class="fa-solid fa-trash"></i>',
 						title: 'Remove...',
 						handleClick: function () {
 							app.removeWKT.bind(this)
