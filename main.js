@@ -25,7 +25,7 @@ var app = (function () {
 	var latitude = 39.6945;
 	var longitude = -8.1234;
 
-	var defaultCenter = ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857');
+	var defaultCenter = [longitude, latitude];/*  ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'); */
 
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
@@ -735,7 +735,7 @@ var app = (function () {
 			getLocation().then(location => {
 				console.log("location", location);
 
-				defaultCenter = ol.proj.transform([location.longitude, location.latitude], 'EPSG:4326', 'EPSG:3857');
+				defaultCenter = [location.longitude, location.latitude]; /* ol.proj.transform([location.longitude, location.latitude], 'EPSG:4326', 'EPSG:3857'); */
 
 				self.prepareObjets();
 
