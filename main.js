@@ -487,6 +487,17 @@ var app = (function () {
 				source: new ol.source.OSM()
 			});
 
+			map = new ol.Map({
+				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
+				layers: [raster, vector],
+				target: 'map',
+				view: new ol.View({
+					projection: 'EPSG:4326',
+					center: defaultCenter,
+					zoom: 6
+				})
+			});
+
 			var interactions = {
 				draw: new ol.interaction.Draw({
 					source: vector.getSource(),
@@ -573,17 +584,6 @@ var app = (function () {
 							});
 						});
 			*/
-			map = new ol.Map({
-				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
-				interactions: [mousewheelzoom, drag, select, modify],
-				layers: [raster, vector],
-				target: 'map',
-				view: new ol.View({
-					projection: 'EPSG:4326',
-					center: defaultCenter,
-					zoom: 6
-				})
-			});
 
 			// Main control bar
 			var mainbar = new ol.control.Bar();
