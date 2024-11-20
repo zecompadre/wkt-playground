@@ -72,14 +72,14 @@ var app = (function () {
 			});
 	}
 
-	function deselectFeature() {
-		select.getFeatures().clear();
-		map.getControls().forEach(function (control) {
-			if (control instanceof EditorControl) {
-				control.hide();
-			}
-		});
-	}
+	/* 	function deselectFeature() {
+			select.getFeatures().clear();
+			map.getControls().forEach(function (control) {
+				if (control instanceof EditorControl) {
+					control.hide();
+				}
+			});
+		} */
 
 	async function getIP() {
 		try {
@@ -261,10 +261,7 @@ var app = (function () {
 		}
 	}
 
-	class EditorControl extends ol.control.Control {
-		/**
-		 * @param {Object} [opt_options] Control options.
-		 */
+	/* class EditorControl extends ol.control.Control {
 		constructor(opt_options) {
 			const options = opt_options || {};
 
@@ -314,7 +311,7 @@ var app = (function () {
 			buttons[1].style.display = "";
 			buttons[2].style.display = "none";
 		}
-	}
+	} */
 
 	function styles(color) {
 		return [
@@ -384,7 +381,7 @@ var app = (function () {
 		resetFeatures: async function () {
 			features = new ol.Collection();
 			map.removeLayer(vector);
-			deselectFeature()
+			//deselectFeature()
 		},
 		plotWKT: function (id, wkt) {
 
@@ -435,7 +432,7 @@ var app = (function () {
 			document.execCommand("copy");
 			textarea.blur();
 
-			deselectFeature();
+			//deselectFeature();
 
 			app.restoreDefaultColors();
 		},
@@ -626,7 +623,6 @@ var app = (function () {
 			// });
 
 			map = new ol.Map({
-				controls: ol.control.defaults.defaults().extend([new EditorControl()]),
 				interactions: [mousewheelzoom, drag/* , select, modify */],
 				layers: [raster, vector],
 				target: 'map',
