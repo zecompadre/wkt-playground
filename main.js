@@ -504,7 +504,9 @@ var app = (function () {
 				}),
 				modify: new ol.interaction.Modify({
 					source: vector.getSource(),
-					insertVertexCondition: true
+					insertVertexCondition: function () {
+						return true;
+					}
 				}),
 				modifyfeature: new ol.interaction.ModifyFeature({
 					sources: vector.getSource(),
