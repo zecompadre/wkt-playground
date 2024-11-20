@@ -72,14 +72,14 @@ var app = (function () {
 			});
 	}
 
-	function deselectFeature() {
-		select.getFeatures().clear();
-		map.getControls().forEach(function (control) {
-			if (control instanceof EditorControl) {
-				control.hide();
-			}
-		});
-	}
+	// function deselectFeature() {
+	// 	select.getFeatures().clear();
+	// 	map.getControls().forEach(function (control) {
+	// 		if (control instanceof EditorControl) {
+	// 			control.hide();
+	// 		}
+	// 	});
+	// }
 
 	async function getIP() {
 		try {
@@ -329,7 +329,7 @@ var app = (function () {
 		resetFeatures: async function () {
 			features = new ol.Collection();
 			map.removeLayer(vector);
-			deselectFeature()
+			//deselectFeature()
 		},
 		plotWKT: function (id, wkt) {
 
@@ -380,7 +380,7 @@ var app = (function () {
 			document.execCommand("copy");
 			textarea.blur();
 
-			deselectFeature();
+			//deselectFeature();
 
 			app.restoreDefaultColors();
 		},
