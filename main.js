@@ -674,21 +674,21 @@ var app = (function () {
 						title: 'Add...',
 						handleClick: function () {
 							console.log(this)
-							app.addWKT.bind(this)
+							app.addWKT(this)
 						}
 					}),
 					new ol.control.Button({
 						html: '<i class="fa-regular fa-clipboard"></i>',
 						title: 'Copy...',
 						handleClick: function () {
-							app.copyWKT.bind(this)
+							app.copyWKT(this)
 						}
 					}),
 					new ol.control.Button({
 						html: '<i class="fa-solid fa-trash"></i>',
 						title: 'Remove...',
 						handleClick: function () {
-							app.removeWKT.bind(this)
+							app.removeWKT(this)
 						}
 					}),
 					new ol.control.Button({
