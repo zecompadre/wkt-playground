@@ -207,7 +207,6 @@ var app = (function () {
 			}
 		}).flat();
 
-
 		// Create a MultiPolygon geometry
 		const multiPolygonGeometry = new ol.geom.MultiPolygon(polygonCoordinates);
 
@@ -377,7 +376,6 @@ var app = (function () {
 		},
 		copyWKT: async function () {
 
-
 			textarea.select();
 			document.execCommand("copy");
 			textarea.blur();
@@ -518,8 +516,6 @@ var app = (function () {
 			}
 			for (var i in interactions) map.addInteraction(interactions[i]);
 
-
-
 			/*
 						select.on('select', function (evt) {
 			
@@ -560,7 +556,6 @@ var app = (function () {
 							}
 						});
 			*/
-
 
 			/*
 						draw.on('drawend', async function (evt) {
@@ -674,8 +669,6 @@ var app = (function () {
 				}
 			);
 
-
-
 			document.addEventListener('keydown', function (evt) {
 				switch (evt.key) {
 					case 'Escape':
@@ -700,7 +693,6 @@ var app = (function () {
 
 				self.loadWKTs(true);
 			});
-
 
 			getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
