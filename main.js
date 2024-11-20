@@ -372,8 +372,8 @@ var app = (function () {
 
 			console.log("addWKT");
 
-			map.removeInteraction(interactions.select);
-			map.addInteraction(interactions.draw);
+			//map.removeInteraction(interactions.select);
+			//map.addInteraction(interactions.draw);
 			textarea.value = "";
 		},
 		copyWKT: async function () {
@@ -672,16 +672,16 @@ var app = (function () {
 				}
 			);
 
-			document.addEventListener('keydown', function (evt) {
-				switch (evt.key) {
-					case 'Escape':
-						map.removeInteraction(interactions.draw);
-						break;
-					case 'Delete':
-						app.removeWKT();
-						break;
-				}
-			}, false);
+			// document.addEventListener('keydown', function (evt) {
+			// 	switch (evt.key) {
+			// 		case 'Escape':
+			// 			map.removeInteraction(interactions.draw);
+			// 			break;
+			// 		case 'Delete':
+			// 			app.removeWKT();
+			// 			break;
+			// 	}
+			// }, false);
 		},
 
 		init: function () {
