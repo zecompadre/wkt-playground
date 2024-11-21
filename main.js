@@ -642,9 +642,9 @@ var app = (function () {
 				source: vector.getSource(),
 				edition: false,
 				interactions: {
-					Select: true,
-					DrawPolygon: true,
-					Modify: true,
+					/* 				Select: true,
+									DrawPolygon: true,
+									Modify: true, */
 					Info: false,
 					Split: false,
 					Offset: false
@@ -660,7 +660,7 @@ var app = (function () {
 			var bar = new ol.control.Bar({
 				group: true,
 				controls: [
-					new ol.control.Button({
+					/* new ol.control.Button({
 						html: '<i class="fa-solid fa-plus"></i>',
 						title: 'Add...',
 						handleClick: function () {
@@ -681,7 +681,7 @@ var app = (function () {
 						handleClick: function () {
 							app.removeWKT(this)
 						}
-					}),
+					}), */
 					new ol.control.Button({
 						html: '<i class="fa-solid fa-rotate-left"></i>',
 						title: 'Undo...',
