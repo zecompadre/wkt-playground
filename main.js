@@ -520,7 +520,7 @@ var app = (function () {
 							console.log("multi", multi);
 
 							//var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-							textarea.value = format.writeGeometry(geo);
+							//textarea.value = format.writeGeometry(geo);
 						});
 
 					});
@@ -717,16 +717,16 @@ var app = (function () {
 				}
 			);
 
-			document.addEventListener('keydown', function (evt) {
-				switch (evt.key) {
-					case 'Escape':
-						map.removeInteraction(draw);
-						break;
-					case 'Delete':
-						app.removeWKT();
-						break;
-				}
-			}, false);
+			/* 			document.addEventListener('keydown', function (evt) {
+							switch (evt.key) {
+								case 'Escape':
+									map.removeInteraction(draw);
+									break;
+								case 'Delete':
+									app.removeWKT();
+									break;
+							}
+						}, false); */
 		},
 
 		init: function () {
