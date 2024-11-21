@@ -341,104 +341,104 @@ var app = (function () {
 	}
 
 	return {
-		addInteraction: function (shape) {
-			draw = new ol.interaction.Draw({
-				features: features,
-				type: /** @type {ol.geom.GeometryType} */ shape
-			});
-			map.addInteraction(draw);
-			snap = new Snap({ sfeatures: features });
-			map.addInteraction(snap);
-		},
-		createVector: function () {
-			vector = new ol.layer.Vector({
-				source: new ol.source.Vector({ features: features }),
-				style: styles(normalColor)
-			});
-		},
+		// addInteraction: function (shape) {
+		// 	draw = new ol.interaction.Draw({
+		// 		features: features,
+		// 		type: /** @type {ol.geom.GeometryType} */ shape
+		// 	});
+		// 	map.addInteraction(draw);
+		// 	snap = new Snap({ sfeatures: features });
+		// 	map.addInteraction(snap);
+		// },
+		// createVector: function () {
+		// 	vector = new ol.layer.Vector({
+		// 		source: new ol.source.Vector({ features: features }),
+		// 		style: styles(normalColor)
+		// 	});
+		// },
 		toEPSG4326: function (element, index, array) {
 			element = element.getGeometry().transform(projection_mercator, projection_geodetic);
 		},
 		toEPSG3857: function (element, index, array) {
 			element = element.getGeometry().transform(projection_geodetic, projection_mercator);
 		},
-		selectGeom: function (shape) {
-			current_shape = shape;
-			map.removeInteraction(draw);
-			this.addInteraction(shape);
-			console.log(shape);
+		// selectGeom: function (shape) {
+		// 	current_shape = shape;
+		// 	map.removeInteraction(draw);
+		// 	this.addInteraction(shape);
+		// 	console.log(shape);
 
-		},
+		// },
 		restoreDefaultColors: function () {
 			textarea.style.borderColor = "";
 			textarea.style.backgroundColor = "";
 		},
-		addFeatures: async function () {
-			map.removeLayer(vector);
-			vector = new ol.layer.Vector({
-				source: new ol.source.Vector({ features: features }),
-				style: styles(normalColor)
-			});
-			map.addLayer(vector);
-		},
-		resetFeatures: async function () {
-			features = new ol.Collection();
-			map.removeLayer(vector);
-			//deselectFeature()
-		},
-		plotWKT: function (id, wkt) {
+		// addFeatures: async function () {
+		// 	map.removeLayer(vector);
+		// 	vector = new ol.layer.Vector({
+		// 		source: new ol.source.Vector({ features: features }),
+		// 		style: styles(normalColor)
+		// 	});
+		// 	map.addLayer(vector);
+		// },
+		// resetFeatures: async function () {
+		// 	features = new ol.Collection();
+		// 	map.removeLayer(vector);
+		// 	//deselectFeature()
+		// },
+		// plotWKT: function (id, wkt) {
 
-			var new_feature;
-			wkt_string = wkt || textarea.value;
-			if (wkt_string == "") {
-				textarea.style.borderColor = "red";
-				textarea.style.backgroundColor = "#F7E8F3";
-				return;
-			} else {
-				try {
-					new_feature = format.readFeature(wkt_string);
-				} catch (err) {
-				}
-			}
-			if (!new_feature) {
-				textarea.style.borderColor = "red";
-				textarea.style.backgroundColor = "#F7E8F3";
-				return;
-			} else {
-				new_feature.getGeometry().transform(projection_geodetic, projection_mercator);
-				new_feature.setId(id);
-				features.push(new_feature);
-			}
-		},
-		removeWKT: async function () {
+		// 	var new_feature;
+		// 	wkt_string = wkt || textarea.value;
+		// 	if (wkt_string == "") {
+		// 		textarea.style.borderColor = "red";
+		// 		textarea.style.backgroundColor = "#F7E8F3";
+		// 		return;
+		// 	} else {
+		// 		try {
+		// 			new_feature = format.readFeature(wkt_string);
+		// 		} catch (err) {
+		// 		}
+		// 	}
+		// 	if (!new_feature) {
+		// 		textarea.style.borderColor = "red";
+		// 		textarea.style.backgroundColor = "#F7E8F3";
+		// 		return;
+		// 	} else {
+		// 		new_feature.getGeometry().transform(projection_geodetic, projection_mercator);
+		// 		new_feature.setId(id);
+		// 		features.push(new_feature);
+		// 	}
+		// },
+		// removeWKT: async function () {
 
-			if (select.getFeatures().item.length > 0) {
+		// 	// if (select.getFeatures().item.length > 0) {
 
-				var current = select.getFeatures().item(0);
+		// 	// 	var current = select.getFeatures().item(0);
 
-				LS_WKTs.remove(current.getId());
+		// 	// 	LS_WKTs.remove(current.getId());
 
-				await app.loadWKTs(false);
-			}
-		},
-		addWKT: function () {
+		// 	// 	await app.loadWKTs(false);
+		// 	// }
+		// },
+		// addWKT: function () {
 
-			console.log("addWKT");
+		// 	console.log("addWKT");
 
-			//map.removeInteraction(select);
-			//map.addInteraction(draw);
-			textarea.value = "";
-		},
-		copyWKT: async function () {
+		// 	//map.removeInteraction(select);
+		// 	//map.addInteraction(draw);
+		// 	textarea.value = "";
+		// },
+		// copyWKT: async function () {
 
-			textarea.select();
-			document.execCommand("copy");
-			textarea.blur();
+		// 	textarea.select();
+		// 	document.execCommand("copy");
+		// 	textarea.blur();
 
-			//deselectFeature();
+		// 	//deselectFeature();
 
-			app.restoreDefaultColors();
-		},
+		// 	app.restoreDefaultColors();
+		// },
 		clipboardWKT: async function () {
 
 			var returnVal = "";
@@ -463,7 +463,6 @@ var app = (function () {
 			return returnVal;
 		},
 		pasteWKT: async function (ele) {
-
 			await LS_WKTs.add(ele.value).then(async function (result) {
 				await this.loadWKTs();
 			});
@@ -472,61 +471,61 @@ var app = (function () {
 
 			var self = this;
 
-			await self.resetFeatures().then(async function () {
-				LS_WKTs.load();
+			// await self.resetFeatures().then(async function () {
+			LS_WKTs.load();
 
-				var wkts = current_wkts;
+			var wkts = current_wkts;
 
-				textarea.focus();
+			textarea.focus();
 
-				var wkt = "";
-				if (readcb)
-					wkt = await self.clipboardWKT();
+			var wkt = "";
+			if (readcb)
+				wkt = await self.clipboardWKT();
 
-				await generateChecksum(wkt).then(async function (checksum) {
-					if (wkts == null || wkts == undefined)
-						wkts = [];
+			await generateChecksum(wkt).then(async function (checksum) {
+				if (wkts == null || wkts == undefined)
+					wkts = [];
 
-					var exists = false;
-					var idx = 0;
+				var exists = false;
+				var idx = 0;
 
-					if (wkts.length > 0) {
-						wkts.forEach(item => {
-							idx = idx + 1;
-							if (checksum !== "" && item.id === checksum)
-								exists = true;
-							self.plotWKT(item.id, item.wkt);
-						});
-					}
-
-					if (wkt != "" && !exists) {
+				if (wkts.length > 0) {
+					wkts.forEach(item => {
 						idx = idx + 1;
-						self.plotWKT(checksum, wkt);
-						wkts.push({ id: checksum, wkt: wkt });
-					}
-
-					current_wkts = wkts;
-
-					LS_WKTs.save()
-
-					await self.addFeatures().then(async function () {
-
-						if (features.getArray().length > 0)
-							main.classList.remove("nowkt");
-						else
-							main.classList.add("nowkt");
-
-						await centerMap().then(function () {
-							var multi = featuresToMultiPolygon();
-							var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
-							textarea.value = format.writeGeometry(geo);
-
-							map.updateSize();
-						});
-
+						if (checksum !== "" && item.id === checksum)
+							exists = true;
+						self.plotWKT(item.id, item.wkt);
 					});
-				});
+				}
+
+				if (wkt != "" && !exists) {
+					idx = idx + 1;
+					self.plotWKT(checksum, wkt);
+					wkts.push({ id: checksum, wkt: wkt });
+				}
+
+				current_wkts = wkts;
+
+				LS_WKTs.save()
+
+				// await self.addFeatures().then(async function () {
+
+				// 	if (features.getArray().length > 0)
+				// 		main.classList.remove("nowkt");
+				// 	else
+				// 		main.classList.add("nowkt");
+
+				// 	await centerMap().then(function () {
+				// 		var multi = featuresToMultiPolygon();
+				// 		var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+				// 		textarea.value = format.writeGeometry(geo);
+
+				// 		map.updateSize();
+				// 	});
+
+				// });
 			});
+			// });
 		},
 		prepareObjets: function () {
 
@@ -535,10 +534,24 @@ var app = (function () {
 			main = document.querySelector(".maincontainer");
 			textarea = document.querySelector("#wktdefault textarea");
 
-			this.createVector();
 			raster = new ol.layer.Tile({
 				source: new ol.source.OSM()
 			});
+
+			var vector = new ol.layer.Vector({
+				source: new ol.source.Vector(),
+				style: function (f) {
+					return new ol.style.Style({
+						image: new ol.style.Circle({
+							radius: 5,
+							stroke: new ol.style.Stroke({ width: 1.5, color: f.get('color') || [255, 128, 0] }),
+							fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
+						}),
+						stroke: new ol.style.Stroke({ width: 2.5, color: f.get('color') || [255, 128, 0] }),
+						fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
+					})
+				}
+			})
 
 			// select = new ol.interaction.Select({
 			// 	style: styles(editColor),
