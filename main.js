@@ -662,9 +662,12 @@ var app = (function () {
 				source: vector.getSource(),
 				edition: true,
 				interactions: {
-					// 	// Select: true,
+					DrawPoint: false,
+					DrawLine: false,
 					DrawPolygon: true,
-					// 	// Modify: true,
+					DrawHole: false,
+					DrawRegular: false,
+					Transform: false,
 					Info: false,
 					Split: false,
 					Offset: false
