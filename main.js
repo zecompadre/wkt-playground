@@ -629,7 +629,7 @@ var app = (function () {
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
-					projection: new OpenLayers.Projection('EPSG:4326'),
+					projection: projection,
 					center: defaultCenter,
 					zoom: 6
 				})
