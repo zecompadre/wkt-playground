@@ -350,6 +350,7 @@ var app = (function () {
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
+				projection: map.displayProjection,
 				style: styles(normalColor)
 			});
 		},
@@ -374,6 +375,7 @@ var app = (function () {
 			map.removeLayer(vector);
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
+				projection: map.displayProjection,
 				style: styles(normalColor)
 			});
 			map.addLayer(vector);
