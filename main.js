@@ -640,15 +640,15 @@ var app = (function () {
 			// Editbar
 			var editbar = new ol.control.EditBar({
 				source: vector.getSource(),
-				edition: false,
-				// interactions: {
-				// 	// Select: true,
-				// 	DrawPolygon: true,
-				// 	// Modify: true,
-				// 	Info: false,
-				// 	Split: false,
-				// 	Offset: false
-				// }
+				edition: true,
+				interactions: {
+					// 	// Select: true,
+					DrawPolygon: true,
+					// 	// Modify: true,
+					Info: false,
+					Split: false,
+					Offset: false
+				}
 			});
 			mainbar.addControl(editbar);
 
