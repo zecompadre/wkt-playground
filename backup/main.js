@@ -326,11 +326,11 @@ function createVector() {
 }
 
 function toEPSG4326(element, index, array) {
-	element = element.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+	element = element.getGeometry().transform(projection_mercator, projection_geodetic);
 }
 
 function toEPSG3857(element, index, array) {
-	element = element.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+	element = element.getGeometry().transform(projection_geodetic, projection_mercator);
 }
 
 function copyWKT() {

@@ -22,12 +22,13 @@ var app = (function () {
 	var editColor = '#ec7063';
 	var snapColor = '#34495e';
 
-	var projection = 'EPSG:4326'; //new ol.proj.Projection('EPSG:4326');
+	var projection_geodetic = 'EPSG:4326';
+	var projection_mercator = 'EPSG:3857';
 
 	var latitude = 39.6945;
 	var longitude = -8.1234;
 
-	var defaultCenter = [longitude, latitude];/*  ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'); */
+	var defaultCenter = ol.proj.transform([longitude, latitude], projection_geodetic, projection_mercator);
 
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
@@ -38,7 +39,7 @@ var app = (function () {
 		let extent = geometry.getExtent(); // Returns [minX, minY, maxX, maxY]
 		let center = ol.extent.getCenter(extent); // Calculate the center
 
-		//var defaultCenter = ol.proj.transform(center, 'EPSG:3857', 'EPSG:4326');
+		//var defaultCenter = ol.proj.transform(center, projection_mercator, projection_geodetic);
 
 		console.log('Center coordinates:', center);
 
@@ -187,9 +188,9 @@ var app = (function () {
 		},
 		set: function (feature) {
 			app.restoreDefaultColors();
-			//var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			//var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
 			textarea.value = format.writeGeometry(geo);
-			//var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+			//var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
 		}
 	};
 
@@ -357,10 +358,10 @@ var app = (function () {
 			});
 		},
 		toEPSG4326: function (element, index, array) {
-			element = element.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			element = element.getGeometry().transform(projection_mercator, projection_geodetic);
 		},
 		toEPSG3857: function (element, index, array) {
-			element = element.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+			element = element.getGeometry().transform(projection_geodetic, projection_mercator);
 		},
 		selectGeom: function (shape) {
 			current_shape = shape;
@@ -406,7 +407,7 @@ var app = (function () {
 				textarea.style.backgroundColor = "#F7E8F3";
 				return;
 			} else {
-				//new_feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+				new_feature.getGeometry().transform(projection_geodetic, projection_mercator);
 				new_feature.setId(id);
 				features.push(new_feature);
 			}
@@ -519,8 +520,8 @@ var app = (function () {
 
 						await centerMap().then(function () {
 							var multi = featuresToMultiPolygon();
-							//var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-							textarea.value = format.writeGeometry(multi.getGeometry());
+							var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+							textarea.value = format.writeGeometry(geo);
 
 							map.updateSize();
 						});
@@ -552,14 +553,14 @@ var app = (function () {
 			// 		evt.deselected.forEach(function (feature) {
 
 			// 			self.restoreDefaultColors();
-			// 			var geo = feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			// 			var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
 			// 			textarea.value = format.writeGeometry(geo);
-			// 			var geo = feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+			// 			var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
 
 			// 			LS_WKTs.update(feature.getId(), textarea.value);
 
 			// 			var multi = featuresToMultiPolygon();
-			// 			var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			// 			var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
 			// 			textarea.value = format.writeGeometry(geo);
 			// 		});
 
@@ -611,7 +612,7 @@ var app = (function () {
 
 			// draw.on('drawend', async function (evt) {
 
-			// 	var geo = evt.feature.getGeometry().transform('EPSG:3857', 'EPSG:4326');
+			// 	var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
 			// 	var wkt = format.writeGeometry(geo);
 
 			// 	await LS_WKTs.add(wkt).then(async function (result) {
@@ -629,7 +630,6 @@ var app = (function () {
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
-					projection: projection,
 					center: defaultCenter,
 					zoom: 6
 				})
@@ -737,7 +737,7 @@ var app = (function () {
 			getLocation().then(location => {
 				console.log("location", location);
 
-				defaultCenter = [location.longitude, location.latitude]; /* ol.proj.transform([location.longitude, location.latitude], 'EPSG:4326', 'EPSG:3857'); */
+				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projection_geodetic, projection_mercator); */
 
 				self.prepareObjets();
 

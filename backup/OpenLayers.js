@@ -3025,7 +3025,7 @@ OpenLayers.Geometry.Curve = OpenLayers.Class(OpenLayers.Geometry.MultiPoint, {
 	getGeodesicLength: function (projection) {
 		var geom = this;
 		if (projection) {
-			var gg = new OpenLayers.Projection("EPSG:4326");
+			var gg = new OpenLayers.Projection("projection_geodetic");
 			if (!gg.equals(projection)) {
 				geom = this.clone().transform(projection, gg);
 			}
@@ -3503,7 +3503,7 @@ OpenLayers.Geometry.LineString.geodesic = function (interpolate, transform, squa
 	return new OpenLayers.Geometry.LineString(components);
 };
 OpenLayers.Geometry.LineString.geodesicMeridian = function (lon, lat1, lat2, projection, squaredTolerance) {
-	var epsg4326Projection = new OpenLayers.Projection('EPSG:4326');
+	var epsg4326Projection = new OpenLayers.Projection(projection_geodetic);
 	return OpenLayers.Geometry.LineString.geodesic(function (frac) {
 		return new OpenLayers.Geometry.Point(lon, lat1 + ((lat2 - lat1) * frac));
 	}, function (point) {
@@ -3511,7 +3511,7 @@ OpenLayers.Geometry.LineString.geodesicMeridian = function (lon, lat1, lat2, pro
 	}, squaredTolerance);
 };
 OpenLayers.Geometry.LineString.geodesicParallel = function (lat, lon1, lon2, projection, squaredTolerance) {
-	var epsg4326Projection = new OpenLayers.Projection('EPSG:4326');
+	var epsg4326Projection = new OpenLayers.Projection(projection_geodetic);
 	return OpenLayers.Geometry.LineString.geodesic(function (frac) {
 		return new OpenLayers.Geometry.Point(lon1 + ((lon2 - lon1) * frac), lat);
 	}, function (point) {
@@ -3616,7 +3616,7 @@ OpenLayers.Geometry.LinearRing = OpenLayers.Class(OpenLayers.Geometry.LineString
 	getGeodesicArea: function (projection) {
 		var ring = this;
 		if (projection) {
-			var gg = new OpenLayers.Projection("EPSG:4326");
+			var gg = new OpenLayers.Projection("projection_geodetic");
 			if (!gg.equals(projection)) {
 				ring = this.clone().transform(projection, gg);
 			}
@@ -4752,7 +4752,7 @@ OpenLayers.Projection = OpenLayers.Class({
 });
 OpenLayers.Projection.transforms = {};
 OpenLayers.Projection.defaults = {
-	"EPSG:4326": {
+	"projection_geodetic": {
 		units: "degrees",
 		maxExtent: [-180, -90, 180, 90],
 		worldExtent: [-180, -90, 180, 90],
@@ -4836,8 +4836,8 @@ OpenLayers.Projection.nullTransform = function (point) {
 			}
 		}
 	}
-	var mercator = ["EPSG:900913", "EPSG:3857", "EPSG:102113", "EPSG:102100", "OSGEO:41001"],
-		geographic = ["CRS:84", "urn:ogc:def:crs:EPSG:6.6:4326", "EPSG:4326"],
+	var mercator = ["EPSG:900913", "projection_mercator", "EPSG:102113", "EPSG:102100", "OSGEO:41001"],
+		geographic = ["CRS:84", "urn:ogc:def:crs:EPSG:6.6:4326", "projection_geodetic"],
 		i;
 	for (i = mercator.length - 1; i >= 0; --i) {
 		map(mercator[i], geographic);
@@ -4876,7 +4876,7 @@ OpenLayers.Format.KML = OpenLayers.Class(OpenLayers.Format.XML, {
 			kmlIconPalette: (/root:\/\/icons\/palette-(\d+)(\.\w+)/),
 			straightBracket: (/\$\[(.*?)\]/g)
 		};
-		this.externalProjection = new OpenLayers.Projection("EPSG:4326");
+		this.externalProjection = new OpenLayers.Projection("projection_geodetic");
 		OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
 	},
 	read: function (data) {
@@ -10470,7 +10470,7 @@ OpenLayers.Map = OpenLayers.Class({
 	panRatio: 1.5,
 	options: null,
 	tileSize: null,
-	projection: "EPSG:4326",
+	projection: "projection_geodetic",
 	units: null,
 	resolutions: null,
 	maxResolution: null,
@@ -11562,7 +11562,7 @@ OpenLayers.Map = OpenLayers.Class({
 		var right = lonlat.add(res / 2, 0);
 		var bottom = lonlat.add(0, -res / 2);
 		var top = lonlat.add(0, res / 2);
-		var dest = new OpenLayers.Projection("EPSG:4326");
+		var dest = new OpenLayers.Projection("projection_geodetic");
 		var source = this.getProjectionObject() || dest;
 		if (!source.equals(dest)) {
 			left.transform(source, dest);
@@ -13038,7 +13038,7 @@ OpenLayers.Layer.SphericalMercator = {
 		this.projection = this.projection || "EPSG:900913";
 	},
 	forwardMercator: (function () {
-		var gg = new OpenLayers.Projection("EPSG:4326");
+		var gg = new OpenLayers.Projection("projection_geodetic");
 		var sm = new OpenLayers.Projection("EPSG:900913");
 		return function (lon, lat) {
 			var point = OpenLayers.Projection.transform({
@@ -13049,7 +13049,7 @@ OpenLayers.Layer.SphericalMercator = {
 		};
 	})(),
 	inverseMercator: (function () {
-		var gg = new OpenLayers.Projection("EPSG:4326");
+		var gg = new OpenLayers.Projection("projection_geodetic");
 		var sm = new OpenLayers.Projection("EPSG:900913");
 		return function (x, y) {
 			var point = OpenLayers.Projection.transform({
@@ -17752,7 +17752,7 @@ OpenLayers.Format.GPX = OpenLayers.Class(OpenLayers.Format.XML, {
 	schemaLocation: "https://web.archive.org/web/20200317040326/http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd",
 	creator: "OpenLayers",
 	initialize: function (options) {
-		this.externalProjection = new OpenLayers.Projection("EPSG:4326");
+		this.externalProjection = new OpenLayers.Projection("projection_geodetic");
 		OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
 	},
 	read: function (doc) {
@@ -19050,7 +19050,7 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
 			area[layer_defaults.areaTags[i]] = true;
 		}
 		layer_defaults.areaTags = area;
-		this.externalProjection = new OpenLayers.Projection("EPSG:4326");
+		this.externalProjection = new OpenLayers.Projection("projection_geodetic");
 		OpenLayers.Format.XML.prototype.initialize.apply(this, [layer_defaults]);
 	},
 	read: function (doc) {
@@ -20224,7 +20224,7 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 			return;
 		}
 		var res = metadata.resourceSets[0].resources[0];
-		var extent = this.map.getExtent().transform(this.map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+		var extent = this.map.getExtent().transform(this.map.getProjectionObject(), new OpenLayers.Projection("projection_geodetic"));
 		var providers = res.imageryProviders || [],
 			zoom = OpenLayers.Util.indexOf(this.serverResolutions, this.getServerResolution()),
 			copyrights = "",
@@ -23635,7 +23635,7 @@ OpenLayers.Format.WMSCapabilities.v1_1_0 = OpenLayers.Class(OpenLayers.Format.WM
 });
 OpenLayers.Protocol.WFS.v1 = OpenLayers.Class(OpenLayers.Protocol, {
 	version: null,
-	srsName: "EPSG:4326",
+	srsName: "projection_geodetic",
 	featureType: null,
 	featureNS: null,
 	geometryName: "the_geom",
@@ -33276,7 +33276,7 @@ OpenLayers.Format.WMTSCapabilities = OpenLayers.Class(OpenLayers.Format.XML.Vers
 			}
 		}
 		var projection = config.projection || matrixSet.supportedCRS.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, "$1:$3");
-		var units = config.units || (projection === ("EPSG:4326" || "OGC:CRS84") ? "degrees" : "m");
+		var units = config.units || (projection === ("projection_geodetic" || "OGC:CRS84") ? "degrees" : "m");
 		var resolutions = [],
 			minScaleDenominator, maxScaleDenominator, reducedMatrixIds = [],
 			tileMatrixSetLink, tileMatrixSetLinks = layerDef.tileMatrixSetLinks;
@@ -36893,7 +36893,7 @@ OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
 		return OpenLayers.Control.prototype.deactivate.apply(this, arguments);
 	},
 	geolocate: function (position) {
-		var center = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude).transform(new OpenLayers.Projection("EPSG:4326"), this.map.getProjectionObject());
+		var center = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude).transform(new OpenLayers.Projection("projection_geodetic"), this.map.getProjectionObject());
 		if (this.bind) {
 			this.map.setCenter(center);
 		}
@@ -40097,7 +40097,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
 			labelXOffset: "${xOffset}",
 			labelYOffset: "${yOffset}"
 		};
-		this.epsg4326Projection = new OpenLayers.Projection('EPSG:4326');
+		this.epsg4326Projection = new OpenLayers.Projection(projection_geodetic);
 		this.parallels = [];
 		this.meridians = [];
 	},
