@@ -737,7 +737,7 @@ var app = (function () {
 			getLocation().then(location => {
 				console.log("location", location);
 
-				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projection_geodetic, projection_mercator); */
+				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projection_geodetic, projection_mercator);
 
 				self.prepareObjets();
 
