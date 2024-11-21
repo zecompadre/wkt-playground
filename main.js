@@ -264,58 +264,6 @@ var app = (function () {
 		}
 	}
 
-	/* class EditorControl extends ol.control.Control {
-		constructor(opt_options) {
-			const options = opt_options || {};
-
-			const buttonClear = document.createElement('button');
-			buttonClear.innerHTML = '<i class="fa-solid fa-trash fa-sm"></i>';
-			buttonClear.classList.add('btn', 'btn-danger');
-
-			const buttonCopy = document.createElement('button');
-			buttonCopy.innerHTML = '<i class="fa-regular fa-clipboard fa-sm"></i>';
-			buttonCopy.classList.add('btn', 'btn-warning');
-
-			const buttonPlot = document.createElement('button');
-			buttonPlot.innerHTML = '<i class="fa-solid fa-plus fa-sm"></i>';
-			buttonPlot.classList.add('btn', 'btn-primary');
-
-			const element = document.createElement('div');
-			element.className = 'ol-top-right ol-unselectable ol-control';
-			element.appendChild(buttonClear);
-			element.appendChild(buttonCopy);
-			element.appendChild(buttonPlot);
-
-			super({
-				element: element,
-				target: options.target,
-			});
-
-			buttonClear.addEventListener('click', app.removeWKT.bind(this), false);
-			buttonCopy.addEventListener('click', app.copyWKT.bind(this), false);
-			buttonPlot.addEventListener('click', app.addWKT.bind(this), false);
-
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "none";
-			buttons[1].style.display = "none";
-			buttons[2].style.display = "";
-		}
-
-		hide() {
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "none";
-			buttons[1].style.display = "none";
-			buttons[2].style.display = "";
-		}
-
-		show() {
-			var buttons = this.element.querySelectorAll("button");
-			buttons[0].style.display = "";
-			buttons[1].style.display = "";
-			buttons[2].style.display = "none";
-		}
-	} */
-
 	function styles(color) {
 		return [
 			new ol.style.Style({
@@ -353,17 +301,7 @@ var app = (function () {
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				style: function (f) {
-					return new ol.style.Style({
-						image: new ol.style.Circle({
-							radius: 5,
-							stroke: new ol.style.Stroke({ width: 1.5, color: f.get('color') || [255, 128, 0] }),
-							fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
-						}),
-						stroke: new ol.style.Stroke({ width: 2.5, color: f.get('color') || [255, 128, 0] }),
-						fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
-					})
-				}
+				style: styles(normalColor)
 			})
 		},
 		toEPSG4326: function (element, index, array) {
@@ -623,11 +561,6 @@ var app = (function () {
 				}
 			});
 
-			// draw = new ol.interaction.Draw({
-			// 	features: features,
-			// 	type: /** @type {ol.geom.GeometryType} */ shape
-			// });
-
 			// draw.on('drawend', async function (evt) {
 
 			// 	var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
@@ -683,28 +616,6 @@ var app = (function () {
 			var bar = new ol.control.Bar({
 				group: true,
 				controls: [
-					// new ol.control.Button({
-					// 	html: '<i class="fa-solid fa-plus"></i>',
-					// 	title: 'Add...',
-					// 	handleClick: function () {
-					// 		console.log(this)
-					// 		app.addWKT(this)
-					// 	}
-					// }),
-					// new ol.control.Button({
-					// 	html: '<i class="fa-regular fa-clipboard"></i>',
-					// 	title: 'Copy...',
-					// 	handleClick: function () {
-					// 		app.copyWKT(this)
-					// 	}
-					// }),
-					// new ol.control.Button({
-					// 	html: '<i class="fa-solid fa-trash"></i>',
-					// 	title: 'Remove...',
-					// 	handleClick: function () {
-					// 		app.removeWKT(this)
-					// 	}
-					// }),
 					new ol.control.Button({
 						html: '<i class="fa-solid fa-rotate-left"></i>',
 						title: 'Undo...',
@@ -739,17 +650,9 @@ var app = (function () {
 					vector.changed();
 				}
 			);
-
-			/* 			document.addEventListener('keydown', function (evt) {
-							switch (evt.key) {
-								case 'Escape':
-									map.removeInteraction(draw);
-									break;
-								case 'Delete':
-									app.removeWKT();
-									break;
-							}
-						}, false); */
+			map.addInteraction(new ol.interaction.Snap({
+				source: vector.getSource()
+			}));
 		},
 
 		init: function () {
