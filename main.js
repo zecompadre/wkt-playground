@@ -289,15 +289,6 @@ var app = (function () {
 	}
 
 	return {
-		// addInteraction: function (shape) {
-		// 	draw = new ol.interaction.Draw({
-		// 		features: features,
-		// 		type: /** @type {ol.geom.GeometryType} */ shape
-		// 	});
-		// 	map.addInteraction(draw);
-		// 	snap = new Snap({ sfeatures: features });
-		// 	map.addInteraction(snap);
-		// },
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
@@ -310,13 +301,6 @@ var app = (function () {
 		toEPSG3857: function (element, index, array) {
 			element = element.getGeometry().transform(projection_geodetic, projection_mercator);
 		},
-		// selectGeom: function (shape) {
-		// 	current_shape = shape;
-		// 	map.removeInteraction(draw);
-		// 	this.addInteraction(shape);
-		// 	console.log(shape);
-
-		// },
 		restoreDefaultColors: function () {
 			textarea.style.borderColor = "";
 			textarea.style.backgroundColor = "";
@@ -653,6 +637,9 @@ var app = (function () {
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
 			}));
+
+			console.log(editbar.getInteraction("DrawPolygon"));
+
 		},
 
 		init: function () {
