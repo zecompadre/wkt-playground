@@ -22,7 +22,7 @@ var app = (function () {
 	var editColor = '#ec7063';
 	var snapColor = '#34495e';
 
-	var projection = new ol.proj.Projection('EPSG:4326');
+	var projection = 'EPSG:4326'; //new ol.proj.Projection('EPSG:4326');
 
 	var latitude = 39.6945;
 	var longitude = -8.1234;
