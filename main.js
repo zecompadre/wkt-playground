@@ -628,7 +628,6 @@ var app = (function () {
 				target: 'map',
 				view: new ol.View({
 					projection: new OpenLayers.Projection('EPSG:4326'),
-					displayProjection: new OpenLayers.Projection("EPSG: 4326"),
 					center: defaultCenter,
 					zoom: 6
 				})
