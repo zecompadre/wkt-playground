@@ -467,20 +467,7 @@ var app = (function () {
 				source: new ol.source.OSM()
 			});
 
-			vector = new ol.layer.Vector({
-				source: new ol.source.Vector(),
-				style: function (f) {
-					return new ol.style.Style({
-						image: new ol.style.Circle({
-							radius: 5,
-							stroke: new ol.style.Stroke({ width: 1.5, color: f.get('color') || [255, 128, 0] }),
-							fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
-						}),
-						stroke: new ol.style.Stroke({ width: 2.5, color: f.get('color') || [255, 128, 0] }),
-						fill: new ol.style.Fill({ color: (f.get('color') || [255, 128, 0]).concat([.3]) })
-					})
-				}
-			})
+			this.createVector();
 
 			// select = new ol.interaction.Select({
 			// 	style: styles(editColor),
@@ -638,7 +625,21 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
-			console.log(editbar.getInteraction("DrawPolygon"));
+			draw = editbar.getInteraction("DrawPolygon");
+			draw.on('drawend', async function (evt) {
+
+				var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
+				var wkt = format.writeGeometry(geo);
+
+				await LS_WKTs.add(wkt).then(async function (result) {
+					await app.loadWKTs(false).then(function () {
+						// map.removeInteraction(draw);
+						// map.addInteraction(select);
+						//centerOnFeature(evt.feature);
+						//imageCanvas(evt.feature);
+					});
+				});
+			});
 
 		},
 
