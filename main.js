@@ -514,13 +514,11 @@ var app = (function () {
 							main.classList.add("nowkt");
 
 						await centerMap().then(function () {
-							map.updateSize();
 							var multi = featuresToMultiPolygon();
-
-							console.log("multi", multi);
-
 							//var geo = multi.getGeometry().transform('EPSG:3857', 'EPSG:4326');
-							//textarea.value = format.writeGeometry(geo);
+							textarea.value = format.writeGeometry(multi.getGeometry());
+
+							map.updateSize();
 						});
 
 					});
@@ -627,7 +625,8 @@ var app = (function () {
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
-					projection: 'EPSG:4326',
+					projection: new OpenLayers.Projection('EPSG:4326'),
+					displayProjection: new OpenLayers.Projection("EPSG: 4326"),
 					center: defaultCenter,
 					zoom: 6
 				})
