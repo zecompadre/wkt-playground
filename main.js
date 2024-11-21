@@ -22,6 +22,8 @@ var app = (function () {
 	var editColor = '#ec7063';
 	var snapColor = '#34495e';
 
+	var projection = new OpenLayers.Projection('EPSG:4326');
+
 	var latitude = 39.6945;
 	var longitude = -8.1234;
 
@@ -350,7 +352,7 @@ var app = (function () {
 		createVector: function () {
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				projection: map.getView().getProjection(),
+				projection: projection,
 				style: styles(normalColor)
 			});
 		},
@@ -375,7 +377,7 @@ var app = (function () {
 			map.removeLayer(vector);
 			vector = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: features }),
-				projection: map.getView().getProjection(),
+				projection: projection,
 				style: styles(normalColor)
 			});
 			map.addLayer(vector);
