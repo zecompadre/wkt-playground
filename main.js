@@ -642,7 +642,7 @@ var app = (function () {
 			});
 
 			select = editbar.getInteraction("Select");
-			console.log("select", select);
+			select.style_ = styles(editColor);
 
 		},
 
