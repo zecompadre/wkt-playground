@@ -18,8 +18,6 @@ var app = (function () {
 
 	var lfkey = "zecompadre-wkt";
 
-	var teste = 1;
-
 	var normalColor = '#141414'; //'#005baa';
 	var editColor = '#ec7063';
 	var snapColor = '#34495e';
