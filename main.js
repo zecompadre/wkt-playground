@@ -641,6 +641,9 @@ var app = (function () {
 				});
 			});
 
+			select = editbar.getInteraction("Select");
+			select.setStyle(styles(editColor));
+
 		},
 
 		init: function () {
