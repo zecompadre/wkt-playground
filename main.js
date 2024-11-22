@@ -661,7 +661,6 @@ var app = (function () {
 
 			getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
-					// Fallback option: use geolocation API as a last resort
 					navigator.geolocation.getCurrentPosition(position => {
 						latitude = position.coords.latitude;
 						longitude = position.coords.longitude;
