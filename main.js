@@ -651,23 +651,23 @@ var app = (function () {
 
 				console.log("select", evt);
 
-				// if (evt.deselected.length > 0) {
+				if (evt.deselected.length > 0) {
 
-				// 	evt.deselected.forEach(function (feature) {
+					evt.deselected.forEach(function (feature) {
 
-				// 		self.restoreDefaultColors();
-				// 		var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
-				// 		textarea.value = format.writeGeometry(geo);
-				// 		var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+						var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
+						textarea.value = format.writeGeometry(geo);
+						var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+						// 		self.restoreDefaultColors();
 
-				// 		LS_WKTs.update(feature.getId(), textarea.value);
+						// 		LS_WKTs.update(feature.getId(), textarea.value);
 
-				// 		var multi = featuresToMultiPolygon();
-				// 		var geo = multi.getGeometry().transform(projection_geodetic, projection_mercator);
-				// 		textarea.value = format.writeGeometry(geo);
+						// 		var multi = featuresToMultiPolygon();
+						// 		var geo = multi.getGeometry().transform(projection_geodetic, projection_mercator);
+						// 		textarea.value = format.writeGeometry(geo);
 
-				// 	});
-				// }
+					});
+				}
 
 				// if (evt.selected.length > 0) {
 
