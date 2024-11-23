@@ -652,6 +652,9 @@ var app = (function () {
 			select.style_ = styles(editColor);
 
 			select.on('select', function (evt) {
+
+				console.log("select", evt);
+
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
 					evt.deselected.forEach(function (feature) {
