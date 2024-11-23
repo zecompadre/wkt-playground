@@ -583,6 +583,8 @@ var app = (function () {
 			});
 			mainbar.addControl(editbar);
 
+			console.log("editbar", editbar);
+
 			// Undo redo interaction
 			var undoInteraction = new ol.interaction.UndoRedo();
 			map.addInteraction(undoInteraction);
@@ -630,20 +632,14 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
-			draw = editbar.getInteraction("DrawPolygon");
-			draw.on('drawend', async function (evt) {
-
+			draw = editbar.getInteraction("DrawPolygon").on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
-
 				await LS_WKTs.add(wkt).then(function (result) {
 					centerOnFeature(evt.feature);
 				});
 			});
 
-			remove = editbar.getInteraction("Delete");
-
-			remove.on('deletestart', function (evt) {
-
+			remove = editbar.getInteraction("Delete").on('deletestart', function (evt) {
 				console.log("deletestart", evt);
 				if (evt.features.getArray().length > 0) {
 					evt.features.getArray().forEach(function (feature) {
@@ -651,13 +647,9 @@ var app = (function () {
 						LS_WKTs.remove(feature.getId());
 					});
 				}
-
 			});
 
-			select = editbar.getInteraction("Select");
-			select.style_ = styles(editColor);
-
-			select.on('select', function (evt) {
+			select = editbar.getInteraction("Select").on('select', function (evt) {
 
 				console.log("select", evt);
 
@@ -675,6 +667,7 @@ var app = (function () {
 					});
 				}
 			});
+			select.style_ = styles(editColor);
 
 		},
 
