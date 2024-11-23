@@ -34,9 +34,17 @@ var app = (function () {
 	var textarea = document.querySelector("#wktdefault textarea");
 
 	function getFeatureWKT(feature) {
-		var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+
+		const clonedGeometry = feature.getGeometry().clone();
+
+		// Criar uma nova feature com a geometria clonada
+		const clonedFeature = new Feature({
+			geometry: clonedGeometry
+		});
+
+		var geo = clonedFeature.getGeometry().transform(projection_mercator, projection_geodetic);
 		var wkt = format.writeGeometry(geo);
-		var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
+
 		return wkt;
 	}
 
@@ -655,16 +663,8 @@ var app = (function () {
 
 					evt.deselected.forEach(function (feature) {
 
-						var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
-						textarea.value = format.writeGeometry(geo);
-						var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
-						// 		self.restoreDefaultColors();
-
-						// 		LS_WKTs.update(feature.getId(), textarea.value);
-
-						// 		var multi = featuresToMultiPolygon();
-						// 		var geo = multi.getGeometry().transform(projection_geodetic, projection_mercator);
-						// 		textarea.value = format.writeGeometry(geo);
+						textarea.value = getFeatureWKT(feature);
+						LS_WKTs.update(feature.getId(), textarea.value);
 
 					});
 				}
