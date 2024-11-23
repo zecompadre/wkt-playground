@@ -38,7 +38,7 @@ var app = (function () {
 		const clonedGeometry = feature.getGeometry().clone();
 
 		// Criar uma nova feature com a geometria clonada
-		const clonedFeature = new Feature({
+		const clonedFeature = new ol.geom.Feature({
 			geometry: clonedGeometry
 		});
 
