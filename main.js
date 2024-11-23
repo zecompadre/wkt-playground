@@ -645,7 +645,6 @@ var app = (function () {
 			remove.on('deletestart', function (evt) {
 
 				console.log("deletestart", evt);
-
 				if (evt.features.length > 0) {
 					evt.features.forEach(function (feature) {
 						console.log(feature);
