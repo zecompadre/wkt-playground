@@ -646,6 +646,13 @@ var app = (function () {
 
 				console.log("deletestart", evt);
 
+				if (evt.features.length > 0) {
+					evt.features.forEach(function (feature) {
+						console.log(feature);
+						LS_WKTs.remove(feature.getId());
+					});
+				}
+
 			});
 
 			select = editbar.getInteraction("Select");
