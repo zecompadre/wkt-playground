@@ -7,6 +7,7 @@ var app = (function () {
 	var snap;
 	var drag;
 	var select;
+	var remove;
 	var modify;
 	var mousewheelzoom;
 	var features = new ol.Collection();
@@ -196,18 +197,6 @@ var app = (function () {
 		const checksum = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 		return checksum;
 	}
-
-	var CurrentTextarea = {
-		get: function () {
-			return textarea.value;
-		},
-		set: function (feature) {
-			app.restoreDefaultColors();
-			var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
-			textarea.value = format.writeGeometry(geo);
-			var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
-		}
-	};
 
 	function featuresToMultiPolygon() {
 
@@ -636,6 +625,7 @@ var app = (function () {
 					vector.changed();
 				}
 			);
+
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
 			}));
@@ -650,29 +640,31 @@ var app = (function () {
 				});
 			});
 
+			remove = editbar.getInteraction("Delete");
+
 			select = editbar.getInteraction("Select");
 			select.style_ = styles(editColor);
 
 			select.on('select', function (evt) {
-
-				console.log("select", evt);
-
+				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
-
 					evt.deselected.forEach(function (feature) {
-
 						textarea.value = getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
-
 					});
 				}
 
-				// if (evt.selected.length > 0) {
+				if (evt.selected.length > 0) {
+					evt.selected.forEach(function (feature) {
+						textarea.value = getFeatureWKT(feature);
+					});
+				}
+			});
 
-				// 	evt.selected.forEach(function (feature) {
-				// 		CurrentTextarea.set(feature);
-				// 	});
-				// }
+			select.on('deletestart', function (evt) {
+
+				console.log("deletestart", evt);
+
 			});
 
 		},
