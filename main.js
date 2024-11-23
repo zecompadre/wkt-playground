@@ -647,7 +647,7 @@ var app = (function () {
 				console.log("deletestart", evt);
 				if (evt.features.getArray().length > 0) {
 					evt.features.getArray().forEach(function (feature) {
-						console.log(feature);
+						console.log(feature.getId());
 						LS_WKTs.remove(feature.getId());
 					});
 				}
