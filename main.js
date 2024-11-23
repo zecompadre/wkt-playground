@@ -562,84 +562,149 @@ var app = (function () {
 			});
 
 			// Main control bar
-			var mainbar = new ol.control.Bar();
-			map.addControl(mainbar);
+			var mainBar = new ol.control.Bar();
+			map.addControl(mainBar);
 
-			// Editbar
-			var editbar = new ol.control.EditBar({
-				source: vector.getSource(),
-				edition: true,
-				interactions: {
-					DrawPoint: false,
-					DrawLine: false,
-					DrawPolygon: true,
-					DrawHole: false,
-					DrawRegular: false,
-					Transform: false,
-					Info: false,
-					Split: false,
-					Offset: false
-				}
+			// // Editbar
+			// var editbar = new ol.control.EditBar({
+			// 	source: vector.getSource(),
+			// 	edition: true,
+			// 	interactions: {
+			// 		DrawPoint: false,
+			// 		DrawLine: false,
+			// 		DrawPolygon: true,
+			// 		DrawHole: false,
+			// 		DrawRegular: false,
+			// 		Transform: false,
+			// 		Info: false,
+			// 		Split: false,
+			// 		Offset: false
+			// 	}
+			// });
+			// mainbar.addControl(editbar);
+
+			// Main control bar
+			var mainBar = new ol.control.Bar();
+			map.addControl(mainBar);
+
+			// Edit control bar 
+			var editBar = new ol.control.Bar({
+				toggleOne: true,	// one control active at the same time
+				group: false			// group controls together
 			});
-			mainbar.addControl(editbar);
+			mainBar.addControl(editBar);
 
-			console.log("editbar", editbar);
-
-			// Undo redo interaction
-			var undoInteraction = new ol.interaction.UndoRedo();
-			map.addInteraction(undoInteraction);
-
-			// Add buttons to the bar
-			var bar = new ol.control.Bar({
-				group: true,
-				controls: [
-					new ol.control.Button({
-						html: '<i class="fa-solid fa-rotate-left"></i>',
-						title: 'Undo...',
-						handleClick: function () {
-							undoInteraction.undo();
-						}
-					}),
-					new ol.control.Button({
-						html: '<i class="fa-solid fa-rotate-right"></i>',
-						title: 'Redo...',
-						handleClick: function () {
-							undoInteraction.redo();
-						}
-					})
-				]
-			});
-			mainbar.addControl(bar);
-
-			/* undo/redo custom */
-			var style;
-			// Define undo redo for the style
-			undoInteraction.define(
-				'style',
-				// undo function: set previous style
-				function (s) {
-					style = s.before;
-					vector.changed();
-				},
-				// redo function: reset the style
-				function (s) {
-					style = s.after;
-					vector.changed();
+			// Add selection tool:
+			//  1- a toggle control with a select interaction
+			//  2- an option bar to delete / get information on the selected feature
+			var selectBar = new ol.control.Bar();
+			selectBar.addControl(new ol.control.Button({
+				html: '<i class="fa fa-times"></i>',
+				title: "Delete",
+				handleClick: function () {
+					// var features = select.getInteraction().getFeatures();
+					// if (!features.getLength()) info("Select an object first...");
+					// else info(features.getLength() + " object(s) deleted.");
+					// for (var i = 0, f; f = features.item(i); i++) {
+					// 	vector.getSource().removeFeature(f);
+					// }
+					// select.getInteraction().getFeatures().clear();
 				}
-			);
+			}));
+
+			selectBar.addControl(new ol.control.Button({
+				html: '<i class="fa fa-info"></i>',
+				title: "Show informations",
+				handleClick: function () {
+					// switch (selectCtrl.getInteraction().getFeatures().getLength()) {
+					// 	case 0: info("Select an object first...");
+					// 		break;
+					// 	case 1:
+					// 		var f = selectCtrl.getInteraction().getFeatures().item(0);
+					// 		info("Selection is a " + f.getGeometry().getType());
+					// 		break;
+					// 	default:
+					// 		info(selectCtrl.getInteraction().getFeatures().getLength() + " objects seleted.");
+					// 		break;
+					// }
+				}
+			}));
+
+			selectCtrl = new ol.control.Toggle({
+				html: '<i class="fa fa-hand-pointer-o"></i>',
+				title: "Select",
+				interaction: new ol.interaction.Select({ hitTolerance: 2 }),
+				bar: selectBar,
+				autoActivate: true,
+				active: true
+			});
+			editBar.addControl(selectCtrl);
+
+			drawCtrl = new ol.control.Toggle({
+				html: '<i class="fa fa-bookmark-o fa-rotate-270" ></i>',
+				title: 'Polygon',
+				interaction: new ol.interaction.Draw({
+					type: 'Polygon',
+					source: vector.getSource()
+				})
+			});
+			editBar.addControl(drawCtrl);
+
+			// // Undo redo interaction
+			// var undoInteraction = new ol.interaction.UndoRedo();
+			// map.addInteraction(undoInteraction);
+
+			// // Add buttons to the bar
+			// var bar = new ol.control.Bar({
+			// 	group: true,
+			// 	controls: [
+			// 		new ol.control.Button({
+			// 			html: '<i class="fa-solid fa-rotate-left"></i>',
+			// 			title: 'Undo...',
+			// 			handleClick: function () {
+			// 				undoInteraction.undo();
+			// 			}
+			// 		}),
+			// 		new ol.control.Button({
+			// 			html: '<i class="fa-solid fa-rotate-right"></i>',
+			// 			title: 'Redo...',
+			// 			handleClick: function () {
+			// 				undoInteraction.redo();
+			// 			}
+			// 		})
+			// 	]
+			// });
+			// mainbar.addControl(bar);
+
+			// /* undo/redo custom */
+			// var style;
+			// // Define undo redo for the style
+			// undoInteraction.define(
+			// 	'style',
+			// 	// undo function: set previous style
+			// 	function (s) {
+			// 		style = s.before;
+			// 		vector.changed();
+			// 	},
+			// 	// redo function: reset the style
+			// 	function (s) {
+			// 		style = s.after;
+			// 		vector.changed();
+			// 	}
+			// );
 
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
 			}));
 
-			draw = editbar.getInteraction("DrawPolygon").on('drawend', async function (evt) {
+			draw = editBar.getInteraction("DrawPolygon").on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
 				await LS_WKTs.add(wkt).then(function (result) {
 					centerOnFeature(evt.feature);
 				});
 			});
 
-			remove = editbar.getInteraction("Delete").on('deletestart', function (evt) {
+			remove = editBar.getInteraction("Delete").on('deletestart', function (evt) {
 				console.log("deletestart", evt);
 				if (evt.features.getArray().length > 0) {
 					evt.features.getArray().forEach(function (feature) {
@@ -649,7 +714,7 @@ var app = (function () {
 				}
 			});
 
-			select = editbar.getInteraction("Select").on('select', function (evt) {
+			select = editBar.getInteraction("Select").on('select', function (evt) {
 
 				console.log("select", evt);
 
@@ -658,6 +723,10 @@ var app = (function () {
 					evt.deselected.forEach(function (feature) {
 						textarea.value = getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
+
+						var multi = featuresToMultiPolygon();
+						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+						textarea.value = format.writeGeometry(geo);
 					});
 				}
 
