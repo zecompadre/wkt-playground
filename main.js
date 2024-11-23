@@ -44,7 +44,11 @@ var app = (function () {
 
 		console.log("centerOnFeature");
 
-		map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+		map.getView().fit(feature.getGeometry().getExtent(), {
+			size: map.getSize(), // Map size to ensure the geometry fits well
+			padding: [50, 50, 50, 50], // Optional padding around the feature
+			maxZoom: 18, // Optional: limit maximum zoom
+		});
 
 		return;
 
