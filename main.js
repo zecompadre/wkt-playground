@@ -33,6 +33,13 @@ var app = (function () {
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
 
+	function getFeatureWKT(feature) {
+		var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+		var wkt = format.writeGeometry(geo);
+		var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
+		return wkt;
+	}
+
 	function centerOnFeature(feature) {
 
 		console.log("centerOnFeature");
@@ -648,18 +655,10 @@ var app = (function () {
 			draw = editbar.getInteraction("DrawPolygon");
 			draw.on('drawend', async function (evt) {
 
-				console.log('drawend')
+				wkt = getFeatureWKT(evt.feature);
 
-				var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
-				var wkt = format.writeGeometry(geo);
-
-				await LS_WKTs.add(wkt).then(async function (result) {
-					//await app.loadWKTs(false).then(function () {
-					// map.removeInteraction(draw);
-					// map.addInteraction(select);
+				await LS_WKTs.add(wkt).then(function (result) {
 					centerOnFeature(evt.feature);
-					//imageCanvas(evt.feature);
-					//});
 				});
 			});
 
