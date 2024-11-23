@@ -631,7 +631,7 @@ var app = (function () {
 			}));
 
 			selectCtrl = new ol.control.Toggle({
-				html: '<i class="fa fa-hand-pointer-o"></i>',
+				html: '<i class="fa-solid fa-hand-pointer"></i>',
 				title: "Select",
 				interaction: new ol.interaction.Select({ hitTolerance: 2 }),
 				bar: selectBar,
@@ -641,7 +641,7 @@ var app = (function () {
 			editBar.addControl(selectCtrl);
 
 			drawCtrl = new ol.control.Toggle({
-				html: '<i class="fa fa-bookmark-o fa-rotate-270" ></i>',
+				html: '<i class="fa-regular fa-draw-polygon"></i>',
 				title: 'Polygon',
 				interaction: new ol.interaction.Draw({
 					type: 'Polygon',
