@@ -197,9 +197,9 @@ var app = (function () {
 		},
 		set: function (feature) {
 			app.restoreDefaultColors();
-			//var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+			var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
 			textarea.value = format.writeGeometry(geo);
-			//var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
+			var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
 		}
 	};
 
@@ -646,6 +646,34 @@ var app = (function () {
 
 			select = editbar.getInteraction("Select");
 			select.style_ = styles(editColor);
+
+			select.on('select', function (evt) {
+
+				if (evt.deselected.length > 0) {
+
+					evt.deselected.forEach(function (feature) {
+
+						self.restoreDefaultColors();
+						var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
+						textarea.value = format.writeGeometry(geo);
+						var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
+
+						LS_WKTs.update(feature.getId(), textarea.value);
+
+						var multi = featuresToMultiPolygon();
+						var geo = multi.getGeometry().transform(projection_geodetic, projection_mercator);
+						textarea.value = format.writeGeometry(geo);
+
+					});
+				}
+
+				if (evt.selected.length > 0) {
+
+					evt.selected.forEach(function (feature) {
+						CurrentTextarea.set(feature);
+					});
+				}
+			});
 
 		},
 
