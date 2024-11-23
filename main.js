@@ -628,6 +628,8 @@ var app = (function () {
 			draw = editbar.getInteraction("DrawPolygon");
 			draw.on('drawend', async function (evt) {
 
+				console.log('drawend')
+
 				var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
 				var wkt = format.writeGeometry(geo);
 
