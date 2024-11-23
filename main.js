@@ -35,11 +35,9 @@ var app = (function () {
 
 	function getFeatureWKT(feature) {
 
-		const clonedGeometry = feature.getGeometry().clone();
-
 		// Criar uma nova feature com a geometria clonada
-		const clonedFeature = new ol.geom.Feature({
-			geometry: clonedGeometry
+		const clonedFeature = new ol.Feature({
+			geometry: feature.getGeometry().clone()
 		});
 
 		var geo = clonedFeature.getGeometry().transform(projection_mercator, projection_geodetic);
