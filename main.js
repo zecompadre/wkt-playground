@@ -697,24 +697,24 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
-			draw = editBar.getInteraction("DrawPolygon").on('drawend', async function (evt) {
+			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
 				await LS_WKTs.add(wkt).then(function (result) {
 					centerOnFeature(evt.feature);
 				});
 			});
 
-			remove = editBar.getInteraction("Delete").on('deletestart', function (evt) {
-				console.log("deletestart", evt);
-				if (evt.features.getArray().length > 0) {
-					evt.features.getArray().forEach(function (feature) {
-						console.log(feature.getId());
-						LS_WKTs.remove(feature.getId());
-					});
-				}
-			});
+			// remove = editBar.getInteraction().on('deletestart', function (evt) {
+			// 	console.log("deletestart", evt);
+			// 	if (evt.features.getArray().length > 0) {
+			// 		evt.features.getArray().forEach(function (feature) {
+			// 			console.log(feature.getId());
+			// 			LS_WKTs.remove(feature.getId());
+			// 		});
+			// 	}
+			// });
 
-			select = editBar.getInteraction("Select").on('select', function (evt) {
+			select = drawCtrl.getInteraction().on('select', function (evt) {
 
 				console.log("select", evt);
 
@@ -736,7 +736,7 @@ var app = (function () {
 					});
 				}
 			});
-			select.style_ = styles(editColor);
+			// select.style_ = styles(editColor);
 
 		},
 
