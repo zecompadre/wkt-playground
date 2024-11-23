@@ -637,7 +637,7 @@ var app = (function () {
 					await app.loadWKTs(false).then(function () {
 						// map.removeInteraction(draw);
 						// map.addInteraction(select);
-						//centerOnFeature(evt.feature);
+						centerOnFeature(evt.feature);
 						//imageCanvas(evt.feature);
 					});
 				});
