@@ -654,12 +654,12 @@ var app = (function () {
 				var wkt = format.writeGeometry(geo);
 
 				await LS_WKTs.add(wkt).then(async function (result) {
-					await app.loadWKTs(false).then(function () {
-						// map.removeInteraction(draw);
-						// map.addInteraction(select);
-						centerOnFeature(evt.feature);
-						//imageCanvas(evt.feature);
-					});
+					//await app.loadWKTs(false).then(function () {
+					// map.removeInteraction(draw);
+					// map.addInteraction(select);
+					centerOnFeature(evt.feature);
+					//imageCanvas(evt.feature);
+					//});
 				});
 			});
 
