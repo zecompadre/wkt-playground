@@ -642,6 +642,12 @@ var app = (function () {
 
 			remove = editbar.getInteraction("Delete");
 
+			remove.on('deletestart', function (evt) {
+
+				console.log("deletestart", evt);
+
+			});
+
 			select = editbar.getInteraction("Select");
 			select.style_ = styles(editColor);
 
@@ -659,12 +665,6 @@ var app = (function () {
 						textarea.value = getFeatureWKT(feature);
 					});
 				}
-			});
-
-			select.on('deletestart', function (evt) {
-
-				console.log("deletestart", evt);
-
 			});
 
 		},
