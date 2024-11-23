@@ -35,6 +35,12 @@ var app = (function () {
 
 	function centerOnFeature(feature) {
 
+		console.log("centerOnFeature");
+
+		map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+
+		return;
+
 		// Assuming 'map' is your OpenLayers Map instance and 'feature' is the feature to center on
 		const geometry = feature.getGeometry(); // Get the geometry of the feature
 		const view = map.getView(); // Get the current map view
