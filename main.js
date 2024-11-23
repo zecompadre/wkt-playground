@@ -44,33 +44,8 @@ var app = (function () {
 
 		console.log("centerOnFeature");
 
-		map.getView().fit(feature.getGeometry().getExtent(), {
-			size: map.getSize(), // Map size to ensure the geometry fits well
-			padding: [50, 50, 50, 50], // Optional padding around the feature
-			maxZoom: 18, // Optional: limit maximum zoom
-		});
-
-		return;
-
-		// Assuming 'map' is your OpenLayers Map instance and 'feature' is the feature to center on
-		const geometry = feature.getGeometry(); // Get the geometry of the feature
-		const view = map.getView(); // Get the current map view
-
-		// Use the fit method to center and zoom the map around the feature
-		view.fit(geometry.getExtent(), {
-			size: map.getSize(), // Map size to ensure the geometry fits well
-			padding: [50, 50, 50, 50], // Optional padding around the feature
-			maxZoom: 18, // Optional: limit maximum zoom
-		});
-
-		return;
-
-		let geometryx = feature.getGeometry();
-
-		let extent = geometryx.getExtent(); // Returns [minX, minY, maxX, maxY]
+		let extent = feature.getGeometry().getExtent(); // Returns [minX, minY, maxX, maxY]
 		let center = ol.extent.getCenter(extent); // Calculate the center
-
-		//var defaultCenter = ol.proj.transform(center, projection_mercator, projection_geodetic);
 
 		console.log('Center coordinates:', center);
 
@@ -84,7 +59,10 @@ var app = (function () {
 			center: [centerx, centery],
 			zoom: 8
 		}));
-		map.getView().fit(extent, map.getSize());
+		map.getView().fit(extent, {
+			size: map.getSize(), // Map size to ensure the geometry fits well
+			padding: [50, 50, 50, 50], // Optional padding around the feature
+		});
 	}
 
 	function imageCanvas(feature) {
