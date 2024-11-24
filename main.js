@@ -623,7 +623,7 @@ var app = (function () {
 				//selectCtrl.getInteraction().setActive(!drawCtrl.getInteraction().getActive());
 				//modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 
-				const selectedFeatures = select.getFeatures(); // Get the selected features collection
+				const selectedFeatures = selectCtrl.getInteraction().getFeatures(); // Get the selected features collection
 				if (selectedFeatures)
 					selectedFeatures.clear();
 
