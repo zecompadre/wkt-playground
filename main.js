@@ -612,9 +612,9 @@ var app = (function () {
 			// 	}
 			// );
 
-			// map.addInteraction(new ol.interaction.Snap({
-			// 	source: vector.getSource()
-			// }));
+			map.addInteraction(new ol.interaction.Snap({
+				source: vector.getSource()
+			}));
 
 			map.addInteraction(new ol.interaction.DragPan({
 				condition: function (event) {
