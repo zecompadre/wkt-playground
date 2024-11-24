@@ -642,6 +642,10 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
+			//modify.setVisible(selectCtrl.getInteraction().getActive())
+
+			console.log(selectBar);
+
 			modify = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures()
 			})
