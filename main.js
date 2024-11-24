@@ -199,7 +199,7 @@ var app = (function () {
 		return checksum;
 	}
 
-	function featuresToMultiPolygonx() {
+	function featuresToMultiPolygon() {
 		// Get the vector layer from the map
 		var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
 		if (!vectorLayer) {
