@@ -635,7 +635,7 @@ var app = (function () {
 			}));
 
 			selectCtrl = new ol.control.Toggle({
-				html: '<i class="fa-solid fa-hand-pointer"></i>',
+				html: '<i class="fa-solid fa-arrow-pointer"></i>',
 				title: "Select",
 				interaction: new ol.interaction.Select({ hitTolerance: 2 }),
 				bar: selectBar,
@@ -647,12 +647,16 @@ var app = (function () {
 			console.log(selectBar.getControls())
 			console.log(selectBar.getControlsByName("Delete"))
 
-			selectBar.getControlsByName("Delete").setVisible(selectCtrl.getInteraction().getActive())
-			selectBar.getControlsByName("Info").setVisible(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
 				var features = selectCtrl.getInteraction().getFeatures();
-				selectBar.getControlsByName("Delete").setVisible(features.getLength() > 0)
-				selectBar.getControlsByName("Info").setVisible(features.getLength() > 0)
+				if (features.getLength() > 0) {
+					ol_ext_element.show(selectBar.getControlsByName("Delete").element);
+					ol_ext_element.show(selectBar.getControlsByName("Info").element);
+				}
+				else {
+					ol_ext_element.hide(selectBar.getControlsByName("Delete").element);
+					ol_ext_element.hide(selectBar.getControlsByName("Info").element);
+				}
 			}.bind(editBar));
 
 			console.log(selectBar);
@@ -669,7 +673,7 @@ var app = (function () {
 			}.bind(editBar));
 
 			drawCtrl = new ol.control.Toggle({
-				html: '<i class="fa-regular fa-draw-polygon"></i>',
+				html: '<i class="fa-solid fa-draw-polygon"></i>',
 				title: 'Polygon',
 				interaction: new ol.interaction.Draw({
 					type: 'Polygon',
