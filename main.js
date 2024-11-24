@@ -571,6 +571,29 @@ var app = (function () {
 
 			map.addInteraction(modifyInteraction);
 
+			select = selectCtrl.getInteraction().on('select', function (evt) {
+				app.restoreDefaultColors();
+				if (evt.deselected.length > 0) {
+					console.log("deselected")
+					evt.deselected.forEach(function (feature) {
+						textarea.value = utilities.getFeatureWKT(feature);
+						LS_WKTs.update(feature.getId(), textarea.value);
+						var multi = featuresToMultiPolygon();
+						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
+						textarea.value = format.writeGeometry(geo);
+					});
+					selectBar.setVisible(false);
+				}
+
+				if (evt.selected.length > 0) {
+					console.log("selected")
+					evt.selected.forEach(function (feature) {
+						textarea.value = utilities.getFeatureWKT(feature);
+					});
+					selectBar.setVisible(true);
+				}
+			});
+
 			// Activate with select
 			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
@@ -586,6 +609,18 @@ var app = (function () {
 				})
 			});
 			editBar.addControl(drawCtrl);
+
+			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
+				wkt = utilities.getFeatureWKT(evt.feature);
+				await LS_WKTs.add(wkt).then(function (result) {
+					centerOnFeature(evt.feature);
+				});
+			});
+
+			drawCtrl.getInteraction().on('change:active', function () {
+				select.setActive(!drawCtrl.getInteraction().getActive());
+				modifyInteraction.setActive(select.getActive())
+			}.bind(editBar));
 
 			// Undo redo interaction
 			undoInteraction = new ol.interaction.UndoRedo();
@@ -634,35 +669,6 @@ var app = (function () {
 				source: vectorLayer.getSource()
 			}));
 
-			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
-				wkt = utilities.getFeatureWKT(evt.feature);
-				await LS_WKTs.add(wkt).then(function (result) {
-					centerOnFeature(evt.feature);
-				});
-			});
-
-			select = selectCtrl.getInteraction().on('select', function (evt) {
-				app.restoreDefaultColors();
-				if (evt.deselected.length > 0) {
-					console.log("deselected")
-					evt.deselected.forEach(function (feature) {
-						textarea.value = utilities.getFeatureWKT(feature);
-						LS_WKTs.update(feature.getId(), textarea.value);
-						var multi = featuresToMultiPolygon();
-						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
-						textarea.value = format.writeGeometry(geo);
-					});
-					selectBar.setVisible(false);
-				}
-
-				if (evt.selected.length > 0) {
-					console.log("selected")
-					evt.selected.forEach(function (feature) {
-						textarea.value = utilities.getFeatureWKT(feature);
-					});
-					selectBar.setVisible(true);
-				}
-			});
 		},
 
 		init: function () {
