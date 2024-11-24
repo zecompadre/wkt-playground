@@ -13,10 +13,6 @@ var app = (function () {
 	var features = new ol.Collection();
 	var format = new ol.format.WKT();
 
-	var current_wkts = [];
-
-	var shape = "Polygon";
-
 	var lfkey = "zecompadre-wkt";
 
 	var normalColor = '#141414'; //'#005baa';
@@ -269,7 +265,7 @@ var app = (function () {
 			this.save();
 		},
 		save: function () {
-			localStorage.setItem(lfkey, JSON.stringify(current_wkts));
+			localStorage.setItem(lfkey, JSON.stringify(this.get()));
 		},
 		add: async function (wkt) {
 			var self = this;
@@ -471,7 +467,7 @@ var app = (function () {
 			});
 			// });
 		},
-		prepareObjets: function () {
+		setupMap: function () {
 
 			var self = this;
 
@@ -484,71 +480,7 @@ var app = (function () {
 
 			this.createVector();
 
-			// select = new ol.interaction.Select({
-			// 	style: styles(editColor),
-			// });
-
-			// select.on('select', function (evt) {
-
-			// 	if (evt.deselected.length > 0) {
-
-			// 		evt.deselected.forEach(function (feature) {
-
-			// 			self.restoreDefaultColors();
-			// 			var geo = feature.getGeometry().transform(projection_mercator, projection_geodetic);
-			// 			textarea.value = format.writeGeometry(geo);
-			// 			var geo = feature.getGeometry().transform(projection_geodetic, projection_mercator);
-
-			// 			LS_WKTs.update(feature.getId(), textarea.value);
-
-			// 			var multi = featuresToMultiPolygon();
-			// 			var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
-			// 			textarea.value = format.writeGeometry(geo);
-			// 		});
-
-			// 		map.getControls().forEach(function (control) {
-			// 			if (control instanceof EditorControl) {
-			// 				control.hide();
-			// 			}
-			// 		});
-			// 	}
-
-			// 	if (evt.selected.length > 0) {
-
-			// 		map.getControls().forEach(function (control) {
-			// 			if (control instanceof EditorControl) {
-			// 				control.show();
-			// 			}
-			// 		});
-
-			// 		evt.selected.forEach(function (feature) {
-			// 			CurrentTextarea.set(feature);
-			// 		});
-			// 	}
-			// });
-
-			// modify = new ol.interaction.Modify({
-			// 	features: select.getFeatures(),
-			// 	style: styles(snapColor),
-			// 	insertVertexCondition: function () {
-			// 		return true;
-			// 	},
-			// });
-
-			drag = new ol.interaction.DragPan({
-				condition: function (event) {
-					return true;
-				}
-			});
-
-			mousewheelzoom = new ol.interaction.MouseWheelZoom({
-				condition: function (event) {
-					return true;
-				}
-			});
-
 			map = new ol.Map({
-				interactions: [mousewheelzoom, drag/* , select, modify */],
 				layers: [raster, vector],
 				target: 'map',
 				view: new ol.View({
@@ -556,10 +488,6 @@ var app = (function () {
 					zoom: 6
 				})
 			});
-
-			// Main control bar
-			var mainBar = new ol.control.Bar();
-			map.addControl(mainBar);
 
 			// Main control bar
 			var mainBar = new ol.control.Bar();
@@ -630,7 +558,8 @@ var app = (function () {
 			editBar.addControl(selectCtrl);
 
 			modify = new ol.interaction.ModifyFeature({
-				features: selectCtrl.getInteraction().getFeatures()
+				features: selectCtrl.getInteraction().getFeatures(),
+				style: styles(snapColor),
 			})
 
 			map.addInteraction(modify)
@@ -697,6 +626,18 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
+			map.addInteraction(new ol.interaction.DragPan({
+				condition: function (event) {
+					return true;
+				}
+			}));
+
+			map.addInteraction(new ol.interaction.MouseWheelZoom({
+				condition: function (event) {
+					return true;
+				}
+			}));
+
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
 				await LS_WKTs.add(wkt).then(function (result) {
@@ -735,7 +676,7 @@ var app = (function () {
 
 				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projection_geodetic, projection_mercator);
 
-				self.prepareObjets();
+				self.setupMap();
 
 				self.loadWKTs(true);
 			});
