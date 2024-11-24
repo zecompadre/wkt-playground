@@ -199,7 +199,48 @@ var app = (function () {
 		return checksum;
 	}
 
-	function featuresToMultiPolygon(features) {
+	function featuresToMultiPolygonx() {
+		// Get the vector layer from the map
+		var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
+		if (!vectorLayer) {
+			console.error('No vector layer found on the map.');
+			return null;
+		}
+
+		// Get all features from the vector layer
+		var features = vectorLayer.getSource().getFeatures();
+
+		// Filter the features to include only polygons and multi-polygons
+		var polygons = features.filter(function (feature) {
+			var geometryType = feature.getGeometry().getType();
+			return geometryType === 'Polygon' || geometryType === 'MultiPolygon';
+		});
+
+		// If there are no polygons or multi-polygons, return null
+		if (polygons.length === 0) {
+			console.error('No polygons or multi-polygons found.');
+			return null;
+		}
+
+		// Create an array of geometries from the features
+		var geometries = polygons.map(function (feature) {
+			return feature.getGeometry();
+		});
+
+		// Create a MultiPolygon geometry from the array of geometries
+		var multiPolygon = new ol.geom.MultiPolygon(geometries.map(function (geometry) {
+			// Ensure that each geometry is in the correct format for MultiPolygon
+			return geometry.getType() === 'Polygon' ? geometry.getCoordinates() : geometry.getCoordinates();
+		}));
+
+		// Optionally, add the MultiPolygon as a new feature on the map
+		var multiPolygon = new ol.Feature(multiPolygon);
+
+		// Return the created MultiPolygon geometry
+		return multiPolygon;
+	}
+
+	function featuresToMultiPolygonx(features) {
 		// Helper function: Convert LineString to Polygon
 		function lineStringToPolygon(lineString) {
 			const coordinates = lineString.getCoordinates();
