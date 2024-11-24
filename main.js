@@ -573,6 +573,9 @@ var app = (function () {
 
 			select = selectCtrl.getInteraction().on('select', function (evt) {
 				app.restoreDefaultColors();
+
+				console.log("evt", evt)
+
 				if (evt.deselected.length > 0) {
 					console.log("deselected", evt)
 					evt.deselected.forEach(function (feature) {
@@ -623,8 +626,8 @@ var app = (function () {
 				const features = select.getFeatures(); // Get the selected features collection
 				if (features) {
 					var feature = select.getFeatures().item(0);
-					select.dispatchEvent({ type: 'select', deselected: features, selected: [] });
-					features.remove(feature);
+					select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
+					//features.remove(feature);
 				}
 			}.bind(editBar));
 
