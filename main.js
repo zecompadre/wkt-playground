@@ -34,15 +34,13 @@ var app = (function () {
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
 
-	function getFeatureCount(map) {
+	function getFeatureCount() {
 		let featureCount = 0;
-
 		// Loop through all layers on the map
 		map.getLayers().forEach(layer => {
 			// Check if the layer is a vector layer
 			if (layer instanceof ol.layer.Vector) {
 				const source = layer.getSource(); // Get the source of the vector layer
-
 				if (source) {
 					// Count the features in the source
 					featureCount += source.getFeatures().length;
@@ -260,12 +258,14 @@ var app = (function () {
 	var LS_WKTs = {
 		load: function () {
 			var wkts = localStorage.getItem(lfkey) || "[]";
-			current_wkts = JSON.parse(wkts);
+			map.set("wkts", JSON.parse(wkts));
 		},
 		remove: function (id) {
-			current_wkts = current_wkts.filter(function (item) {
+			var wkts = map.get("wkts");
+			wkts.filter(function (item) {
 				return item.id !== id;
 			});
+			map.set("wkts", wkts);
 			this.save();
 		},
 		save: function () {
@@ -275,27 +275,33 @@ var app = (function () {
 			var self = this;
 			await generateChecksum(wkt).then(function (checksum) {
 				var exists = false;
-				if (current_wkts.length > 0) {
-					current_wkts.forEach(item => {
+				var wkts = map.get("wkts");
+				if (wkts.length > 0) {
+					wkts.forEach(item => {
 						if (checksum !== "" && item.id === checksum)
 							exists = true;
 					});
 				}
 				if (wkt != "" && !exists) {
-					current_wkts.push({ id: checksum, wkt: wkt });
+					wkts.push({ id: checksum, wkt: wkt });
 				}
+				map.set("wkts", wkts);
 				self.save();
 			});
 
 		},
 		get: function () {
-			return current_wkts;
+			return map.get("wkts");
 		},
 		update: function (id, wkt) {
-			current_wkts.forEach(function (item) {
-				if (item.id === id)
-					item.wkt = wkt;
-			});
+			var wkts = map.get("wkts");
+			if (wkts.length > 0) {
+				wkts.forEach(function (item) {
+					if (item.id === id)
+						item.wkt = wkt;
+				});
+			}
+			map.set("wkts", wkts);
 			this.save();
 		}
 	}
@@ -342,9 +348,13 @@ var app = (function () {
 			textarea.style.backgroundColor = "";
 		},
 		addFeatures: async function () {
-			map.removeLayer(vector);
-			this.createVector();
-			map.addLayer(vector);
+			if (vector)
+				map.removeLayer(vector); // Remove a camada existente
+			this.createVector(); // Aguarda a criação da camada
+			if (vector)
+				map.addLayer(vector); // Adiciona a nova camada ao mapa
+			else
+				console.error("Falha ao criar a camada 'vector'. Verifique a função createVector.");
 		},
 		// resetFeatures: async function () {
 		// 	features = new ol.Collection();
@@ -352,7 +362,6 @@ var app = (function () {
 		// 	//deselectFeature()
 		// },
 		plotWKT: function (id, wkt) {
-
 			var new_feature;
 			wkt_string = wkt || textarea.value;
 			if (wkt_string == "") {
@@ -407,10 +416,9 @@ var app = (function () {
 
 			var self = this;
 
-			// await self.resetFeatures().then(async function () {
 			LS_WKTs.load();
 
-			var wkts = current_wkts;
+			var wkts = LS_WKTs.get();
 
 			textarea.focus();
 
@@ -427,20 +435,20 @@ var app = (function () {
 
 				if (wkts.length > 0) {
 					wkts.forEach(item => {
-						idx = idx + 1;
 						if (checksum !== "" && item.id === checksum)
 							exists = true;
 						self.plotWKT(item.id, item.wkt);
+						idx = idx + 1;
 					});
 				}
 
 				if (wkt != "" && !exists) {
-					idx = idx + 1;
-					self.plotWKT(checksum, wkt);
 					wkts.push({ id: checksum, wkt: wkt });
+					self.plotWKT(checksum, wkt);
+					idx = idx + 1;
 				}
 
-				current_wkts = wkts;
+				map.set("wkts", wkts);
 
 				LS_WKTs.save()
 
