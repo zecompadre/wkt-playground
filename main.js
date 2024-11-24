@@ -1,7 +1,7 @@
 var app = (function () {
 
 	var raster;
-	var vector;
+	var vectorLayer;
 	var map;
 	var modifyInteraction;
 	var undoInteraction;
@@ -25,22 +25,8 @@ var app = (function () {
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
 
-	function getFeatureCount() {
-		let featureCount = 0;
-		// Loop through all layers on the map
-		map.getLayers().forEach(layer => {
-			// Check if the layer is a vector layer
-			if (layer instanceof ol.layer.Vector) {
-				const source = layer.getSource(); // Get the source of the vector layer
-				if (source) {
-					// Count the features in the source
-					featureCount += source.getFeatures().length;
-				}
-			}
-		});
-
-		console.log("Total number of features on the map:", featureCount);
-		return featureCount;
+	function getFeaturesFromVectorLayer() {
+		return vectorLayer.getSource().getFeatures();;
 	}
 
 	function getFeatureWKT(feature) {
@@ -234,7 +220,7 @@ var app = (function () {
 			]];
 		}
 
-		const polygonCoordinates = features.getArray().flatMap(feature => {
+		const polygonCoordinates = getFeaturesFromVectorLayer().getArray().flatMap(feature => {
 			const geometry = feature.getGeometry();
 			if (!geometry) {
 				console.warn('Feature has no geometry.');
@@ -358,7 +344,7 @@ var app = (function () {
 
 	return {
 		createVector: function () {
-			vector = new ol.layer.Vector({
+			vectorLayer = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: featureCollection }),
 				style: styles(normalColor)
 			})
@@ -374,11 +360,11 @@ var app = (function () {
 			textarea.style.backgroundColor = "";
 		},
 		addFeatures: async function () {
-			if (vector)
-				map.removeLayer(vector); // Remove a camada existente
+			if (vectorLayer)
+				map.removeLayer(vectorLayer); // Remove a camada existente
 			this.createVector(); // Aguarda a criação da camada
-			if (vector)
-				map.addLayer(vector); // Adiciona a nova camada ao mapa
+			if (vectorLayer)
+				map.addLayer(vectorLayer); // Adiciona a nova camada ao mapa
 			else
 				console.error("Falha ao criar a camada 'vector'. Verifique a função createVector.");
 		},
@@ -507,7 +493,7 @@ var app = (function () {
 			this.createVector();
 
 			map = new ol.Map({
-				layers: [raster, vector],
+				layers: [raster, vectorLayer],
 				target: 'map',
 				view: new ol.View({
 					center: defaultCenter,
@@ -556,7 +542,7 @@ var app = (function () {
 						var feature = features.item(0);
 						LS_WKTs.remove(feature.getId());
 						for (var i = 0, f; f = features.item(i); i++) {
-							vector.getSource().removeFeature(f);
+							vectorLayer.getSource().removeFeature(f);
 						}
 						features.clear();
 					}
@@ -616,7 +602,7 @@ var app = (function () {
 				title: 'Polygon',
 				interaction: new ol.interaction.Draw({
 					type: 'Polygon',
-					source: vector.getSource()
+					source: vectorLayer.getSource()
 				})
 			});
 			editBar.addControl(drawCtrl);
@@ -655,17 +641,17 @@ var app = (function () {
 				// undo function: set previous style
 				function (s) {
 					style = s.before;
-					vector.changed();
+					vectorLayer.changed();
 				},
 				// redo function: reset the style
 				function (s) {
 					style = s.after;
-					vector.changed();
+					vectorLayer.changed();
 				}
 			);
 
 			map.addInteraction(new ol.interaction.Snap({
-				source: vector.getSource()
+				source: vectorLayer.getSource()
 			}));
 
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
