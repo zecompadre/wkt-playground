@@ -639,24 +639,17 @@ var app = (function () {
 
 			selectBar.addControl(infoBtn);
 
+			selectBar.setVisible(false);
+
 			selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer"></i>',
 				title: "Select",
-				interaction: new ol.interaction.Select({ hitTolerance: 2 }),
+				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(editColor) }),
 				bar: selectBar,
 				autoActivate: true,
 				active: true
 			});
 			editBar.addControl(selectCtrl);
-
-			console.log(deleteBtn.setVisible)
-
-			selectBar.setVisible(false);
-
-			selectCtrl.getInteraction().on('change:active', function () {
-				var features = selectCtrl.getInteraction().getFeatures();
-				selectBar.setVisible(features.getLength() > 0);
-			}.bind(editBar));
 
 			modify = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures()
@@ -744,9 +737,6 @@ var app = (function () {
 			// });
 
 			select = drawCtrl.getInteraction().on('select', function (evt) {
-
-				console.log("select", evt);
-
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
 					evt.deselected.forEach(function (feature) {
@@ -756,17 +746,17 @@ var app = (function () {
 						var multi = featuresToMultiPolygon();
 						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
 						textarea.value = format.writeGeometry(geo);
+						selectBar.setVisible(false);
 					});
 				}
 
 				if (evt.selected.length > 0) {
 					evt.selected.forEach(function (feature) {
 						textarea.value = getFeatureWKT(feature);
+						selectBar.setVisible(true);
 					});
 				}
 			});
-			// select.style_ = styles(editColor);
-
 		},
 
 		init: function () {
