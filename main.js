@@ -17,29 +17,59 @@ var app = (function () {
 		zoom: 6,
 	};
 
-	var tileLayer;
-	var vectorLayer;
-	var map;
+	let map, vectorLayer, format, defaultCenter, featureCollection;
+
+	const utilities = {
+		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
+		hexToRgbA: (hex) => {
+			const bigint = parseInt(hex.replace(/^#/, ''), 16);
+			const r = (bigint >> 16) & 255;
+			const g = (bigint >> 8) & 255;
+			const b = bigint & 255;
+			return `rgba(${r}, ${g}, ${b}, 0.2)`;
+		},
+		getFeatureWKT: (feature) => {
+			const geom = feature.getGeometry().clone();
+			return format.writeGeometry(geom.transform(projections.mercator, projections.geodetic));
+		},
+		generateChecksum: async (input) => {
+			if (!input) return input;
+			const encoder = new TextEncoder();
+			const data = encoder.encode(input);
+			const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+			return Array.from(new Uint8Array(hashBuffer))
+				.map((byte) => byte.toString(16).padStart(2, '0'))
+				.join('');
+		},
+		createVectorLayer: () => {
+			vectorLayer = new ol.layer.Vector({
+				source: new ol.source.Vector({ features: featureCollection }),
+				style: utilities.createStyles(colors.normal),
+			});
+		},
+		createStyles: (color) => [
+			new ol.style.Style({
+				image: new ol.style.Circle({
+					fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }),
+					stroke: new ol.style.Stroke({ color, width: 2 }),
+					radius: 5,
+				}),
+				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }),
+				stroke: new ol.style.Stroke({ color, width: 2 }),
+			}),
+		],
+	};
+
 	var modifyInteraction;
 	var undoInteraction;
-	var featureCollection = new ol.Collection();
-	var format = new ol.format.WKT();
 
 	var lfkey = "zecompadre-wkt";
-
-	var defaultCenter = ol.proj.transform([mapDefaults.longitude, mapDefaults.latitude], projections.geodetic, projections.mercator);
 
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
 
 	function getFeaturesFromVectorLayer() {
 		return vectorLayer.getSource().getFeatures();;
-	}
-
-	function getFeatureWKT(feature) {
-		return format.writeGeometry(new ol.Feature({
-			geometry: feature.getGeometry().clone()
-		}).getGeometry().transform(projections.mercator, projections.geodetic));
 	}
 
 	function centerOnFeature(feature) {
@@ -161,31 +191,6 @@ var app = (function () {
 		}
 	}
 
-	function hexToRgbA(hex) {
-		// Remove the "#" if present
-		hex = hex.replace(/^#/, '');
-
-		// Parse the hex color into RGB components
-		let bigint = parseInt(hex, 16);
-		let r = (bigint >> 16) & 255;
-		let g = (bigint >> 8) & 255;
-		let b = bigint & 255;
-
-		return `rgba(${r}, ${g}, ${b},0.2)`;
-	}
-
-	async function generateChecksum(inputString) {
-		if (inputString === "")
-			return inputString;
-
-		const encoder = new TextEncoder();
-		const data = encoder.encode(inputString);
-		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-		const hashArray = Array.from(new Uint8Array(hashBuffer));
-		const checksum = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-		return checksum;
-	}
-
 	function getMapsFeatureCount() {
 		var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
 		if (!vectorLayer) {
@@ -259,7 +264,7 @@ var app = (function () {
 		},
 		add: async function (wkt) {
 			var self = this;
-			await generateChecksum(wkt).then(function (checksum) {
+			await utilities.generateChecksum(wkt).then(function (checksum) {
 				var exists = false;
 				var wkts = map.get("wkts");
 				if (wkts.length > 0) {
@@ -297,7 +302,7 @@ var app = (function () {
 			new ol.style.Style({
 				image: new ol.style.Circle({
 					fill: new ol.style.Fill({
-						color: hexToRgbA(color)
+						color: utilities.hexToRgbA(color)
 					}),
 					stroke: new ol.style.Stroke({
 						color: color,
@@ -306,7 +311,7 @@ var app = (function () {
 					radius: 5
 				}),
 				fill: new ol.style.Fill({
-					color: hexToRgbA(color)
+					color: utilities.hexToRgbA(color)
 				}),
 				stroke: new ol.style.Stroke({
 					color: color,
@@ -317,12 +322,6 @@ var app = (function () {
 	}
 
 	return {
-		createVector: function () {
-			vectorLayer = new ol.layer.Vector({
-				source: new ol.source.Vector({ features: featureCollection }),
-				style: styles(colors.normal)
-			})
-		},
 		toEPSG4326: function (element, index, array) {
 			element = element.getGeometry().transform(projections.mercator, projections.geodetic);
 		},
@@ -336,7 +335,7 @@ var app = (function () {
 		addFeatures: async function () {
 			if (vectorLayer)
 				map.removeLayer(vectorLayer); // Remove a camada existente
-			this.createVector(); // Aguarda a criação da camada
+			utilities.createVectorLayer(); // Aguarda a criação da camada
 			if (vectorLayer)
 				map.addLayer(vectorLayer); // Adiciona a nova camada ao mapa
 			else
@@ -408,7 +407,7 @@ var app = (function () {
 			if (readcb)
 				wkt = await self.clipboardWKT();
 
-			await generateChecksum(wkt).then(async function (checksum) {
+			await utilities.generateChecksum(wkt).then(async function (checksum) {
 				if (wkts == null || wkts == undefined)
 					wkts = [];
 
@@ -457,17 +456,24 @@ var app = (function () {
 
 			var self = this;
 
+			format = new ol.format.WKT();
+			featureCollection = new ol.Collection();
+			defaultCenter = utilities.transformCoordinates(
+				[mapDefaults.longitude, mapDefaults.latitude],
+				projections.geodetic,
+				projections.mercator
+			);
+
 			main = document.querySelector(".maincontainer");
 			textarea = document.querySelector("#wktdefault textarea");
 
-			tileLayer = new ol.layer.Tile({
-				source: new ol.source.OSM()
-			});
-
-			this.createVector();
+			utilities.createVectorLayer();
 
 			map = new ol.Map({
-				layers: [tileLayer, vectorLayer],
+				layers: [
+					new ol.layer.Tile({ source: new ol.source.OSM() }),
+					vectorLayer
+				],
 				target: 'map',
 				view: new ol.View({
 					center: defaultCenter,
@@ -535,7 +541,7 @@ var app = (function () {
 							textarea.value = "Select an object first...";
 							break;
 						case 1:
-							textarea.value = getFeatureWKT(selectCtrl.getInteraction().getFeatures().item(0));
+							textarea.value = utilities.getFeatureWKT(selectCtrl.getInteraction().getFeatures().item(0));
 							break;
 					}
 				}
@@ -548,7 +554,7 @@ var app = (function () {
 			selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer"></i>',
 				title: "Select",
-				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(colors.edit) }),
+				interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.createStyles(colors.edit) }),
 				bar: selectBar,
 				autoActivate: true,
 				active: true
@@ -557,7 +563,7 @@ var app = (function () {
 
 			modifyInteraction = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
-				style: styles(colors.snap),
+				style: utilities.createStyles(colors.snap),
 				insertVertexCondition: function () {
 					return true;
 				},
@@ -629,7 +635,7 @@ var app = (function () {
 			}));
 
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
-				wkt = getFeatureWKT(evt.feature);
+				wkt = utilities.getFeatureWKT(evt.feature);
 				await LS_WKTs.add(wkt).then(function (result) {
 					centerOnFeature(evt.feature);
 				});
@@ -639,7 +645,7 @@ var app = (function () {
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
 					evt.deselected.forEach(function (feature) {
-						textarea.value = getFeatureWKT(feature);
+						textarea.value = utilities.getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
 						var multi = featuresToMultiPolygon();
 						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
@@ -650,7 +656,7 @@ var app = (function () {
 
 				if (evt.selected.length > 0) {
 					evt.selected.forEach(function (feature) {
-						textarea.value = getFeatureWKT(feature);
+						textarea.value = utilities.getFeatureWKT(feature);
 					});
 					selectBar.setVisible(true);
 				}
