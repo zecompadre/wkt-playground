@@ -621,15 +621,11 @@ var app = (function () {
 				var select = selectCtrl.getInteraction();
 				console.log("drawCtrl[change:active]", select, select.getActive());
 				const features = select.getFeatures(); // Get the selected features collection
-
-				select.dispatchEvent({ type: 'select', deselected: features, selected: [] });
-
-				// 
-				// if (features) {
-				// 	var feature = select.getFeatures().item(0);
-				// 	console.log("selectedFeatures", feature);
-				// 	features.remove(feature);
-				// }
+				if (features) {
+					var feature = select.getFeatures().item(0);
+					select.dispatchEvent({ type: 'select', deselected: features, selected: [] });
+					features.remove(feature);
+				}
 			}.bind(editBar));
 
 			// Undo redo interaction
