@@ -3,14 +3,9 @@ var app = (function () {
 	var raster;
 	var vector;
 	var map;
-	var draw;
-	var snap;
-	var drag;
-	var select;
-	var remove;
-	var modify;
-	var mousewheelzoom;
-	var features = new ol.Collection();
+	var modifyInteraction;
+	var undoInteraction;
+	var featureCollection = new ol.Collection();
 	var format = new ol.format.WKT();
 
 	var lfkey = "zecompadre-wkt";
@@ -181,7 +176,7 @@ var app = (function () {
 	async function centerMap() {
 		if (!main.classList.contains("nowkt")) {
 			const extent = ol.extent.createEmpty();
-			features.forEach(feature => ol.extent.extend(extent, feature.getGeometry().getExtent()));
+			featureCollection.forEach(feature => ol.extent.extend(extent, feature.getGeometry().getExtent()));
 			map.getView().fit(extent, {
 				size: map.getSize(),
 				padding: [50, 50, 50, 50],
@@ -286,7 +281,6 @@ var app = (function () {
 		return multiPolygonFeature;
 	}
 
-
 	var LS_WKTs = {
 		load: function () {
 			var wkts = localStorage.getItem(lfkey) || "[]";
@@ -365,7 +359,7 @@ var app = (function () {
 	return {
 		createVector: function () {
 			vector = new ol.layer.Vector({
-				source: new ol.source.Vector({ features: features }),
+				source: new ol.source.Vector({ features: featureCollection }),
 				style: styles(normalColor)
 			})
 		},
@@ -409,7 +403,7 @@ var app = (function () {
 			} else {
 				new_feature.getGeometry().transform(projection_geodetic, projection_mercator);
 				new_feature.setId(id);
-				features.push(new_feature);
+				featureCollection.push(new_feature);
 			}
 		},
 		clipboardWKT: async function () {
@@ -482,7 +476,7 @@ var app = (function () {
 
 				await self.addFeatures().then(async function () {
 
-					if (features.length === 0)
+					if (featureCollection.length === 0)
 						main.classList.remove("nowkt");
 					else
 						main.classList.add("nowkt");
@@ -601,7 +595,7 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
-			modify = new ol.interaction.ModifyFeature({
+			modifyInteraction = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
 				style: styles(snapColor),
 				insertVertexCondition: function () {
@@ -609,12 +603,12 @@ var app = (function () {
 				},
 			})
 
-			map.addInteraction(modify);
+			map.addInteraction(modifyInteraction);
 
 			// Activate with select
-			modify.setActive(selectCtrl.getInteraction().getActive())
+			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
-				modify.setActive(selectCtrl.getInteraction().getActive())
+				modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			}.bind(editBar));
 
 			drawCtrl = new ol.control.Toggle({
@@ -627,48 +621,48 @@ var app = (function () {
 			});
 			editBar.addControl(drawCtrl);
 
-			// // Undo redo interaction
-			// var undoInteraction = new ol.interaction.UndoRedo();
-			// map.addInteraction(undoInteraction);
+			// Undo redo interaction
+			undoInteraction = new ol.interaction.UndoRedo();
+			map.addInteraction(undoInteraction);
 
-			// // Add buttons to the bar
-			// var bar = new ol.control.Bar({
-			// 	group: true,
-			// 	controls: [
-			// 		new ol.control.Button({
-			// 			html: '<i class="fa-solid fa-rotate-left"></i>',
-			// 			title: 'Undo...',
-			// 			handleClick: function () {
-			// 				undoInteraction.undo();
-			// 			}
-			// 		}),
-			// 		new ol.control.Button({
-			// 			html: '<i class="fa-solid fa-rotate-right"></i>',
-			// 			title: 'Redo...',
-			// 			handleClick: function () {
-			// 				undoInteraction.redo();
-			// 			}
-			// 		})
-			// 	]
-			// });
-			// mainbar.addControl(bar);
+			// Add buttons to the bar
+			var undoBar = new ol.control.Bar({
+				group: true,
+				controls: [
+					new ol.control.Button({
+						html: '<i class="fa-solid fa-rotate-left"></i>',
+						title: 'Undo...',
+						handleClick: function () {
+							undoInteraction.undo();
+						}
+					}),
+					new ol.control.Button({
+						html: '<i class="fa-solid fa-rotate-right"></i>',
+						title: 'Redo...',
+						handleClick: function () {
+							undoInteraction.redo();
+						}
+					})
+				]
+			});
+			mainBar.addControl(undoBar);
 
-			// /* undo/redo custom */
-			// var style;
-			// // Define undo redo for the style
-			// undoInteraction.define(
-			// 	'style',
-			// 	// undo function: set previous style
-			// 	function (s) {
-			// 		style = s.before;
-			// 		vector.changed();
-			// 	},
-			// 	// redo function: reset the style
-			// 	function (s) {
-			// 		style = s.after;
-			// 		vector.changed();
-			// 	}
-			// );
+			/* undo/redo custom */
+			var style;
+			// Define undo redo for the style
+			undoInteraction.define(
+				'style',
+				// undo function: set previous style
+				function (s) {
+					style = s.before;
+					vector.changed();
+				},
+				// redo function: reset the style
+				function (s) {
+					style = s.after;
+					vector.changed();
+				}
+			);
 
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
