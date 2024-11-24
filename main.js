@@ -34,42 +34,71 @@ var app = (function () {
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
 
-	function getFeatureWKT(feature) {
+	function getFeatureCount(map) {
+		let featureCount = 0;
 
-		// Criar uma nova feature com a geometria clonada
-		const clonedFeature = new ol.Feature({
-			geometry: feature.getGeometry().clone()
+		// Loop through all layers on the map
+		map.getLayers().forEach(layer => {
+			// Check if the layer is a vector layer
+			if (layer instanceof ol.layer.Vector) {
+				const source = layer.getSource(); // Get the source of the vector layer
+
+				if (source) {
+					// Count the features in the source
+					featureCount += source.getFeatures().length;
+				}
+			}
 		});
 
-		var geo = clonedFeature.getGeometry().transform(projection_mercator, projection_geodetic);
-		var wkt = format.writeGeometry(geo);
+		console.log("Total number of features on the map:", featureCount);
+		return featureCount;
+	}
 
-		return wkt;
+	function getFeatureWKT(feature) {
+		return format.writeGeometry(new ol.Feature({
+			geometry: feature.getGeometry().clone()
+		}).getGeometry().transform(projection_mercator, projection_geodetic));
 	}
 
 	function centerOnFeature(feature) {
-
 		console.log("centerOnFeature");
 
-		let extent = feature.getGeometry().getExtent(); // Returns [minX, minY, maxX, maxY]
-		let center = ol.extent.getCenter(extent); // Calculate the center
-
+		const extent = feature.getGeometry().getExtent(); // Returns [minX, minY, maxX, maxY]
+		const center = ol.extent.getCenter(extent); // Calculate the center
 		console.log('Center coordinates:', center);
 
-		minx = extent[0];
-		miny = extent[1];
-		maxx = extent[2];
-		maxy = extent[3];
-		centerx = (minx + maxx) / 2;
-		centery = (miny + maxy) / 2;
+		// Center the map view
 		map.setView(new ol.View({
-			center: [centerx, centery],
-			zoom: 8
+			center: center,
+			zoom: 8, // Adjust the zoom level as needed
 		}));
+
+		// Adjust the view to fit the feature extent
 		map.getView().fit(extent, {
-			size: map.getSize(), // Map size to ensure the geometry fits well
+			size: map.getSize(), // Ensures the geometry fits well in the viewport
 			padding: [50, 50, 50, 50], // Optional padding around the feature
 		});
+		// console.log("centerOnFeature");
+
+		// let extent = feature.getGeometry().getExtent(); // Returns [minX, minY, maxX, maxY]
+		// let center = ol.extent.getCenter(extent); // Calculate the center
+
+		// console.log('Center coordinates:', center);
+
+		// minx = extent[0];
+		// miny = extent[1];
+		// maxx = extent[2];
+		// maxy = extent[3];
+		// centerx = (minx + maxx) / 2;
+		// centery = (miny + maxy) / 2;
+		// map.setView(new ol.View({
+		// 	center: [centerx, centery],
+		// 	zoom: 8
+		// }));
+		// map.getView().fit(extent, {
+		// 	size: map.getSize(), // Map size to ensure the geometry fits well
+		// 	padding: [50, 50, 50, 50], // Optional padding around the feature
+		// });
 	}
 
 	function imageCanvas(feature) {
@@ -346,35 +375,6 @@ var app = (function () {
 				features.push(new_feature);
 			}
 		},
-		// removeWKT: async function () {
-
-		// 	// if (select.getFeatures().item.length > 0) {
-
-		// 	// 	var current = select.getFeatures().item(0);
-
-		// 	// 	LS_WKTs.remove(current.getId());
-
-		// 	// 	await app.loadWKTs(false);
-		// 	// }
-		// },
-		// addWKT: function () {
-
-		// 	console.log("addWKT");
-
-		// 	//map.removeInteraction(select);
-		// 	//map.addInteraction(draw);
-		// 	textarea.value = "";
-		// },
-		// copyWKT: async function () {
-
-		// 	textarea.select();
-		// 	document.execCommand("copy");
-		// 	textarea.blur();
-
-		// 	//deselectFeature();
-
-		// 	app.restoreDefaultColors();
-		// },
 		clipboardWKT: async function () {
 
 			var returnVal = "";
@@ -446,7 +446,7 @@ var app = (function () {
 
 				await self.addFeatures().then(async function () {
 
-					if (features.getArray().length > 0)
+					if (getFeatureCount(map) === 0)
 						main.classList.remove("nowkt");
 					else
 						main.classList.add("nowkt");
@@ -539,21 +539,6 @@ var app = (function () {
 				}
 			});
 
-			// draw.on('drawend', async function (evt) {
-
-			// 	var geo = evt.feature.getGeometry().transform(projection_mercator, projection_geodetic);
-			// 	var wkt = format.writeGeometry(geo);
-
-			// 	await LS_WKTs.add(wkt).then(async function (result) {
-			// 		await app.loadWKTs(false).then(function () {
-			// 			map.removeInteraction(draw);
-			// 			map.addInteraction(select);
-			// 			//centerOnFeature(evt.feature);
-			// 			//imageCanvas(evt.feature);
-			// 		});
-			// 	});
-			// });
-
 			map = new ol.Map({
 				interactions: [mousewheelzoom, drag/* , select, modify */],
 				layers: [raster, vector],
@@ -567,24 +552,6 @@ var app = (function () {
 			// Main control bar
 			var mainBar = new ol.control.Bar();
 			map.addControl(mainBar);
-
-			// // Editbar
-			// var editbar = new ol.control.EditBar({
-			// 	source: vector.getSource(),
-			// 	edition: true,
-			// 	interactions: {
-			// 		DrawPoint: false,
-			// 		DrawLine: false,
-			// 		DrawPolygon: true,
-			// 		DrawHole: false,
-			// 		DrawRegular: false,
-			// 		Transform: false,
-			// 		Info: false,
-			// 		Split: false,
-			// 		Offset: false
-			// 	}
-			// });
-			// mainbar.addControl(editbar);
 
 			// Main control bar
 			var mainBar = new ol.control.Bar();
@@ -728,16 +695,6 @@ var app = (function () {
 					centerOnFeature(evt.feature);
 				});
 			});
-
-			// remove = editBar.getInteraction().on('deletestart', function (evt) {
-			// 	console.log("deletestart", evt);
-			// 	if (evt.features.getArray().length > 0) {
-			// 		evt.features.getArray().forEach(function (feature) {
-			// 			console.log(feature.getId());
-			// 			LS_WKTs.remove(feature.getId());
-			// 		});
-			// 	}
-			// });
 
 			select = selectCtrl.getInteraction().on('select', function (evt) {
 				app.restoreDefaultColors();
