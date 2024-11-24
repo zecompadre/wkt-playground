@@ -600,6 +600,7 @@ var app = (function () {
 			var selectBar = new ol.control.Bar();
 			selectBar.addControl(new ol.control.Button({
 				html: '<i class="fa fa-times"></i>',
+				name: "Delete",
 				title: "Delete",
 				handleClick: function () {
 					var features = selectCtrl.getInteraction().getFeatures();
@@ -619,6 +620,7 @@ var app = (function () {
 
 			selectBar.addControl(new ol.control.Button({
 				html: '<i class="fa fa-info"></i>',
+				name: "Info",
 				title: "Show informations",
 				handleClick: function () {
 					switch (selectCtrl.getInteraction().getFeatures().getLength()) {
@@ -642,7 +644,12 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
-			//modify.setVisible(selectCtrl.getInteraction().getActive())
+			selectBar.getControlsByName("Delete").setVisible(selectCtrl.getInteraction().getActive())
+			selectBar.getControlsByName("Info").setVisible(selectCtrl.getInteraction().getActive())
+			selectCtrl.getInteraction().on('change:active', function () {
+				selectBar.getControlsByName("Delete").setVisible(selectCtrl.getInteraction().getActive())
+				selectBar.getControlsByName("Info").setVisible(selectCtrl.getInteraction().getActive())
+			}.bind(editBar));
 
 			console.log(selectBar);
 
@@ -655,7 +662,7 @@ var app = (function () {
 			modify.setActive(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
 				modify.setActive(selectCtrl.getInteraction().getActive())
-			}.bind(editBar))
+			}.bind(editBar));
 
 			drawCtrl = new ol.control.Toggle({
 				html: '<i class="fa-regular fa-draw-polygon"></i>',
