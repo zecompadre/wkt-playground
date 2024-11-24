@@ -598,7 +598,8 @@ var app = (function () {
 			//  1- a toggle control with a select interaction
 			//  2- an option bar to delete / get information on the selected feature
 			var selectBar = new ol.control.Bar();
-			selectBar.addControl(new ol.control.Button({
+
+			var deleteBtn = new ol.control.Button({
 				html: '<i class="fa fa-times"></i>',
 				name: "Delete",
 				title: "Delete",
@@ -616,9 +617,11 @@ var app = (function () {
 						features.clear();
 					}
 				}
-			}));
+			});
 
-			selectBar.addControl(new ol.control.Button({
+			selectBar.addControl(deleteBtn);
+
+			var infoBtn = new ol.control.Button({
 				html: '<i class="fa fa-info"></i>',
 				name: "Info",
 				title: "Show informations",
@@ -632,7 +635,9 @@ var app = (function () {
 							break;
 					}
 				}
-			}));
+			});
+
+			selectBar.addControl(infoBtn);
 
 			selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer"></i>',
@@ -644,18 +649,20 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
-			console.log(selectBar.getControls())
-			console.log(selectBar.getControlsByName("Delete"))
+			console.log(deleteBtn.setVisible)
+
+			ol_ext_element.hide(deleteBtn.element);
+			ol_ext_element.hide(infoBtn.element);
 
 			selectCtrl.getInteraction().on('change:active', function () {
 				var features = selectCtrl.getInteraction().getFeatures();
 				if (features.getLength() > 0) {
-					ol_ext_element.show(selectBar.getControlsByName("Delete").element);
-					ol_ext_element.show(selectBar.getControlsByName("Info").element);
+					ol_ext_element.show(deleteBtn.element);
+					ol_ext_element.show(infoBtn.element);
 				}
 				else {
-					ol_ext_element.hide(selectBar.getControlsByName("Delete").element);
-					ol_ext_element.hide(selectBar.getControlsByName("Info").element);
+					ol_ext_element.hide(deleteBtn.element);
+					ol_ext_element.hide(infoBtn.element);
 				}
 			}.bind(editBar));
 
