@@ -640,6 +640,17 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
+			modify = new ol.interaction.ModifyFeature({
+				features: selectCtrl.getInteraction().getFeatures()
+			})
+
+			map.addInteraction(modify)
+			// Activate with select
+			modify.setActive(selectCtrl.getInteraction().getActive())
+			selectCtrl.getInteraction().on('change:active', function () {
+				modify.setActive(selectCtrl.getInteraction().getActive())
+			}.bind(editBar))
+
 			drawCtrl = new ol.control.Toggle({
 				html: '<i class="fa-regular fa-draw-polygon"></i>',
 				title: 'Polygon',
@@ -696,17 +707,6 @@ var app = (function () {
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
 			}));
-
-			editBar._interactions.ModifySelect = new ol.interaction.ModifyFeature({
-				features: selectCtrl.getInteraction().getFeatures()
-			})
-
-			map.addInteraction(editBar._interactions.ModifySelect)
-			// Activate with select
-			editBar._interactions.ModifySelect.setActive(this._interactions.Select.getActive())
-			editBar._interactions.Select.on('change:active', function () {
-				editBar._interactions.ModifySelect.setActive(this._interactions.Select.getActive())
-			}.bind(editBar))
 
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
