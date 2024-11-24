@@ -622,7 +622,7 @@ var app = (function () {
 				console.log("drawCtrl[change:active]", select, select.getActive());
 				const features = select.getFeatures(); // Get the selected features collection
 
-				select.dispatchEvent({ type: 'select', deselected: features });
+				select.dispatchEvent({ type: 'select', deselected: features, selected: [] });
 
 				// 
 				// if (features) {
