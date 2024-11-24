@@ -1,6 +1,6 @@
 var app = (function () {
 
-	var raster;
+	var tileLayer;
 	var vectorLayer;
 	var map;
 	var modifyInteraction;
@@ -53,27 +53,6 @@ var app = (function () {
 			size: map.getSize(), // Ensures the geometry fits well in the viewport
 			padding: [50, 50, 50, 50], // Optional padding around the feature
 		});
-		// console.log("centerOnFeature");
-
-		// let extent = feature.getGeometry().getExtent(); // Returns [minX, minY, maxX, maxY]
-		// let center = ol.extent.getCenter(extent); // Calculate the center
-
-		// console.log('Center coordinates:', center);
-
-		// minx = extent[0];
-		// miny = extent[1];
-		// maxx = extent[2];
-		// maxy = extent[3];
-		// centerx = (minx + maxx) / 2;
-		// centery = (miny + maxy) / 2;
-		// map.setView(new ol.View({
-		// 	center: [centerx, centery],
-		// 	zoom: 8
-		// }));
-		// map.getView().fit(extent, {
-		// 	size: map.getSize(), // Map size to ensure the geometry fits well
-		// 	padding: [50, 50, 50, 50], // Optional padding around the feature
-		// });
 	}
 
 	function imageCanvas(feature) {
@@ -120,6 +99,7 @@ var app = (function () {
 			return 'Unable to retrieve IP address';
 		}
 	}
+
 	async function getLocation() {
 		return new Promise((resolve, reject) => {
 			// Check if geolocation is available
@@ -199,6 +179,20 @@ var app = (function () {
 		return checksum;
 	}
 
+	function getMapsFeatureCount() {
+		var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
+		if (!vectorLayer) {
+			console.error('No vector layer found on the map.');
+			return 0;
+		}
+
+		// Get all features from the vector layer
+		var features = vectorLayer.getSource().getFeatures();
+
+		return features.length;
+
+	}
+
 	function featuresToMultiPolygon() {
 		// Get the vector layer from the map
 		var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
@@ -238,74 +232,6 @@ var app = (function () {
 
 		// Return the created MultiPolygon geometry
 		return multiPolygon;
-	}
-
-	function featuresToMultiPolygonx(features) {
-		// Helper function: Convert LineString to Polygon
-		function lineStringToPolygon(lineString) {
-			const coordinates = lineString.getCoordinates();
-			if (coordinates.length < 3) return []; // Not enough points for a polygon
-			return [[...coordinates, coordinates[0]]]; // Close the loop to form a Polygon
-		}
-
-		// Helper function: Convert Point to a small Polygon
-		function pointToPolygon(point) {
-			const [x, y] = point.getCoordinates();
-			const radius = 0.0001; // Small buffer radius
-			return [[
-				[x - radius, y - radius],
-				[x + radius, y - radius],
-				[x + radius, y + radius],
-				[x - radius, y + radius],
-				[x - radius, y - radius]
-			]];
-		}
-
-		const polygonCoordinates = getFeaturesFromVectorLayer().getArray().flatMap(feature => {
-			const geometry = feature.getGeometry();
-			if (!geometry) {
-				console.warn('Feature has no geometry.');
-				return [];
-			}
-
-			const geometryType = geometry.getType();
-
-			switch (geometryType) {
-				case 'Polygon':
-					return [geometry.getCoordinates()];
-				case 'MultiPolygon':
-					return geometry.getCoordinates();
-				case 'LineString':
-					return [lineStringToPolygon(geometry)];
-				case 'MultiLineString':
-					return geometry.getCoordinates().map(line => lineStringToPolygon(new ol.geom.LineString(line)));
-				case 'Point':
-					return [pointToPolygon(geometry)];
-				case 'MultiPoint':
-					return geometry.getCoordinates().map(coord => pointToPolygon(new ol.geom.Point(coord)));
-				case 'GeometryCollection':
-					return geometry.getGeometries().flatMap(subGeometry => {
-						const subFeature = new ol.Feature({ geometry: subGeometry });
-						return featuresToMultiPolygon(new ol.Collection([subFeature])).getGeometry().getCoordinates();
-					});
-				default:
-					console.warn(`Unsupported geometry type: ${geometryType}`);
-					return [];
-			}
-		});
-
-		// Ensure valid MultiPolygon coordinates
-		const validCoordinates = polygonCoordinates.filter(coords => coords.length > 0);
-
-		// Create a MultiPolygon geometry from the collected coordinates
-		const multiPolygonGeometry = new ol.geom.MultiPolygon(validCoordinates);
-
-		// Optionally, create a new feature with the MultiPolygon geometry
-		const multiPolygonFeature = new ol.Feature({
-			geometry: multiPolygonGeometry
-		});
-
-		return multiPolygonFeature;
 	}
 
 	var LS_WKTs = {
@@ -503,7 +429,7 @@ var app = (function () {
 
 				await self.addFeatures().then(async function () {
 
-					if (featureCollection.length === 0)
+					if (getMapsFeatureCount() > 0)
 						main.classList.remove("nowkt");
 					else
 						main.classList.add("nowkt");
@@ -527,14 +453,14 @@ var app = (function () {
 			main = document.querySelector(".maincontainer");
 			textarea = document.querySelector("#wktdefault textarea");
 
-			raster = new ol.layer.Tile({
+			tileLayer = new ol.layer.Tile({
 				source: new ol.source.OSM()
 			});
 
 			this.createVector();
 
 			map = new ol.Map({
-				layers: [raster, vectorLayer],
+				layers: [tileLayer, vectorLayer],
 				target: 'map',
 				view: new ol.View({
 					center: defaultCenter,
