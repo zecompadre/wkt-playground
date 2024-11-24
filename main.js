@@ -1,5 +1,22 @@
 var app = (function () {
 
+	const projections = {
+		geodetic: 'EPSG:4326',
+		mercator: 'EPSG:3857',
+	};
+
+	const colors = {
+		normal: '#141414',
+		edit: '#ec7063',
+		snap: '#34495e',
+	};
+
+	const mapDefaults = {
+		latitude: 39.6945,
+		longitude: -8.1234,
+		zoom: 6,
+	};
+
 	var tileLayer;
 	var vectorLayer;
 	var map;
@@ -10,17 +27,7 @@ var app = (function () {
 
 	var lfkey = "zecompadre-wkt";
 
-	var normalColor = '#141414'; //'#005baa';
-	var editColor = '#ec7063';
-	var snapColor = '#34495e';
-
-	var projection_geodetic = 'EPSG:4326';
-	var projection_mercator = 'EPSG:3857';
-
-	var latitude = 39.6945;
-	var longitude = -8.1234;
-
-	var defaultCenter = ol.proj.transform([longitude, latitude], projection_geodetic, projection_mercator);
+	var defaultCenter = ol.proj.transform([mapDefaults.longitude, mapDefaults.latitude], projections.geodetic, projections.mercator);
 
 	var main = document.querySelector(".maincontainer");
 	var textarea = document.querySelector("#wktdefault textarea");
@@ -32,7 +39,7 @@ var app = (function () {
 	function getFeatureWKT(feature) {
 		return format.writeGeometry(new ol.Feature({
 			geometry: feature.getGeometry().clone()
-		}).getGeometry().transform(projection_mercator, projection_geodetic));
+		}).getGeometry().transform(projections.mercator, projections.geodetic));
 	}
 
 	function centerOnFeature(feature) {
@@ -313,14 +320,14 @@ var app = (function () {
 		createVector: function () {
 			vectorLayer = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: featureCollection }),
-				style: styles(normalColor)
+				style: styles(colors.normal)
 			})
 		},
 		toEPSG4326: function (element, index, array) {
-			element = element.getGeometry().transform(projection_mercator, projection_geodetic);
+			element = element.getGeometry().transform(projections.mercator, projections.geodetic);
 		},
 		toEPSG3857: function (element, index, array) {
-			element = element.getGeometry().transform(projection_geodetic, projection_mercator);
+			element = element.getGeometry().transform(projections.geodetic, projections.mercator);
 		},
 		restoreDefaultColors: function () {
 			textarea.style.borderColor = "";
@@ -354,7 +361,7 @@ var app = (function () {
 				textarea.style.backgroundColor = "#F7E8F3";
 				return;
 			} else {
-				new_feature.getGeometry().transform(projection_geodetic, projection_mercator);
+				new_feature.getGeometry().transform(projections.geodetic, projections.mercator);
 				new_feature.setId(id);
 				featureCollection.push(new_feature);
 			}
@@ -436,7 +443,7 @@ var app = (function () {
 
 					await centerMap().then(function () {
 						var multi = featuresToMultiPolygon();
-						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
 						textarea.value = format.writeGeometry(geo);
 
 						map.updateSize();
@@ -464,7 +471,7 @@ var app = (function () {
 				target: 'map',
 				view: new ol.View({
 					center: defaultCenter,
-					zoom: 6
+					zoom: mapDefaults.zoom
 				})
 			});
 
@@ -541,7 +548,7 @@ var app = (function () {
 			selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer"></i>',
 				title: "Select",
-				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(editColor) }),
+				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(colors.edit) }),
 				bar: selectBar,
 				autoActivate: true,
 				active: true
@@ -550,7 +557,7 @@ var app = (function () {
 
 			modifyInteraction = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
-				style: styles(snapColor),
+				style: styles(colors.snap),
 				insertVertexCondition: function () {
 					return true;
 				},
@@ -635,7 +642,7 @@ var app = (function () {
 						textarea.value = getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
 						var multi = featuresToMultiPolygon();
-						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
 						textarea.value = format.writeGeometry(geo);
 					});
 					selectBar.setVisible(false);
@@ -656,7 +663,7 @@ var app = (function () {
 			getLocation().then(location => {
 				console.log("location", location);
 
-				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projection_geodetic, projection_mercator);
+				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
 
 				self.setupMap();
 
