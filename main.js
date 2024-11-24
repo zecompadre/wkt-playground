@@ -697,6 +697,10 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
+			editBar._interactions.ModifySelect = new ol.interaction.ModifyFeature({
+				features: this.getInteraction('Select').getFeatures()
+			})
+
 			map.addInteraction(editBar._interactions.ModifySelect)
 			// Activate with select
 			editBar._interactions.ModifySelect.setActive(this._interactions.Select.getActive())
