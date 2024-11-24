@@ -574,7 +574,7 @@ var app = (function () {
 			select = selectCtrl.getInteraction().on('select', function (evt) {
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
-					console.log("deselected")
+					console.log("deselected", evt)
 					evt.deselected.forEach(function (feature) {
 						textarea.value = utilities.getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
@@ -586,7 +586,7 @@ var app = (function () {
 				}
 
 				if (evt.selected.length > 0) {
-					console.log("selected")
+					console.log("selected", evt)
 					evt.selected.forEach(function (feature) {
 						textarea.value = utilities.getFeatureWKT(feature);
 					});
@@ -622,7 +622,7 @@ var app = (function () {
 				console.log("drawCtrl[change:active]", select, select.getActive());
 				const features = select.getFeatures(); // Get the selected features collection
 
-				select.dispatchEvent({ type: 'select', name: e.target.getAttribute("data-name"), deselected: features });
+				select.dispatchEvent({ type: 'select', deselected: features });
 
 				// 
 				// if (features) {
