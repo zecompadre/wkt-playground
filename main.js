@@ -619,13 +619,13 @@ var app = (function () {
 
 			drawCtrl.getInteraction().on('change:active', function () {
 				var select = selectCtrl.getInteraction();
-				console.log("drawCtrl[change:active]", select.getActive());
-				const features = select.getFeatures(); // Get the selected features collection
-				if (features) {
-					var feature = select.getFeatures().item(0);
-					console.log("selectedFeatures", feature);
-					features.remove(feature);
-				}
+				console.log("drawCtrl[change:active]", select, select.getActive());
+				// const features = select.getFeatures(); // Get the selected features collection
+				// if (features) {
+				// 	var feature = select.getFeatures().item(0);
+				// 	console.log("selectedFeatures", feature);
+				// 	features.remove(feature);
+				// }
 			}.bind(editBar));
 
 			// Undo redo interaction
