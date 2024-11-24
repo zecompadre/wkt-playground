@@ -644,27 +644,7 @@ var app = (function () {
 			selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer"></i>',
 				title: "Select",
-				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(editColor) }).on('select', function (evt) {
-					app.restoreDefaultColors();
-					if (evt.deselected.length > 0) {
-						evt.deselected.forEach(function (feature) {
-							textarea.value = getFeatureWKT(feature);
-							LS_WKTs.update(feature.getId(), textarea.value);
-
-							var multi = featuresToMultiPolygon();
-							var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
-							textarea.value = format.writeGeometry(geo);
-						});
-						selectBar.setVisible(false);
-					}
-
-					if (evt.selected.length > 0) {
-						evt.selected.forEach(function (feature) {
-							textarea.value = getFeatureWKT(feature);
-						});
-						selectBar.setVisible(true);
-					}
-				}),
+				interaction: new ol.interaction.Select({ hitTolerance: 2, style: styles(editColor) }),
 				bar: selectBar,
 				autoActivate: true,
 				active: true
@@ -756,27 +736,27 @@ var app = (function () {
 			// 	}
 			// });
 
-			// 	select = selectCtrl.getInteraction().on('select', function (evt) {
-			// 		app.restoreDefaultColors();
-			// 		if (evt.deselected.length > 0) {
-			// 			evt.deselected.forEach(function (feature) {
-			// 				textarea.value = getFeatureWKT(feature);
-			// 				LS_WKTs.update(feature.getId(), textarea.value);
+			select = selectCtrl.getInteraction().on('select', function (evt) {
+				app.restoreDefaultColors();
+				if (evt.deselected.length > 0) {
+					evt.deselected.forEach(function (feature) {
+						textarea.value = getFeatureWKT(feature);
+						LS_WKTs.update(feature.getId(), textarea.value);
 
-			// 				var multi = featuresToMultiPolygon();
-			// 				var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
-			// 				textarea.value = format.writeGeometry(geo);
-			// 			});
-			// 			selectBar.setVisible(false);
-			// 		}
+						var multi = featuresToMultiPolygon();
+						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
+						textarea.value = format.writeGeometry(geo);
+					});
+					selectBar.setVisible(false);
+				}
 
-			// 		if (evt.selected.length > 0) {
-			// 			evt.selected.forEach(function (feature) {
-			// 				textarea.value = getFeatureWKT(feature);
-			// 			});
-			// 			selectBar.setVisible(true);
-			// 		}
-			// 	});
+				if (evt.selected.length > 0) {
+					evt.selected.forEach(function (feature) {
+						textarea.value = getFeatureWKT(feature);
+					});
+					selectBar.setVisible(true);
+				}
+			});
 		},
 
 		init: function () {
