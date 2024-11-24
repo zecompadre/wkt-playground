@@ -162,7 +162,10 @@ var app = (function () {
 				features.forEach(function (feature) {
 					ol.extent.extend(extent, feature.getGeometry().getExtent());
 				});
-				map.getView().fit(extent, map.getSize());
+				map.getView().fit(extent, {
+					size: map.getSize(), // Map size to ensure the geometry fits well
+					padding: [50, 50, 50, 50], // Optional padding around the feature
+				});
 			}
 			else {
 				console.log("defaultCenter", defaultCenter);
