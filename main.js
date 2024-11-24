@@ -620,14 +620,9 @@ var app = (function () {
 			drawCtrl.getInteraction().on('change:active', function () {
 
 				console.log("drawCtrl[change:active]", selectCtrl.getInteraction().getActive());
-				//selectCtrl.getInteraction().setActive(!drawCtrl.getInteraction().getActive());
-				//modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
-
 				const selectedFeatures = selectCtrl.getInteraction().getFeatures(); // Get the selected features collection
-
-				console.log(selectedFeatures)
 				if (selectedFeatures)
-					selectedFeatures.clear();
+					selectedFeatures.remove(selectCtrl.getInteraction().getFeatures().item(0));
 
 			}.bind(editBar));
 
