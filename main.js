@@ -618,6 +618,9 @@ var app = (function () {
 			});
 
 			drawCtrl.getInteraction().on('change:active', function () {
+
+				console.log("drawCtrl[change:active]", selectCtrl.getInteraction().getActive());
+
 				selectCtrl.getInteraction().setActive(!drawCtrl.getInteraction().getActive());
 				modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			}.bind(editBar));
