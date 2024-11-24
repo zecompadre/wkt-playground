@@ -218,24 +218,65 @@ var app = (function () {
 		return checksum;
 	}
 
-	function featuresToMultiPolygon() {
+	function featuresToMultiPolygon(features) {
+		// Helper function: Convert LineString to Polygon
+		function lineStringToPolygon(lineString) {
+			const coordinates = lineString.getCoordinates();
+			if (coordinates.length < 3) return []; // Not enough points for a polygon
+			return [[...coordinates, coordinates[0]]]; // Close the loop to form a Polygon
+		}
 
-		const polygonCoordinates = features.getArray().map(feature => {
+		// Helper function: Convert Point to a small Polygon
+		function pointToPolygon(point) {
+			const [x, y] = point.getCoordinates();
+			const radius = 0.0001; // Small buffer radius
+			return [[
+				[x - radius, y - radius],
+				[x + radius, y - radius],
+				[x + radius, y + radius],
+				[x - radius, y + radius],
+				[x - radius, y - radius]
+			]];
+		}
+
+		const polygonCoordinates = features.getArray().flatMap(feature => {
 			const geometry = feature.getGeometry();
+			if (!geometry) {
+				console.warn('Feature has no geometry.');
+				return [];
+			}
+
 			const geometryType = geometry.getType();
 
 			switch (geometryType) {
 				case 'Polygon':
-					return [geometry.getCoordinates()]; // Wrap in an array to standardize structure
+					return [geometry.getCoordinates()];
 				case 'MultiPolygon':
-					return geometry.getCoordinates(); // MultiPolygon already provides an array of polygons
+					return geometry.getCoordinates();
+				case 'LineString':
+					return [lineStringToPolygon(geometry)];
+				case 'MultiLineString':
+					return geometry.getCoordinates().map(line => lineStringToPolygon(new ol.geom.LineString(line)));
+				case 'Point':
+					return [pointToPolygon(geometry)];
+				case 'MultiPoint':
+					return geometry.getCoordinates().map(coord => pointToPolygon(new ol.geom.Point(coord)));
+				case 'GeometryCollection':
+					return geometry.getGeometries().flatMap(subGeometry => {
+						const subFeature = new ol.Feature({ geometry: subGeometry });
+						return featuresToMultiPolygon(new ol.Collection([subFeature])).getGeometry().getCoordinates();
+					});
 				default:
-					throw new Error('Feature is neither a Polygon nor a MultiPolygon');
+					console.warn(`Unsupported geometry type: ${geometryType}`);
+					return [];
 			}
-		}).flat();
+		});
 
-		// Create a MultiPolygon geometry
-		const multiPolygonGeometry = new ol.geom.MultiPolygon(polygonCoordinates);
+		// Ensure valid MultiPolygon coordinates
+		const validCoordinates = polygonCoordinates.filter(coords => coords.length > 0);
+
+		// Create a MultiPolygon geometry from the collected coordinates
+		const multiPolygonGeometry = new ol.geom.MultiPolygon(validCoordinates);
 
 		// Optionally, create a new feature with the MultiPolygon geometry
 		const multiPolygonFeature = new ol.Feature({
@@ -245,6 +286,7 @@ var app = (function () {
 		return multiPolygonFeature;
 	}
 
+
 	var LS_WKTs = {
 		load: function () {
 			var wkts = localStorage.getItem(lfkey) || "[]";
@@ -252,7 +294,7 @@ var app = (function () {
 		},
 		remove: function (id) {
 			var wkts = map.get("wkts");
-			wkts.filter(function (item) {
+			wkts = wkts.filter(function (item) {
 				return item.id !== id;
 			});
 			map.set("wkts", wkts);
