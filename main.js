@@ -618,12 +618,14 @@ var app = (function () {
 			});
 
 			drawCtrl.getInteraction().on('change:active', function () {
-
-				console.log("drawCtrl[change:active]", selectCtrl.getInteraction().getActive());
-				const selectedFeatures = selectCtrl.getInteraction().getFeatures(); // Get the selected features collection
-				if (selectedFeatures)
-					selectedFeatures.remove(selectCtrl.getInteraction().getFeatures().item(0));
-
+				console.log("drawCtrl[change:active]", select.getActive());
+				var select = selectCtrl.getInteraction();
+				const features = select.getFeatures(); // Get the selected features collection
+				if (features) {
+					var feature = select.getFeatures().item(0);
+					console.log("selectedFeatures", feature);
+					features.remove(feature);
+				}
 			}.bind(editBar));
 
 			// Undo redo interaction
