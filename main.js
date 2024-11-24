@@ -651,18 +651,18 @@ var app = (function () {
 
 			console.log(deleteBtn.setVisible)
 
-			ol_ext_element.hide(deleteBtn.element);
-			ol_ext_element.hide(infoBtn.element);
+			deleteBtn.element.style.display = 'none';
+			infoBtn.element.style.display = 'none';
 
 			selectCtrl.getInteraction().on('change:active', function () {
 				var features = selectCtrl.getInteraction().getFeatures();
 				if (features.getLength() > 0) {
-					ol_ext_element.show(deleteBtn.element);
-					ol_ext_element.show(infoBtn.element);
+					deleteBtn.element.style.display = '';
+					infoBtn.element.style.display = '';
 				}
 				else {
-					ol_ext_element.hide(deleteBtn.element);
-					ol_ext_element.hide(infoBtn.element);
+					deleteBtn.element.style.display = 'none';
+					infoBtn.element.style.display = 'none';
 				}
 			}.bind(editBar));
 
