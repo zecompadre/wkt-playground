@@ -550,6 +550,9 @@ var app = (function () {
 			modify = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
 				style: styles(snapColor),
+				insertVertexCondition: function () {
+					return true;
+				},
 			})
 
 			map.addInteraction(modify)
