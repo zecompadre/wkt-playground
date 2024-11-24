@@ -698,7 +698,7 @@ var app = (function () {
 			}));
 
 			editBar._interactions.ModifySelect = new ol.interaction.ModifyFeature({
-				features: this.getInteraction('Select').getFeatures()
+				features: selectCtrl.getInteraction().getFeatures()
 			})
 
 			map.addInteraction(editBar._interactions.ModifySelect)
