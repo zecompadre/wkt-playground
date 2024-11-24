@@ -574,6 +574,9 @@ var app = (function () {
 			// Activate with select
 			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
+
+				console.log(this);
+
 				modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			}.bind(editBar));
 
