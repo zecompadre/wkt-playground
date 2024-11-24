@@ -651,22 +651,12 @@ var app = (function () {
 
 			console.log(deleteBtn.setVisible)
 
-			deleteBtn.element.style.display = 'none';
-			infoBtn.element.style.display = 'none';
+			selectBar.setVisible(false);
 
 			selectCtrl.getInteraction().on('change:active', function () {
 				var features = selectCtrl.getInteraction().getFeatures();
-				if (features.getLength() > 0) {
-					deleteBtn.element.style.display = '';
-					infoBtn.element.style.display = '';
-				}
-				else {
-					deleteBtn.element.style.display = 'none';
-					infoBtn.element.style.display = 'none';
-				}
+				selectBar.setVisible(features.getLength() > 0);
 			}.bind(editBar));
-
-			console.log(selectBar);
 
 			modify = new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures()
