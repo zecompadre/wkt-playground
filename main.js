@@ -737,6 +737,9 @@ var app = (function () {
 			// });
 
 			select = drawCtrl.getInteraction().on('select', function (evt) {
+
+				conmsole.log("select", evt);
+
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
 					evt.deselected.forEach(function (feature) {
@@ -746,15 +749,15 @@ var app = (function () {
 						var multi = featuresToMultiPolygon();
 						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
 						textarea.value = format.writeGeometry(geo);
-						selectBar.setVisible(false);
 					});
+					selectBar.setVisible(false);
 				}
 
 				if (evt.selected.length > 0) {
 					evt.selected.forEach(function (feature) {
 						textarea.value = getFeatureWKT(feature);
-						selectBar.setVisible(true);
 					});
+					selectBar.setVisible(true);
 				}
 			});
 		},
