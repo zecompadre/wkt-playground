@@ -624,6 +624,8 @@ var app = (function () {
 				//modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 
 				const selectedFeatures = selectCtrl.getInteraction().getFeatures(); // Get the selected features collection
+
+				console.log(selectedFeatures)
 				if (selectedFeatures)
 					selectedFeatures.clear();
 
