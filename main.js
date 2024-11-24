@@ -555,12 +555,13 @@ var app = (function () {
 				},
 			})
 
-			map.addInteraction(modify)
+			map.addInteraction(modify);
+
 			// Activate with select
-			modify.setActive(selectCtrl.getInteraction().getActive())
-			selectCtrl.getInteraction().on('change:active', function () {
-				modify.setActive(selectCtrl.getInteraction().getActive())
-			}.bind(editBar));
+			// modify.setActive(selectCtrl.getInteraction().getActive())
+			// selectCtrl.getInteraction().on('change:active', function () {
+			// 	modify.setActive(selectCtrl.getInteraction().getActive())
+			// }.bind(editBar));
 
 			drawCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-draw-polygon"></i>',
