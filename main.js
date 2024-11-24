@@ -736,7 +736,7 @@ var app = (function () {
 			// 	}
 			// });
 
-			select = drawCtrl.getInteraction().on('select', function (evt) {
+			select = selectCtrl.getInteraction().on('select', function (evt) {
 
 				conmsole.log("select", evt);
 
