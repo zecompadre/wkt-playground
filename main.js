@@ -622,9 +622,10 @@ var app = (function () {
 
 			drawCtrl.getInteraction().on('change:active', function () {
 				var select = selectCtrl.getInteraction();
-				console.log("drawCtrl[change:active]", select, select.getActive());
+				var active = select.getActive();
+				console.log("drawCtrl[change:active]", select, active);
 				const features = select.getFeatures(); // Get the selected features collection
-				if (features) {
+				if (!active && features) {
 					var feature = select.getFeatures().item(0);
 					select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
 					features.remove(feature);
