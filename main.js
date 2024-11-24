@@ -602,13 +602,18 @@ var app = (function () {
 				html: '<i class="fa fa-times"></i>',
 				title: "Delete",
 				handleClick: function () {
-					// var features = select.getInteraction().getFeatures();
-					// if (!features.getLength()) info("Select an object first...");
-					// else info(features.getLength() + " object(s) deleted.");
-					// for (var i = 0, f; f = features.item(i); i++) {
-					// 	vector.getSource().removeFeature(f);
-					// }
-					// select.getInteraction().getFeatures().clear();
+					var features = selectCtrl.getInteraction().getFeatures();
+
+					if (!features.getLength())
+						textarea.value = "Select an object first...";
+					else {
+						var feature = features.item(0);
+						LS_WKTs.remove(feature.getId());
+						for (var i = 0, f; f = features.item(i); i++) {
+							vector.getSource().removeFeature(f);
+						}
+						features.clear();
+					}
 				}
 			}));
 
@@ -616,17 +621,14 @@ var app = (function () {
 				html: '<i class="fa fa-info"></i>',
 				title: "Show informations",
 				handleClick: function () {
-					// switch (selectCtrl.getInteraction().getFeatures().getLength()) {
-					// 	case 0: info("Select an object first...");
-					// 		break;
-					// 	case 1:
-					// 		var f = selectCtrl.getInteraction().getFeatures().item(0);
-					// 		info("Selection is a " + f.getGeometry().getType());
-					// 		break;
-					// 	default:
-					// 		info(selectCtrl.getInteraction().getFeatures().getLength() + " objects seleted.");
-					// 		break;
-					// }
+					switch (selectCtrl.getInteraction().getFeatures().getLength()) {
+						case 0:
+							textarea.value = "Select an object first...";
+							break;
+						case 1:
+							textarea.value = getFeatureWKT(selectCtrl.getInteraction().getFeatures().item(0));
+							break;
+					}
 				}
 			}));
 
