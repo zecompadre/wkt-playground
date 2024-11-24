@@ -627,7 +627,7 @@ var app = (function () {
 				if (features) {
 					var feature = select.getFeatures().item(0);
 					select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
-					//features.remove(feature);
+					features.remove(feature);
 				}
 			}.bind(editBar));
 
