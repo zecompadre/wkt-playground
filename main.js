@@ -697,6 +697,13 @@ var app = (function () {
 				source: vector.getSource()
 			}));
 
+			map.addInteraction(editBar._interactions.ModifySelect)
+			// Activate with select
+			editBar._interactions.ModifySelect.setActive(this._interactions.Select.getActive())
+			editBar._interactions.Select.on('change:active', function () {
+				editBar._interactions.ModifySelect.setActive(this._interactions.Select.getActive())
+			}.bind(editBar))
+
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
 				wkt = getFeatureWKT(evt.feature);
 				await LS_WKTs.add(wkt).then(function (result) {
