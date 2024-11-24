@@ -479,6 +479,18 @@ var app = (function () {
 				})
 			});
 
+			map.addInteraction(new ol.interaction.DragPan({
+				condition: function (event) {
+					return true;
+				}
+			}));
+
+			map.addInteraction(new ol.interaction.MouseWheelZoom({
+				condition: function (event) {
+					return true;
+				}
+			}));
+
 			// Main control bar
 			var mainBar = new ol.control.Bar();
 			map.addControl(mainBar);
@@ -618,18 +630,6 @@ var app = (function () {
 
 			map.addInteraction(new ol.interaction.Snap({
 				source: vector.getSource()
-			}));
-
-			map.addInteraction(new ol.interaction.DragPan({
-				condition: function (event) {
-					return true;
-				}
-			}));
-
-			map.addInteraction(new ol.interaction.MouseWheelZoom({
-				condition: function (event) {
-					return true;
-				}
 			}));
 
 			draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
