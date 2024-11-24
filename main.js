@@ -644,6 +644,9 @@ var app = (function () {
 			});
 			editBar.addControl(selectCtrl);
 
+			console.log(selectBar.getControls())
+			console.log(selectBar.getControlsByName("Delete"))
+
 			selectBar.getControlsByName("Delete").setVisible(selectCtrl.getInteraction().getActive())
 			selectBar.getControlsByName("Info").setVisible(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
