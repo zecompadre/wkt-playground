@@ -618,8 +618,8 @@ var app = (function () {
 			});
 
 			drawCtrl.getInteraction().on('change:active', function () {
-				select.setActive(!drawCtrl.getInteraction().getActive());
-				modifyInteraction.setActive(select.getActive())
+				selectCtrl.getInteraction().setActive(!drawCtrl.getInteraction().getActive());
+				modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			}.bind(editBar));
 
 			// Undo redo interaction
