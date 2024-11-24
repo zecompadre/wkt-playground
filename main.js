@@ -574,9 +574,6 @@ var app = (function () {
 			// Activate with select
 			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			selectCtrl.getInteraction().on('change:active', function () {
-
-				console.log(this);
-
 				modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 			}.bind(editBar));
 
@@ -647,6 +644,7 @@ var app = (function () {
 			select = selectCtrl.getInteraction().on('select', function (evt) {
 				app.restoreDefaultColors();
 				if (evt.deselected.length > 0) {
+					console.log("deselected")
 					evt.deselected.forEach(function (feature) {
 						textarea.value = utilities.getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
@@ -658,6 +656,7 @@ var app = (function () {
 				}
 
 				if (evt.selected.length > 0) {
+					console.log("selected")
 					evt.selected.forEach(function (feature) {
 						textarea.value = utilities.getFeatureWKT(feature);
 					});
