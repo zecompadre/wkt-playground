@@ -179,24 +179,18 @@ var app = (function () {
 	}
 
 	async function centerMap() {
-		return new Promise((resolve, reject) => {
-			if (!main.classList.contains("nowkt")) {
-				var extent = ol.extent.createEmpty();
-				features.forEach(function (feature) {
-					ol.extent.extend(extent, feature.getGeometry().getExtent());
-				});
-				map.getView().fit(extent, {
-					size: map.getSize(), // Map size to ensure the geometry fits well
-					padding: [50, 50, 50, 50], // Optional padding around the feature
-				});
-			}
-			else {
-				console.log("defaultCenter", defaultCenter);
-				map.getView().setCenter(defaultCenter);
-				map.getView().setZoom(16);
-			}
-			resolve();
-		});
+		if (!main.classList.contains("nowkt")) {
+			const extent = ol.extent.createEmpty();
+			features.forEach(feature => ol.extent.extend(extent, feature.getGeometry().getExtent()));
+			map.getView().fit(extent, {
+				size: map.getSize(),
+				padding: [50, 50, 50, 50],
+			});
+		} else {
+			console.log("defaultCenter", defaultCenter);
+			map.getView().setCenter(defaultCenter);
+			map.getView().setZoom(16);
+		}
 	}
 
 	function hexToRgbA(hex) {
@@ -352,15 +346,10 @@ var app = (function () {
 			else
 				console.error("Falha ao criar a camada 'vector'. Verifique a função createVector.");
 		},
-		// resetFeatures: async function () {
-		// 	features = new ol.Collection();
-		// 	map.removeLayer(vector);
-		// 	//deselectFeature()
-		// },
-		plotWKT: function (id, wkt) {
+		addToFeatures: function (id, wkt) {
 			var new_feature;
-			wkt_string = wkt || textarea.value;
-			if (wkt_string == "") {
+			var wkt_string = wkt || textarea.value;
+			if (wkt_string === "") {
 				textarea.style.borderColor = "red";
 				textarea.style.backgroundColor = "#F7E8F3";
 				return;
@@ -368,6 +357,7 @@ var app = (function () {
 				try {
 					new_feature = format.readFeature(wkt_string);
 				} catch (err) {
+					console.error('Error reading WKT:', err);
 				}
 			}
 			if (!new_feature) {
@@ -433,14 +423,14 @@ var app = (function () {
 					wkts.forEach(item => {
 						if (checksum !== "" && item.id === checksum)
 							exists = true;
-						self.plotWKT(item.id, item.wkt);
+						self.addToFeatures(item.id, item.wkt);
 						idx = idx + 1;
 					});
 				}
 
 				if (wkt != "" && !exists) {
 					wkts.push({ id: checksum, wkt: wkt });
-					self.plotWKT(checksum, wkt);
+					self.addToFeatures(checksum, wkt);
 					idx = idx + 1;
 				}
 
@@ -450,7 +440,7 @@ var app = (function () {
 
 				await self.addFeatures().then(async function () {
 
-					if (getFeatureCount(map) === 0)
+					if (features.length === 0)
 						main.classList.remove("nowkt");
 					else
 						main.classList.add("nowkt");
@@ -622,9 +612,9 @@ var app = (function () {
 			// 	}
 			// );
 
-			map.addInteraction(new ol.interaction.Snap({
-				source: vector.getSource()
-			}));
+			// map.addInteraction(new ol.interaction.Snap({
+			// 	source: vector.getSource()
+			// }));
 
 			map.addInteraction(new ol.interaction.DragPan({
 				condition: function (event) {
@@ -651,7 +641,6 @@ var app = (function () {
 					evt.deselected.forEach(function (feature) {
 						textarea.value = getFeatureWKT(feature);
 						LS_WKTs.update(feature.getId(), textarea.value);
-
 						var multi = featuresToMultiPolygon();
 						var geo = multi.getGeometry().transform(projection_mercator, projection_geodetic);
 						textarea.value = format.writeGeometry(geo);
