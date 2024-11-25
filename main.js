@@ -17,7 +17,9 @@ var app = (function () {
 		zoom: 6,
 	};
 
-	let map, vectorLayer, format, defaultCenter, featureCollection;
+	let map, vectorLayer, format, defaultCenter, featureCollection, main, textarea, modifyInteraction, undoInteraction;
+
+	let lfkey = "zecompadre-wkt";
 
 	const utilities = {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
@@ -368,15 +370,11 @@ var app = (function () {
 		},
 	}
 
-	var modifyInteraction;
-	var undoInteraction;
-
-	var lfkey = "zecompadre-wkt";
-
-	var main = document.querySelector(".maincontainer");
-	var textarea = document.querySelector("#wktdefault textarea");
-
 	function setupMap() {
+
+		main = document.querySelector(".maincontainer");
+		textarea = document.querySelector("#wktdefault textarea");
+
 		format = new ol.format.WKT();
 		featureCollection = new ol.Collection();
 		defaultCenter = utilities.transformCoordinates(
