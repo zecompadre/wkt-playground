@@ -526,8 +526,8 @@ var app = (function () {
 		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
 			wkt = utilities.getFeatureWKT(evt.feature);
 			await wktUtilities.add(wkt).then(function (result) {
-				featureUtilities.centerOnFeature(evt.feature);
 				mapUtilities.reviewLayout(false);
+				featureUtilities.centerOnFeature(evt.feature);
 			});
 		});
 
