@@ -273,18 +273,23 @@ var app = (function () {
 				await featureUtilities.addFeatures().then(async function () {
 
 					if (mapUtilities.getFeatureCount() > 0)
+					{
 						main.classList.remove("nowkt");
+						await mapUtilities.center().then(function () {
+							var multi = featureUtilities.featuresToMultiPolygon();
+							var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
+							textarea.value = format.writeGeometry(geo);
+	
+							map.updateSize();
+						});
+					}
 					else
+					{
 						main.classList.add("nowkt");
-
-					await mapUtilities.center().then(function () {
-						var multi = featureUtilities.featuresToMultiPolygon();
-						var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
-						textarea.value = format.writeGeometry(geo);
-
-						map.updateSize();
-					});
-
+						await mapUtilities.center().then(function () {
+							map.updateSize();
+						});
+					}
 				});
 			});
 			// });
