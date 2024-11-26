@@ -431,7 +431,7 @@ var app = (function () {
 					}
 					features.clear();
 
-					mapUtilities.getFeatureCount() === 0 ? main.classList.add("nowkt") : main.classList.remove("nowkt");
+					console.log("getFeatureCount", mapUtilities.getFeatureCount());
 				}
 			}
 		});
