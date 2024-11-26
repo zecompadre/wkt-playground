@@ -413,7 +413,7 @@ var app = (function () {
 		var mainBar = new ol.control.Bar();
 		map.addControl(mainBar);
 
-		mapToolbarObjects.push({ mainBar: mainBar });
+		mapToolbarObjects.mainBar = mainBar;
 
 		// Edit control bar 
 		var editBar = new ol.control.Bar({
@@ -422,14 +422,14 @@ var app = (function () {
 		});
 		mainBar.addControl(editBar);
 
-		mapToolbarObjects.push({ editBar: editBar });
+		mapToolbarObjects.editBar = editBar;
 
 		// Add selection tool:
 		//  1- a toggle control with a select interaction
 		//  2- an option bar to delete / get information on the selected feature
 		var selectBar = new ol.control.Bar();
 
-		mapToolbarObjects.push({ selectBar: selectBar });
+		mapToolbarObjects.selectBar = selectBar;
 
 		var deleteBtn = new ol.control.Button({
 			html: '<i class="fa fa-times"></i>',
@@ -451,7 +451,7 @@ var app = (function () {
 			}
 		});
 
-		mapToolbarObjects.push({ deleteBtn: deleteBtn });
+		mapToolbarObjects.deleteBtn = deleteBtn;
 
 		selectBar.addControl(deleteBtn);
 
@@ -471,7 +471,7 @@ var app = (function () {
 			}
 		});
 
-		mapToolbarObjects.push({ infoBtn: infoBtn });
+		mapToolbarObjects.infoBtn = infoBtn;
 
 		selectBar.addControl(infoBtn);
 
@@ -486,7 +486,7 @@ var app = (function () {
 			active: true
 		});
 
-		mapToolbarObjects.push({ selectCtrl: selectCtrl });
+		mapToolbarObjects.selectCtrl = selectCtrl;
 
 		editBar.addControl(selectCtrl);
 
@@ -498,7 +498,7 @@ var app = (function () {
 			},
 		})
 
-		mapToolbarObjects.push({ modifyInteraction: modifyInteraction });
+		mapToolbarObjects.modifyInteraction = modifyInteraction;
 
 		map.addInteraction(modifyInteraction);
 
@@ -537,7 +537,7 @@ var app = (function () {
 			})
 		});
 
-		mapToolbarObjects.push({ drawCtrl: drawCtrl });
+		mapToolbarObjects.drawCtrl = drawCtrl;
 
 		editBar.addControl(drawCtrl);
 
@@ -564,7 +564,7 @@ var app = (function () {
 		undoInteraction = new ol.interaction.UndoRedo();
 		map.addInteraction(undoInteraction);
 
-		mapToolbarObjects.push({ undoInteraction: undoInteraction });
+		mapToolbarObjects.undoInteraction = undoInteraction;
 
 		// Add buttons to the bar
 		var undoBar = new ol.control.Bar({
