@@ -524,10 +524,11 @@ var app = (function () {
 		editBar.addControl(drawCtrl);
 
 		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
-			mapUtilities.reviewLayout(false);
-			wkt = utilities.getFeatureWKT(evt.feature);
-			await wktUtilities.add(wkt).then(function (result) {
-				featureUtilities.centerOnFeature(evt.feature);
+			mapUtilities.reviewLayout(false).then(async function () {
+				wkt = utilities.getFeatureWKT(evt.feature);
+				await wktUtilities.add(wkt).then(function (result) {
+					featureUtilities.centerOnFeature(evt.feature);
+				});
 			});
 		});
 
