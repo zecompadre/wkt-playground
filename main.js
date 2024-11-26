@@ -108,13 +108,7 @@ var app = (function () {
 				// Get current position
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
-						const latitude = position.coords.latitude.toFixed(4);
-						const longitude = position.coords.longitude.toFixed(4);
-
-						console.log(`Latitude: ${latitude}`);
-						console.log(`Longitude: ${longitude}`);
-
-						resolve({ latitude: latitude, longitude: longitude });
+						resolve({ latitude: position.coords.latitude.toFixed(4), longitude: position.coords.longitude.toFixed(4) });
 					},
 					handleError
 				);
@@ -225,17 +219,10 @@ var app = (function () {
 				console.error('No vector layer found on the map.');
 				return 0;
 			}
-
-			// Get all features from the vector layer
 			var features = vectorLayer.getSource().getFeatures();
-
 			return features.length;
-
 		},
 		loadWKTs: async function (readcb) {
-
-			var self = this;
-
 			wktUtilities.load();
 
 			var wkts = wktUtilities.get();
@@ -346,18 +333,13 @@ var app = (function () {
 			this.save();
 		},
 		readClipboard: async function () {
-
 			var returnVal = "";
-
 			try {
-
 				textarea.focus();
-
 				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
 				if (permission.state === 'denied') {
 					throw new Error('Not allowed to read clipboard.');
 				}
-
 				const text = await navigator.clipboard.readText();
 				if (text.indexOf('POLYGON') !== -1) {
 					returnVal = text;
@@ -439,7 +421,6 @@ var app = (function () {
 			title: "Delete",
 			handleClick: function () {
 				var features = selectCtrl.getInteraction().getFeatures();
-
 				if (!features.getLength())
 					textarea.value = "Select an object first...";
 				else {
@@ -449,6 +430,8 @@ var app = (function () {
 						vectorLayer.getSource().removeFeature(f);
 					}
 					features.clear();
+
+					mapUtilities.getFeatureCount() === 0 ? main.classList.add("nowkt") : main.classList.remove("nowkt");
 				}
 			}
 		});
@@ -497,9 +480,6 @@ var app = (function () {
 
 		select = selectCtrl.getInteraction().on('select', function (evt) {
 			utilities.restoreDefaultColors();
-
-			console.log("evt", evt)
-
 			if (evt.deselected.length > 0) {
 				console.log("deselected", evt)
 				evt.deselected.forEach(function (feature) {
@@ -511,7 +491,6 @@ var app = (function () {
 				});
 				selectBar.setVisible(false);
 			}
-
 			if (evt.selected.length > 0) {
 				console.log("selected", evt)
 				evt.selected.forEach(function (feature) {
