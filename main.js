@@ -549,13 +549,13 @@ var app = (function () {
 			var active = select.getActive();
 			console.log("drawCtrl[change:active]", select, active);
 			const features = select.getFeatures(); // Get the selected features collection
-			if (!active && features) {
+			if (!active && features.length > 0) {
 				var feature = select.getFeatures().item(0);
 
 				console.log(feature)
 
-				//select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
-				//features.remove(feature);
+				select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
+				features.remove(feature);
 			}
 		}.bind(editBar));
 
