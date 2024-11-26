@@ -134,14 +134,16 @@ var app = (function () {
 	};
 
 	const featureUtilities = {
-		deselectCurrentFeature: function () {
+		deselectCurrentFeature: function (active) {
 
 			console.log("deselectCurrentFeature")
 
 			var selectInteraction = mapControls.selectCtrl.getInteraction();
-			var activeSelection = selectInteraction.getActive();
+			var conditionSelection = selectInteraction.getActive();
+			if (!active)
+				conditionSelection = !conditionSelection;
 			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
-			if (activeSelection && selectedFeatures.getArray().length > 0) {
+			if (conditionSelection && selectedFeatures.getArray().length > 0) {
 				var activeFeature = selectedFeatures.item(0);
 				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
 				selectedFeatures.remove(activeFeature);
@@ -563,7 +565,7 @@ var app = (function () {
 		});
 
 		drawCtrl.getInteraction().on('change:active', function () {
-			featureUtilities.deselectCurrentFeature();
+			featureUtilities.deselectCurrentFeature(false);
 		}.bind(editBar));
 
 		// Undo redo interaction
@@ -621,7 +623,7 @@ var app = (function () {
 					if (!mapControls.selectCtrl.getActive()) {
 						mapControls.selectCtrl.setActive(true);
 					} else {
-						featureUtilities.deselectCurrentFeature();
+						featureUtilities.deselectCurrentFeature(true);
 					}
 					break;
 				case 'Delete':
