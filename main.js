@@ -626,7 +626,7 @@ var app = (function () {
 				case 'Delete':
 					if (mapControls.selectCtrl.getActive()) {
 						var selectInteraction = mapControls.selectCtrl.getInteraction();
-						if (selectInteraction.getActive()) {
+						if (mapControls.selectCtrl.getActive()) {
 							selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
 							if (selectedFeatures.getArray().length > 0) {
 								mapControls.deleteBtn.click();
