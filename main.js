@@ -203,7 +203,7 @@ var app = (function () {
 	};
 
 	const mapUtilities = {
-		reviewLayout: async function () {
+		reviewLayout: async function (center) {
 			if (mapUtilities.getFeatureCount() > 0) {
 				main.classList.remove("nowkt");
 				featureUtilities.createFromAllFeatures();
@@ -211,9 +211,14 @@ var app = (function () {
 			else {
 				main.classList.add("nowkt");
 			}
-			await mapUtilities.center().then(function () {
+			if (center) {
+				await mapUtilities.center().then(function () {
+					map.updateSize();
+				});
+			}
+			else {
 				map.updateSize();
-			});
+			}
 		},
 		center: async function () {
 			if (!main.classList.contains("nowkt")) {
@@ -279,7 +284,7 @@ var app = (function () {
 				wktUtilities.save()
 
 				await featureUtilities.addFeatures().then(async function () {
-					self.reviewLayout();
+					self.reviewLayout(true);
 				});
 			});
 			// });
@@ -433,7 +438,7 @@ var app = (function () {
 						vectorLayer.getSource().removeFeature(f);
 					}
 					features.clear();
-					mapUtilities.reviewLayout();
+					mapUtilities.reviewLayout(true);
 				}
 			}
 		});
@@ -519,6 +524,7 @@ var app = (function () {
 		editBar.addControl(drawCtrl);
 
 		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
+			mapUtilities.reviewLayout(false);
 			wkt = utilities.getFeatureWKT(evt.feature);
 			await wktUtilities.add(wkt).then(function (result) {
 				featureUtilities.centerOnFeature(evt.feature);
