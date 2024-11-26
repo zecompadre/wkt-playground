@@ -611,6 +611,9 @@ var app = (function () {
 			utilities.getLocation().then(location => {
 				console.log("location", location);
 
+
+				mapDefaults.longitude = location.longitude;
+				mapDefaults.latitude = location.latitude;
 				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
 
 				setupMap();
