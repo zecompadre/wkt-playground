@@ -135,9 +135,6 @@ var app = (function () {
 
 	const featureUtilities = {
 		deselectCurrentFeature: function (active) {
-
-			console.log("deselectCurrentFeature")
-
 			var selectInteraction = mapControls.selectCtrl.getInteraction();
 			var conditionSelection = selectInteraction.getActive();
 			if (!active)
@@ -627,7 +624,15 @@ var app = (function () {
 					}
 					break;
 				case 'Delete':
-
+					if (mapControls.selectCtrl.getActive()) {
+						var selectInteraction = mapControls.selectCtrl.getInteraction();
+						if (selectInteraction.getActive()) {
+							selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
+							if (selectedFeatures.getArray().length > 0) {
+								mapControls.deleteBtn.click();
+							}
+						}
+					}
 					break;
 			}
 		}, false);
