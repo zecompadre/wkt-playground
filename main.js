@@ -629,7 +629,7 @@ var app = (function () {
 						if (mapControls.selectCtrl.getActive()) {
 							selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
 							if (selectedFeatures.getArray().length > 0) {
-								mapControls.deleteBtn.dispatchEvent({ type: 'click' });
+								mapControls.deleteBtn.dispatchEvent('click');
 								//console.log(mapControls.deleteBtn)
 							}
 						}
