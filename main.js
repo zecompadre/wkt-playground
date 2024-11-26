@@ -134,6 +134,16 @@ var app = (function () {
 	};
 
 	const featureUtilities = {
+		deselectCurrentFeature: function () {
+			var selectInteraction = mapControls.selectCtrl.getInteraction();
+			var activeSelection = selectInteraction.getActive();
+			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
+			if (!activeSelection && selectedFeatures.getArray().length > 0) {
+				var activeFeature = selectedFeatures.item(0);
+				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
+				selectedFeatures.remove(activeFeature);
+			}
+		},
 		createFromAllFeatures: function () {
 			var multi = this.featuresToMultiPolygon();
 			var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
@@ -550,14 +560,7 @@ var app = (function () {
 		});
 
 		drawCtrl.getInteraction().on('change:active', function () {
-			var selectInteraction = selectCtrl.getInteraction();
-			var activeSelection = selectInteraction.getActive();
-			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
-			if (!activeSelection && selectedFeatures.getArray().length > 0) {
-				var activeFeature = selectedFeatures.item(0);
-				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
-				selectedFeatures.remove(activeFeature);
-			}
+			featureUtilities.deselectCurrentFeature();
 		}.bind(editBar));
 
 		// Undo redo interaction
@@ -612,7 +615,12 @@ var app = (function () {
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
 				case 'Escape':
-					mapControls.selectCtrl.setActive(true);
+					if (!mapControls.selectCtrl.getActive()) {
+						mapControls.selectCtrl.setActive(true);
+					} else {
+						featureUtilities.deselectCurrentFeature();
+					}
+
 					break;
 				case 'Delete':
 
