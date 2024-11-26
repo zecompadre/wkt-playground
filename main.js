@@ -31,6 +31,8 @@ var app = (function () {
 			return `rgba(${r}, ${g}, ${b}, 0.2)`;
 		},
 		getFeatureWKT: (feature) => {
+			if(!feature)
+				return "";
 			const geom = feature.getGeometry().clone();
 			return format.writeGeometry(geom.transform(projections.mercator, projections.geodetic));
 		},
