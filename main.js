@@ -198,6 +198,12 @@ var app = (function () {
 	};
 
 	const mapUtilities = {
+		reset: async function () {
+			main.classList.add("nowkt");
+			await mapUtilities.center().then(function () {
+				map.updateSize();
+			});
+		},
 		center: async function () {
 			if (!main.classList.contains("nowkt")) {
 				const extent = ol.extent.createEmpty();
@@ -223,6 +229,8 @@ var app = (function () {
 			return features.length;
 		},
 		loadWKTs: async function (readcb) {
+			var self = this;
+
 			wktUtilities.load();
 
 			var wkts = wktUtilities.get();
@@ -272,10 +280,7 @@ var app = (function () {
 						});
 					}
 					else {
-						main.classList.add("nowkt");
-						await mapUtilities.center().then(function () {
-							map.updateSize();
-						});
+						self.reset();
 					}
 				});
 			});
@@ -430,8 +435,9 @@ var app = (function () {
 						vectorLayer.getSource().removeFeature(f);
 					}
 					features.clear();
-
-					console.log("getFeatureCount", mapUtilities.getFeatureCount());
+					if (mapUtilities.getFeatureCount() === 0) {
+						mapUtilities.reset();
+					}
 				}
 			}
 		});
