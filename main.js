@@ -132,6 +132,11 @@ var app = (function () {
 	};
 
 	const featureUtilities = {
+		createFromAllFeatures: function () {
+			var multi = this.featuresToMultiPolygon();
+			var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
+			textarea.value = format.writeGeometry(geo);
+		},
 		centerOnFeature: (feature) => {
 			const extent = feature.getGeometry().getExtent();
 			const center = ol.extent.getCenter(extent);
@@ -198,8 +203,14 @@ var app = (function () {
 	};
 
 	const mapUtilities = {
-		reset: async function () {
-			main.classList.add("nowkt");
+		reviewLayout: async function () {
+			if (mapUtilities.getFeatureCount() > 0) {
+				main.classList.remove("nowkt");
+				featureUtilities.createFromAllFeatures();
+			}
+			else {
+				main.classList.add("nowkt");
+			}
 			await mapUtilities.center().then(function () {
 				map.updateSize();
 			});
@@ -268,20 +279,7 @@ var app = (function () {
 				wktUtilities.save()
 
 				await featureUtilities.addFeatures().then(async function () {
-
-					if (mapUtilities.getFeatureCount() > 0) {
-						main.classList.remove("nowkt");
-						await mapUtilities.center().then(function () {
-							var multi = featureUtilities.featuresToMultiPolygon();
-							var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
-							textarea.value = format.writeGeometry(geo);
-
-							map.updateSize();
-						});
-					}
-					else {
-						self.reset();
-					}
+					self.reviewLayout();
 				});
 			});
 			// });
@@ -435,9 +433,7 @@ var app = (function () {
 						vectorLayer.getSource().removeFeature(f);
 					}
 					features.clear();
-					if (mapUtilities.getFeatureCount() === 0) {
-						mapUtilities.reset();
-					}
+					mapUtilities.reviewLayout();
 				}
 			}
 		});
