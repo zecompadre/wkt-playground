@@ -21,6 +21,8 @@ var app = (function () {
 
 	let lfkey = "zecompadre-wkt";
 
+	let mapToolbarObjects = {};
+
 	const utilities = {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
 		hexToRgbA: (hex) => {
@@ -210,6 +212,7 @@ var app = (function () {
 			}
 			else {
 				main.classList.add("nowkt");
+				mapToolbarObjects.selectBar.setVisible(false);
 			}
 			if (center) {
 				await mapUtilities.center().then(function () {
@@ -229,7 +232,6 @@ var app = (function () {
 					padding: [50, 50, 50, 50],
 				});
 			} else {
-				console.log("defaultCenter", defaultCenter);
 				map.getView().setCenter(defaultCenter);
 				map.getView().setZoom(16);
 			}
@@ -411,6 +413,8 @@ var app = (function () {
 		var mainBar = new ol.control.Bar();
 		map.addControl(mainBar);
 
+		mapToolbarObjects.push({ mainBar: mainBar });
+
 		// Edit control bar 
 		var editBar = new ol.control.Bar({
 			toggleOne: true,	// one control active at the same time
@@ -418,10 +422,14 @@ var app = (function () {
 		});
 		mainBar.addControl(editBar);
 
+		mapToolbarObjects.push({ editBar: editBar });
+
 		// Add selection tool:
 		//  1- a toggle control with a select interaction
 		//  2- an option bar to delete / get information on the selected feature
 		var selectBar = new ol.control.Bar();
+
+		mapToolbarObjects.push({ selectBar: selectBar });
 
 		var deleteBtn = new ol.control.Button({
 			html: '<i class="fa fa-times"></i>',
@@ -443,6 +451,8 @@ var app = (function () {
 			}
 		});
 
+		mapToolbarObjects.push({ deleteBtn: deleteBtn });
+
 		selectBar.addControl(deleteBtn);
 
 		var infoBtn = new ol.control.Button({
@@ -461,6 +471,8 @@ var app = (function () {
 			}
 		});
 
+		mapToolbarObjects.push({ infoBtn: infoBtn });
+
 		selectBar.addControl(infoBtn);
 
 		selectBar.setVisible(false);
@@ -473,6 +485,9 @@ var app = (function () {
 			autoActivate: true,
 			active: true
 		});
+
+		mapToolbarObjects.push({ selectCtrl: selectCtrl });
+
 		editBar.addControl(selectCtrl);
 
 		modifyInteraction = new ol.interaction.ModifyFeature({
@@ -483,6 +498,8 @@ var app = (function () {
 			},
 		})
 
+		mapToolbarObjects.push({ modifyInteraction: modifyInteraction });
+
 		map.addInteraction(modifyInteraction);
 
 		select = selectCtrl.getInteraction().on('select', function (evt) {
@@ -492,9 +509,7 @@ var app = (function () {
 				evt.deselected.forEach(function (feature) {
 					textarea.value = utilities.getFeatureWKT(feature);
 					wktUtilities.update(feature.getId(), textarea.value);
-					var multi = featureUtilities.featuresToMultiPolygon();
-					var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
-					textarea.value = format.writeGeometry(geo);
+					featureUtilities.createFromAllFeatures();
 				});
 				selectBar.setVisible(false);
 			}
@@ -521,6 +536,9 @@ var app = (function () {
 				source: vectorLayer.getSource()
 			})
 		});
+
+		mapToolbarObjects.push({ drawCtrl: drawCtrl });
+
 		editBar.addControl(drawCtrl);
 
 		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
@@ -545,6 +563,8 @@ var app = (function () {
 		// Undo redo interaction
 		undoInteraction = new ol.interaction.UndoRedo();
 		map.addInteraction(undoInteraction);
+
+		mapToolbarObjects.push({ undoInteraction: undoInteraction });
 
 		// Add buttons to the bar
 		var undoBar = new ol.control.Bar({
