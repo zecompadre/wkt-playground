@@ -548,7 +548,7 @@ var app = (function () {
 			var select = selectCtrl.getInteraction();
 			var active = select.getActive();
 			const features = select.getFeatures(); // Get the selected features collection
-			console.log("drawCtrl[change:active]", select, active, typeof features);
+			console.log("drawCtrl[change:active]", select, active, typeof features, features.length);
 			if (!active && features.length > 0) {
 				var feature = features.item(0);
 				select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
