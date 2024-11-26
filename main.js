@@ -505,7 +505,7 @@ var app = (function () {
 				evt.deselected.forEach(function (feature) {
 					textarea.value = utilities.getFeatureWKT(feature);
 					wktUtilities.update(feature.getId(), textarea.value);
-					var multi = featuresToMultiPolygon();
+					var multi = featureUtilities.featuresToMultiPolygon();
 					var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
 					textarea.value = format.writeGeometry(geo);
 				});
