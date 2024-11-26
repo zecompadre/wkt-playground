@@ -135,10 +135,13 @@ var app = (function () {
 
 	const featureUtilities = {
 		deselectCurrentFeature: function () {
+
+			console.log("deselectCurrentFeature")
+
 			var selectInteraction = mapControls.selectCtrl.getInteraction();
 			var activeSelection = selectInteraction.getActive();
 			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
-			if (!activeSelection && selectedFeatures.getArray().length > 0) {
+			if (activeSelection && selectedFeatures.getArray().length > 0) {
 				var activeFeature = selectedFeatures.item(0);
 				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
 				selectedFeatures.remove(activeFeature);
@@ -620,7 +623,6 @@ var app = (function () {
 					} else {
 						featureUtilities.deselectCurrentFeature();
 					}
-
 					break;
 				case 'Delete':
 
