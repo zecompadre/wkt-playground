@@ -545,14 +545,13 @@ var app = (function () {
 		});
 
 		drawCtrl.getInteraction().on('change:active', function () {
-			var select = selectCtrl.getInteraction();
-			var active = select.getActive();
-			const features = select.getFeatures(); // Get the selected features collection
-			console.log("drawCtrl[change:active]", select, active, typeof features, features.getArray());
-			if (!active && features.length > 0) {
-				var feature = features.item(0);
-				select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
-				features.remove(feature);
+			var selectInteraction = selectCtrl.getInteraction();
+			var activeSelection = selectInteraction.getActive();
+			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
+			if (!activeSelection && selectedFeatures.getArray().length > 0) {
+				var activeFeature = selectedFeatures.item(0);
+				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
+				selectedFeatures.remove(activeFeature);
 			}
 		}.bind(editBar));
 
