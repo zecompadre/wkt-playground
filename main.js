@@ -31,7 +31,7 @@ var app = (function () {
 			return `rgba(${r}, ${g}, ${b}, 0.2)`;
 		},
 		getFeatureWKT: (feature) => {
-			if(!feature)
+			if (!feature)
 				return "";
 			const geom = feature.getGeometry().clone();
 			return format.writeGeometry(geom.transform(projections.mercator, projections.geodetic));
@@ -274,19 +274,17 @@ var app = (function () {
 
 				await featureUtilities.addFeatures().then(async function () {
 
-					if (mapUtilities.getFeatureCount() > 0)
-					{
+					if (mapUtilities.getFeatureCount() > 0) {
 						main.classList.remove("nowkt");
 						await mapUtilities.center().then(function () {
 							var multi = featureUtilities.featuresToMultiPolygon();
 							var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
 							textarea.value = format.writeGeometry(geo);
-	
+
 							map.updateSize();
 						});
 					}
-					else
-					{
+					else {
 						main.classList.add("nowkt");
 						await mapUtilities.center().then(function () {
 							map.updateSize();
@@ -553,8 +551,11 @@ var app = (function () {
 			const features = select.getFeatures(); // Get the selected features collection
 			if (!active && features) {
 				var feature = select.getFeatures().item(0);
-				select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
-				features.remove(feature);
+
+				console.log(feature)
+
+				//select.dispatchEvent({ type: 'select', selected: [], deselected: [feature] });
+				//features.remove(feature);
 			}
 		}.bind(editBar));
 
@@ -612,7 +613,6 @@ var app = (function () {
 
 			utilities.getLocation().then(location => {
 				console.log("location", location);
-
 
 				mapDefaults.longitude = location.longitude;
 				mapDefaults.latitude = location.latitude;
