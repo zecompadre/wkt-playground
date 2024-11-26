@@ -485,7 +485,7 @@ var app = (function () {
 
 		mapControls.infoBtn = infoBtn;
 
-		selectBar.addControl(infoBtn);
+		//selectBar.addControl(infoBtn);
 
 		selectBar.setVisible(false);
 
