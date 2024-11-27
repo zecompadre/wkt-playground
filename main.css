@@ -361,18 +361,18 @@ textarea {
 	padding: 10px;
 }
 
-.ol-bar.mainbar
+.ol-control.ol-bar.mainbar
 {
 	background-color:transparent;
 }
 
-.ol-bar.editbar
+.ol-control.ol-bar .ol-bar.editbar
 {
 	margin-right: 5px;
 	background-color: #fff;
 }
 
-.ol-bar.locationbar
+.ol-control.ol-bar .ol-bar.locationbar
 {
 	margin-left: 5px;
 	background-color: #fff;
