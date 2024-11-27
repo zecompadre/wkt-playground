@@ -379,6 +379,7 @@ var app = (function () {
 		},
 	}
 
+	
 	function setupMap() {
 
 		main = document.querySelector(".maincontainer");
@@ -397,6 +398,12 @@ var app = (function () {
 		map = new ol.Map({
 			layers: [
 				new ol.layer.Tile({ source: new ol.source.OSM() }),
+				ol.layer.Tile({ source: new ol.source.OSM({ 
+					attributions: ['All maps © <a href="http://www.openseamap.org/">OpenSeaMap</a>', ol.source.OSM.ATTRIBUTION ],
+			    	opaque: false, 
+					url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png' }),
+					visible: true
+				  });
 				vectorLayer,
 			],
 			target: 'map',
