@@ -628,6 +628,7 @@ var app = (function () {
 			handleClick: function () {
 				utilities.getLocation().then(location => {
 					map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
+					map.getView().setZoom(map.getView().getZoom());
 				});
 			}
 		});
