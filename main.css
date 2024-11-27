@@ -360,3 +360,27 @@ textarea {
 	border-radius: 5px;
 	padding: 10px;
 }
+
+
+.ol-button button
+{
+	pointer-events: auto;
+    background-color: transparent;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 33px;
+    outline: none;
+    padding: 0;
+    width: 33px;
+}
+
+.ol-button button i
+{
+	background-position: 50%;
+    background-repeat: no-repeat;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
