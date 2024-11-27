@@ -367,6 +367,21 @@ textarea {
 background: #fff;
 }
 
+.ol-bar.mainbar
+{
+	background-color:transparent;
+}
+
+.ol-bar.editbar
+{
+	margin-right: 1px;
+}
+
+.ol-bar.locationbar
+{
+	margin-left: 1px;
+}
+
 .ol-bar .ol-button
 {
 	border-radius:0;
