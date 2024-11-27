@@ -423,17 +423,18 @@ var app = (function () {
 		}));
 
 		// Main control bar
-		var mainBar = new ol.control.Bar();
+		var mainBar = new ol.control.Bar({className: 'mainbar'});
 		map.addControl(mainBar);
 
 		mapControls.mainBar = mainBar;
 
 		// Edit control bar 
 		var editBar = new ol.control.Bar({
+			className: 'editbar',
 			toggleOne: true,	// one control active at the same time
 			group: false			// group controls together
 		});
-		//mainBar.addControl(editBar);
+		mainBar.addControl(editBar);
 
 		mapControls.editBar = editBar;
 
@@ -614,10 +615,11 @@ var app = (function () {
 		);
 
 		var locationBar = new ol.control.Bar({
+			className: 'locationbar',
 			toggleOne: false,	// one control active at the same time
 			group: false			// group controls together
 		});
-		//mainBar.addControl(locationBar);
+		mainBar.addControl(locationBar);
 		mapControls.locationBar = locationBar;
 
 		var locationBtn = new ol.control.Button({
