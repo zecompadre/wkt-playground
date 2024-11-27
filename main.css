@@ -361,12 +361,6 @@ textarea {
 	padding: 10px;
 }
 
-
-.ol-bar
-{
-background: #fff;
-}
-
 .ol-bar.mainbar
 {
 	background-color:transparent;
@@ -375,11 +369,13 @@ background: #fff;
 .ol-bar.editbar
 {
 	margin-right: 1px;
+	background: #fff;
 }
 
 .ol-bar.locationbar
 {
 	margin-left: 1px;
+	background: #fff;
 }
 
 .ol-bar .ol-button
