@@ -2,6 +2,7 @@
 	--headerh: 60px;
 	--maph: 75%;
 	--resulth: 25%;
+	--btnsize: 36px;
 
 	--indigo: #6610f2;
 	--purple: #6f42c1;
@@ -391,10 +392,10 @@ textarea {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 33px;
+    height: var(--btnsize);
     outline: none;
     padding: 0;
-    width: 33px;
+    width: var(--btnsize);
     margin: 0;
     border-radius: 0;
 }
@@ -431,10 +432,10 @@ textarea {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 33px;
+    height: var(--btnsize);
     outline: none;
     padding: 0;
-    width: 33px;
+    width: var(--btnsize);
     margin: 0;
     border-radius: 0;
 }
