@@ -573,26 +573,31 @@ var app = (function () {
 		mapControls.undoInteraction = undoInteraction;
 
 		// Add buttons to the bar
-		var undoBar = new ol.control.Bar({
-			group: true,
-			controls: [
-				new ol.control.Button({
+//		var undoBar = new ol.control.Bar({
+//			group: true,
+//			controls: [
+				undoBtn = new ol.control.Button({
 					html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
 					title: 'Undo...',
 					handleClick: function () {
 						undoInteraction.undo();
 					}
-				}),
-				new ol.control.Button({
+				});
+
+				editBar.addControl(undoBtn);
+
+				reduBtn = new ol.control.Button({
 					html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
 					title: 'Redo...',
 					handleClick: function () {
 						undoInteraction.redo();
 					}
-				})
-			]
-		});
-		mainBar.addControl(undoBar);
+				});
+
+				editBar.addControl(reduBtn);
+//			]
+//		});
+		//mainBar.addControl(undoBar);
 
 		/* undo/redo custom */
 		var style;
