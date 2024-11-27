@@ -369,13 +369,13 @@ textarea {
 .ol-bar.editbar
 {
 	margin-right: 1px;
-	background: #fff;
+	background-color: #fff;
 }
 
 .ol-bar.locationbar
 {
 	margin-left: 1px;
-	background: #fff;
+	background-color: #fff;
 }
 
 .ol-bar .ol-button
