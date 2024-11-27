@@ -409,3 +409,9 @@ textarea {
     background-repeat: no-repeat;
     display: block;
 }
+
+.ol-control.ol-bar .ol-control.ol-option-bar
+{
+	-webkit-box-shadow: none;
+    box-shadow: none;
+}
