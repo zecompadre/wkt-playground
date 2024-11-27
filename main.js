@@ -433,7 +433,7 @@ var app = (function () {
 			toggleOne: true,	// one control active at the same time
 			group: false			// group controls together
 		});
-		mainBar.addControl(editBar);
+		//mainBar.addControl(editBar);
 
 		mapControls.editBar = editBar;
 
@@ -617,7 +617,7 @@ var app = (function () {
 			toggleOne: false,	// one control active at the same time
 			group: false			// group controls together
 		});
-		mainBar.addControl(locationBar);
+		//mainBar.addControl(locationBar);
 		mapControls.locationBar = locationBar;
 
 		var locationBtn = new ol.control.Button({
