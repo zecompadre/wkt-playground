@@ -365,7 +365,7 @@ textarea {
 .ol-button button
 {
 	pointer-events: auto;
-    background-color: transparent;
+    background-color: #fff;
     border: 0;
     box-sizing: border-box;
     cursor: pointer;
@@ -381,6 +381,4 @@ textarea {
 	background-position: 50%;
     background-repeat: no-repeat;
     display: block;
-    height: 100%;
-    width: 100%;
 }

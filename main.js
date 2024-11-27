@@ -398,12 +398,6 @@ var app = (function () {
 		map = new ol.Map({
 			layers: [
 				new ol.layer.Tile({ source: new ol.source.OSM() }),
-				new ol.layer.Tile({ source: new ol.source.OSM({ 
-					attributions: ['All maps © <a href="http://www.openseamap.org/">OpenSeaMap</a>', ol.source.OSM.ATTRIBUTION ],
-			    	opaque: false, 
-					url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png' }),
-					visible: true
-				}),
 				vectorLayer,
 			],
 			target: 'map',
@@ -451,7 +445,7 @@ var app = (function () {
 		mapControls.selectBar = selectBar;
 
 		var deleteBtn = new ol.control.Button({
-			html: '<i class="fa fa-times"></i>',
+			html: '<i class="fa fa-times fa-lg"></i>',
 			name: "Delete",
 			title: "Delete",
 			handleClick: function () {
@@ -475,7 +469,7 @@ var app = (function () {
 		selectBar.addControl(deleteBtn);
 
 		var infoBtn = new ol.control.Button({
-			html: '<i class="fa fa-info"></i>',
+			html: '<i class="fa fa-info fa-lg"></i>',
 			name: "Info",
 			title: "Show informations",
 			handleClick: function () {
@@ -497,7 +491,7 @@ var app = (function () {
 		selectBar.setVisible(false);
 
 		selectCtrl = new ol.control.Toggle({
-			html: '<i class="fa-solid fa-arrow-pointer"></i>',
+			html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
 			title: "Select",
 			interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.createStyles(colors.edit) }),
 			bar: selectBar,
@@ -548,7 +542,7 @@ var app = (function () {
 		}.bind(editBar));
 
 		drawCtrl = new ol.control.Toggle({
-			html: '<i class="fa-solid fa-draw-polygon"></i>',
+			html: '<i class="fa-solid fa-draw-polygon fa-lg"></i>',
 			title: 'Polygon',
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
@@ -583,14 +577,14 @@ var app = (function () {
 			group: true,
 			controls: [
 				new ol.control.Button({
-					html: '<i class="fa-solid fa-rotate-left"></i>',
+					html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
 					title: 'Undo...',
 					handleClick: function () {
 						undoInteraction.undo();
 					}
 				}),
 				new ol.control.Button({
-					html: '<i class="fa-solid fa-rotate-right"></i>',
+					html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
 					title: 'Redo...',
 					handleClick: function () {
 						undoInteraction.redo();
@@ -622,6 +616,7 @@ var app = (function () {
 		}));
 
 		document.addEventListener('keydown', function (evt) {
+			console.log(evt.key)
 			switch (evt.key) {
 				case 'Escape':
 					if (!mapControls.selectCtrl.getActive()) {
