@@ -572,11 +572,7 @@ var app = (function () {
 
 		mapControls.undoInteraction = undoInteraction;
 
-		// Add buttons to the bar
-//		var undoBar = new ol.control.Bar({
-//			group: true,
-//			controls: [
-				undoBtn = new ol.control.Button({
+				var undoBtn = new ol.control.Button({
 					html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
 					title: 'Undo...',
 					handleClick: function () {
@@ -586,7 +582,9 @@ var app = (function () {
 
 				editBar.addControl(undoBtn);
 
-				reduBtn = new ol.control.Button({
+				mapControls.undoBtn = undoBtn;
+
+				redoBtn = new ol.control.Button({
 					html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
 					title: 'Redo...',
 					handleClick: function () {
@@ -594,10 +592,9 @@ var app = (function () {
 					}
 				});
 
-				editBar.addControl(reduBtn);
-//			]
-//		});
-		//mainBar.addControl(undoBar);
+				editBar.addControl(redoBtn);
+
+				mapControls.redoBtn = redoBtn;
 
 		/* undo/redo custom */
 		var style;
@@ -615,6 +612,35 @@ var app = (function () {
 				vectorLayer.changed();
 			}
 		);
+
+		var locationBar = new ol.control.Bar({
+			toggleOne: false,	// one control active at the same time
+			group: false			// group controls together
+		});
+		mainBar.addControl(locationBar);
+		mapControls.locationBar = locationBar;
+
+		var locationBtn = new ol.control.Button({
+			html: '<i class="fa-regular fa-location-arrow fa-lg"></i>',
+			title: 'Undo...',
+			handleClick: function () {
+				utilities.getLocation().then(location => {
+					console.log("location", location);
+	
+					mapDefaults.longitude = location.longitude;
+					mapDefaults.latitude = location.latitude;
+					defaultCenter = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
+	
+					map.getView().setCenter(defaultCenter);
+					//map.getView().setZoom(16);
+
+				});
+			}
+		});
+		locationBar.addControl(locationBtn);
+
+		mapControls.locationBtn = locationBtn;
+
 
 		map.addInteraction(new ol.interaction.Snap({
 			source: vectorLayer.getSource()

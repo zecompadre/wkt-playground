@@ -361,8 +361,12 @@ textarea {
 	padding: 10px;
 }
 
+.ol-bar .ol-button
+{
+	border-radius:0;
+}
 
-.ol-button button
+.ol-bar .ol-button button
 {
 	pointer-events: auto;
     background-color: #fff;
@@ -374,9 +378,15 @@ textarea {
     outline: none;
     padding: 0;
     width: 33px;
+    margin: 0;
+    border-radius: 0;
 }
 
-.ol-button button i
+.ol-bar .ol-button button:hover {
+    background-color: rgb(0 0 0 / 5%);
+}
+
+.ol-bar .ol-button button i
 {
 	background-position: 50%;
     background-repeat: no-repeat;
