@@ -621,19 +621,11 @@ var app = (function () {
 		mapControls.locationBar = locationBar;
 
 		var locationBtn = new ol.control.Button({
-			html: '<i class="fa-regular fa-location-arrow fa-lg"></i>',
-			title: 'Undo...',
+			html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
+			title: 'Center in my location...',
 			handleClick: function () {
 				utilities.getLocation().then(location => {
-					console.log("location", location);
-	
-					mapDefaults.longitude = location.longitude;
-					mapDefaults.latitude = location.latitude;
-					defaultCenter = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
-	
-					map.getView().setCenter(defaultCenter);
-					//map.getView().setZoom(16);
-
+					map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
 				});
 			}
 		});

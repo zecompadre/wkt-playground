@@ -361,6 +361,12 @@ textarea {
 	padding: 10px;
 }
 
+
+.ol-bar
+{
+background: #fff;
+}
+
 .ol-bar .ol-button
 {
 	border-radius:0;
@@ -369,7 +375,7 @@ textarea {
 .ol-bar .ol-button button
 {
 	pointer-events: auto;
-    background-color: #fff;
+    background-color:transparent;
     border: 0;
     box-sizing: border-box;
     cursor: pointer;
