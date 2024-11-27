@@ -419,6 +419,7 @@ textarea {
 .ol-zoom.ol-unselectable.ol-control
 {
 	background-color: #fff;
+	border-radius: 0;
 }
 
 .ol-zoom .ol-zoom-in,
