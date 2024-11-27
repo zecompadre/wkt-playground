@@ -379,7 +379,7 @@ var app = (function () {
 		},
 	}
 
-	
+
 	function setupMap() {
 
 		main = document.querySelector(".maincontainer");
@@ -403,7 +403,7 @@ var app = (function () {
 			    	opaque: false, 
 					url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png' }),
 					visible: true
-				  });
+				}),
 				vectorLayer,
 			],
 			target: 'map',
