@@ -368,13 +368,13 @@ textarea {
 
 .ol-bar.editbar
 {
-	margin-right: 1px;
+	margin-right: 5px;
 	background-color: #fff;
 }
 
 .ol-bar.locationbar
 {
-	margin-left: 1px;
+	margin-left: 5px;
 	background-color: #fff;
 }
 
