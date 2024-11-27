@@ -441,4 +441,5 @@ textarea {
 .ol-zoom .ol-zoom-in:hover,
 .ol-zoom .ol-zoom-out:hover {
     background-color: rgb(0 0 0 / 5%);
+	outline:none;
 }
