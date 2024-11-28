@@ -402,8 +402,8 @@ var app = (function () {
 					source: new ol.source.OSM({
 						url: 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',
 						attributions: [
-							new ol.Attribution({ html: '© Google' }),
-							new ol.Attribution({ html: '<a href="https://developers.google.com/maps/terms">Terms of Use.</a>' })
+							new ol.control.Attribution({ html: '© Google' }),
+							new ol.control.Attribution({ html: '<a href="https://developers.google.com/maps/terms">Terms of Use.</a>' })
 						]
 					})
 				}),
