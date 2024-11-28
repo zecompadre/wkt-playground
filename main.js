@@ -157,6 +157,20 @@ var app = (function () {
 			map.getView().setCenter(center);
 			map.getView().fit(extent, { size: map.getSize(), padding: [50, 50, 50, 50] });
 		},
+		centerOnVector: function (vector) {
+			if (mapUtilities.getFeatureCount() > 0) {
+				const source = vectorLayer.getSource(); // Replace 'layer' with your vector layer variable
+
+				// Calculate the extent of all features in the source
+				const extent = source.getExtent();
+
+				// Fit the map view to the extent
+				map.getView().fit(extent, {
+					size: map.getSize(),  // Use the map size to determine the best fit
+					padding: [50, 50, 50, 50], // Add some padding (optional)
+				});
+			}
+		},
 		featuresToMultiPolygon: () => {
 			const features = vectorLayer.getSource().getFeatures();
 			const polygons = features.filter((f) =>
@@ -248,7 +262,6 @@ var app = (function () {
 				map.getView().setZoom(16);
 			}
 		},
-
 		getFeatureCount: function () {
 			var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
 			if (!vectorLayer) {
@@ -640,6 +653,17 @@ var app = (function () {
 		locationBar.addControl(locationBtn);
 
 		mapControls.locationBtn = locationBtn;
+
+		var centerObjectsBtn = new ol.control.Button({
+			html: '<i class="fa-solid fa-arrows-to-dot fa-lg"></i>',
+			title: 'Center on map objects...',
+			handleClick: function () {
+				featureUtilities.centerOnVector();
+			}
+		});
+		locationBar.addControl(centerObjectsBtn);
+
+		mapControls.centerObjectsBtn = centerObjectsBtn;
 
 		map.addInteraction(new ol.interaction.Snap({
 			source: vectorLayer.getSource()
