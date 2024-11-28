@@ -560,7 +560,17 @@ var app = (function () {
 			title: 'Polygon',
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
-				source: vectorLayer.getSource()
+				source: vectorLayer.getSource(),
+				style: {
+					image: new ol.style.RegularShape({
+						fill: new ol.style.Fill({
+							color: 'red'
+						}),
+						points: 4,
+						radius1: 10,
+						radius2: 1
+					})
+				}
 			})
 		});
 
