@@ -459,7 +459,8 @@ var app = (function () {
 						vectorLayer.getSource().removeFeature(f);
 					}
 					features.clear();
-					mapUtilities.reviewLayout(true);
+					mapUtilities.reviewLayout(false);
+					this.getButtonElement().hide();
 				}
 			}
 		});
