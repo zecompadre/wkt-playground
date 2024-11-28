@@ -576,7 +576,7 @@ var app = (function () {
 						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
 						points: 4,
 						radius: 10,
-						radius2: 0,
+						radius2: 2,
 						angle: 0,
 					}),
 					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.create) }),
@@ -735,8 +735,8 @@ var app = (function () {
 
 				//mapDefaults.longitude = location.longitude;
 				//mapDefaults.latitude = location.latitude;
-
-				defaultCenter = userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
+				userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
+				defaultCenter = userLocation;
 
 				setupMap();
 
