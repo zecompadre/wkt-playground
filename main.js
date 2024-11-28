@@ -579,7 +579,7 @@ var app = (function () {
 						angle: 0,
 					}),
 					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.normal) }),
-					stroke: new ol.style.Stroke({ colors.normal, width: 2 }),
+					stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
 				})
 			})
 		});
