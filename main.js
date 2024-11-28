@@ -397,16 +397,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				//new ol.layer.Tile({ source: new ol.source.OSM() }),
-				new ol.layer.Tile({
-					source: new ol.source.OSM({
-						url: 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',
-						attributions: [
-							new ol.control.Attribution({ html: '© Google' }),
-							new ol.control.Attribution({ html: '<a href="https://developers.google.com/maps/terms">Terms of Use.</a>' })
-						]
-					})
-				}),
+				new ol.layer.Tile({ source: new ol.source.OSM() }),
 				vectorLayer,
 			],
 			target: 'map',
