@@ -473,8 +473,7 @@ var app = (function () {
 					}
 					features.clear();
 					mapUtilities.reviewLayout(false);
-					console.log(this)
-					deleteBtn.getButtonElement().get.setVisible(false);
+					mapControls.selectBar.setVisible(false);
 				}
 			}
 		});
@@ -552,8 +551,8 @@ var app = (function () {
 
 		// Activate with select
 		modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
-		selectCtrl.getInteraction().on('change:active', function () {
-			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
+		selectCtrl.getInteraction().on('change:active', function (evt) {
+			modifyInteraction.setActive(evt.active)
 		}.bind(editBar));
 
 		drawCtrl = new ol.control.Toggle({
@@ -577,7 +576,7 @@ var app = (function () {
 			});
 		});
 
-		drawCtrl.getInteraction().on('change:active', function () {
+		drawCtrl.getInteraction().on('change:active', function (evt) {
 			featureUtilities.deselectCurrentFeature(false);
 		}.bind(editBar));
 
