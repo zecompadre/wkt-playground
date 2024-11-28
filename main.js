@@ -585,7 +585,7 @@ var app = (function () {
 			})
 		});
 
-		console.log(drawCtrl.getInteraction());
+		console.log(drawCtrl.getInteraction().getStyle());
 
 		mapControls.drawCtrl = drawCtrl;
 
