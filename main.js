@@ -460,7 +460,8 @@ var app = (function () {
 					}
 					features.clear();
 					mapUtilities.reviewLayout(false);
-					this.getButtonElement().setVisible(false);
+					console.log(this)
+					deleteBtn.getButtonElement().setVisible(false);
 				}
 			}
 		});
