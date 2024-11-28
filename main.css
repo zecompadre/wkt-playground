@@ -445,3 +445,7 @@ textarea {
     background-color: rgb(0 0 0 / 5%);
 	outline:none;
 }
+.ol-zoom .ol-zoom-in
+{
+	border-bottom: 1px solid #0000001c;
+}
