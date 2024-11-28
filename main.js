@@ -7,6 +7,7 @@ var app = (function () {
 
 	const colors = {
 		normal: '#141414',
+		create: '#00AAFF',
 		edit: '#ec7063',
 		snap: '#34495e',
 	};
@@ -572,14 +573,14 @@ var app = (function () {
 				style: new ol.style.Style({
 					image: new ol.style.RegularShape({
 						fill: new ol.style.Fill({ color: 'red' }),
-						stroke: new ol.style.Stroke({ color: 'black', width: 2 }),
+						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
 						points: 4,
 						radius: 10,
 						radius2: 0,
 						angle: 0,
 					}),
-					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.normal) }),
-					stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
+					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.create) }),
+					stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
 				})
 			})
 		});
