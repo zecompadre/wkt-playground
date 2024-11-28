@@ -23,6 +23,14 @@ var app = (function () {
 
 	let mapControls = {};
 
+	// let crosshair = new ol.style.Style({
+	//     image: new ol.style.Icon({
+	//         src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Crosshairs_Red.svg/100px-Crosshairs_Red.svg.png',
+	//         size: [100, 100],
+	//         opacity: 1,
+	//         scale: 0.4
+	//     })
+
 	const utilities = {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
 		hexToRgbA: (hex) => {
@@ -562,13 +570,13 @@ var app = (function () {
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
 				style: {
-					image: new ol.style.RegularShape({
-						fill: new ol.style.Fill({
-							color: 'red'
-						}),
+					image: new RegularShape({
+						fill: new ol.style.Fill({ color: 'red' }),
+						stroke: new ol.style.Stroke({ color: 'black', width: 2 }),
 						points: 4,
-						radius1: 10,
-						radius2: 1
+						radius: 10,
+						radius2: 0,
+						angle: 0,
 					})
 				}
 			})
