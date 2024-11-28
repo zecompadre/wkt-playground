@@ -642,7 +642,6 @@ var app = (function () {
 		}));
 
 		document.addEventListener('keydown', function (evt) {
-			console.log(evt.key)
 			switch (evt.key) {
 				case 'Escape':
 					if (!mapControls.selectCtrl.getActive()) {
@@ -662,6 +661,18 @@ var app = (function () {
 						}
 					}
 					break;
+					case 'z':
+						if (evt.ctrlKey)
+						{
+							mapControls.undoInteraction.undo();
+						}
+						break;					
+					case 'y':
+						if (evt.ctrlKey)
+						{
+							mapControls.undoInteraction.redo();
+						}
+						break;
 			}
 		}, false);
 
