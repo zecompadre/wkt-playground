@@ -17,7 +17,7 @@ var app = (function () {
 		zoom: 6,
 	};
 
-	let map, vectorLayer, format, defaultCenter, featureCollection, main, textarea, modifyInteraction, undoInteraction;
+	let map, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
 
 	let lfkey = "zecompadre-wkt";
 
@@ -461,7 +461,7 @@ var app = (function () {
 					features.clear();
 					mapUtilities.reviewLayout(false);
 					console.log(this)
-					deleteBtn.getButtonElement().setVisible(false);
+					deleteBtn.getButtonElement().get.setVisible(false);
 				}
 			}
 		});
@@ -627,10 +627,14 @@ var app = (function () {
 			html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
 			title: 'Center in my location...',
 			handleClick: function () {
-				utilities.getLocation().then(location => {
-					map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
-					map.getView().setZoom(map.getView().getZoom());
-				});
+				if (typeof userLocation === 'undefined') {
+					utilities.getLocation().then(location => {
+						map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
+					});
+				} else {
+					map.getView().setCenter(userLocation);
+				}
+				map.getView().setZoom(map.getView().getZoom());
 			}
 		});
 		locationBar.addControl(locationBtn);
@@ -683,9 +687,10 @@ var app = (function () {
 			utilities.getLocation().then(location => {
 				console.log("location", location);
 
-				mapDefaults.longitude = location.longitude;
-				mapDefaults.latitude = location.latitude;
-				defaultCenter = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
+				//mapDefaults.longitude = location.longitude;
+				//mapDefaults.latitude = location.latitude;
+
+				defaultCenter = userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
 
 				setupMap();
 
