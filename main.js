@@ -572,7 +572,7 @@ var app = (function () {
 				source: vectorLayer.getSource(),
 				style: new ol.style.Style({
 					image: new ol.style.RegularShape({
-						fill: new ol.style.Fill({ color: 'red' }),
+						fill: new ol.style.Fill({ color: colors.create }),
 						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
 						points: 4,
 						radius: 10,
