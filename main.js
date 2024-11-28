@@ -570,7 +570,7 @@ var app = (function () {
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
 				style: {
-					image: new RegularShape({
+					image: new ol.style.RegularShape({
 						fill: new ol.style.Fill({ color: 'red' }),
 						stroke: new ol.style.Stroke({ color: 'black', width: 2 }),
 						points: 4,
