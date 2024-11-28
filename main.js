@@ -647,6 +647,7 @@ var app = (function () {
 					map.getView().setCenter(userLocation);
 				}
 				map.getView().setZoom(map.getView().getZoom());
+				mapControls.selectCtrl.setActive(true);
 			}
 		});
 		locationBar.addControl(locationBtn);
@@ -658,6 +659,7 @@ var app = (function () {
 			title: 'Center on map objects...',
 			handleClick: function () {
 				featureUtilities.centerOnVector();
+				mapControls.selectCtrl.setActive(true);
 			}
 		});
 		locationBar.addControl(centerObjectsBtn);
