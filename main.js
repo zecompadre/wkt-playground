@@ -379,7 +379,6 @@ var app = (function () {
 		},
 	}
 
-
 	function setupMap() {
 
 		main = document.querySelector(".maincontainer");
@@ -423,7 +422,7 @@ var app = (function () {
 		}));
 
 		// Main control bar
-		var mainBar = new ol.control.Bar({className: 'mainbar'});
+		var mainBar = new ol.control.Bar({ className: 'mainbar' });
 		map.addControl(mainBar);
 
 		mapControls.mainBar = mainBar;
@@ -573,29 +572,29 @@ var app = (function () {
 
 		mapControls.undoInteraction = undoInteraction;
 
-				var undoBtn = new ol.control.Button({
-					html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
-					title: 'Undo...',
-					handleClick: function () {
-						undoInteraction.undo();
-					}
-				});
+		var undoBtn = new ol.control.Button({
+			html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
+			title: 'Undo...',
+			handleClick: function () {
+				undoInteraction.undo();
+			}
+		});
 
-				editBar.addControl(undoBtn);
+		editBar.addControl(undoBtn);
 
-				mapControls.undoBtn = undoBtn;
+		mapControls.undoBtn = undoBtn;
 
-				redoBtn = new ol.control.Button({
-					html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
-					title: 'Redo...',
-					handleClick: function () {
-						undoInteraction.redo();
-					}
-				});
+		redoBtn = new ol.control.Button({
+			html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
+			title: 'Redo...',
+			handleClick: function () {
+				undoInteraction.redo();
+			}
+		});
 
-				editBar.addControl(redoBtn);
+		editBar.addControl(redoBtn);
 
-				mapControls.redoBtn = redoBtn;
+		mapControls.redoBtn = redoBtn;
 
 		/* undo/redo custom */
 		var style;
@@ -636,7 +635,6 @@ var app = (function () {
 
 		mapControls.locationBtn = locationBtn;
 
-
 		map.addInteraction(new ol.interaction.Snap({
 			source: vectorLayer.getSource()
 		}));
@@ -661,18 +659,16 @@ var app = (function () {
 						}
 					}
 					break;
-					case 'z':
-						if (evt.ctrlKey)
-						{
-							mapControls.undoInteraction.undo();
-						}
-						break;					
-					case 'y':
-						if (evt.ctrlKey)
-						{
-							mapControls.undoInteraction.redo();
-						}
-						break;
+				case 'z':
+					if (evt.ctrlKey) {
+						mapControls.undoInteraction.undo();
+					}
+					break;
+				case 'y':
+					if (evt.ctrlKey) {
+						mapControls.undoInteraction.redo();
+					}
+					break;
 			}
 		}, false);
 
