@@ -569,7 +569,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: {
+				style: new ol.style.Style({
 					image: new ol.style.RegularShape({
 						fill: new ol.style.Fill({ color: 'red' }),
 						stroke: new ol.style.Stroke({ color: 'black', width: 2 }),
@@ -578,7 +578,7 @@ var app = (function () {
 						radius2: 0,
 						angle: 0,
 					})
-				}
+				})
 			})
 		});
 
