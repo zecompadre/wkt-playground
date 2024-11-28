@@ -577,7 +577,9 @@ var app = (function () {
 						radius: 10,
 						radius2: 0,
 						angle: 0,
-					})
+					}),
+					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.normal) }),
+					stroke: new ol.style.Stroke({ colors.normal, width: 2 }),
 				})
 			})
 		});
