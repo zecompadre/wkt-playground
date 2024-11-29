@@ -24,6 +24,22 @@ var app = (function () {
 
 	let mapControls = {};
 
+	const satelliteLayer = new ol.layer.Tile({
+		title: 'Satellite',
+		source: new ol.source.XYZ({
+			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+		}),
+		visible: false, // Initially hidden
+		attributions: ["&copy; 1"],
+	});
+
+	const streetLayer = new ol.layer.Tile({
+		title: 'Streets',
+		source: new ol.source.OSM(),
+		visible: true, // Initially visible
+		attributions: ["&copy; 2"],
+	});
+
 	// let crosshair = new ol.style.Style({
 	//     image: new ol.style.Icon({
 	//         src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Crosshairs_Red.svg/100px-Crosshairs_Red.svg.png',
@@ -468,15 +484,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				// new ol.layer.Tile({
-				// 	source: new ol.source.OSM()
-				// }),
-				new ol.layer.Tile({
-					source: new ol.source.XYZ({
-						url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-						maxZoom: 19
-					})
-				}),
+				satelliteLayer, streetLayer,
 				vectorLayer,
 			],
 			target: 'map',
@@ -735,6 +743,8 @@ var app = (function () {
 		map.addInteraction(new ol.interaction.Snap({
 			source: vectorLayer.getSource()
 		}));
+
+		map.addControl(new ol.control.LayerSwitcherImage());
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
