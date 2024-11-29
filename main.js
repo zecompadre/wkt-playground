@@ -30,14 +30,14 @@ var app = (function () {
 			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 		}),
 		visible: false, // Initially hidden
-		attributions: ["&copy; 1"],
+		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
 
 	const streetLayer = new ol.layer.Tile({
 		title: 'Streets',
 		source: new ol.source.OSM(),
 		visible: true, // Initially visible
-		attributions: ["&copy; 2"],
+		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
 
 	// let crosshair = new ol.style.Style({
@@ -485,7 +485,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				satelliteLayer, streetLayer,
+				streetLayer, satelliteLayer,
 				vectorLayer,
 			],
 			target: 'map',
