@@ -570,22 +570,20 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				// style: new ol.style.Style({
-				// 	image: new ol.style.RegularShape({
-				// 		fill: new ol.style.Fill({ color: colors.create }),
-				// 		stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
-				// 		points: 4,
-				// 		radius: 10,
-				// 		radius2: 2,
-				// 		angle: 0,
-				// 	}),
-				// 	fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.create) }),
-				// 	stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
-				// })
+				style: [new ol.style.Style({
+					image: new ol.style.RegularShape({
+						fill: new ol.style.Fill({ color: colors.create }),
+						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
+						points: 4,
+						radius: 10,
+						radius2: 2,
+						angle: 0,
+					}),
+					fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.create) }),
+					stroke: new ol.style.Stroke({ color: colors.create, width: 2 })
+				}), new ol.style.Style({ stroke: new ol.style.Stroke({ color: colors.edit, width: 1 }) })]
 			})
 		});
-
-		console.log(drawCtrl.getInteraction().getStyle());
 
 		mapControls.drawCtrl = drawCtrl;
 
