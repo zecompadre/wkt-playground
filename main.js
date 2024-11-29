@@ -472,7 +472,10 @@ var app = (function () {
 				// 	source: new ol.source.OSM()
 				// }),
 				new ol.layer.Tile({
-					source: new ol.sourceTileArcGISRest({ url: 'https://sampleserver6.arcgisonline.com/ArcGIS/rest/services/' + 'USA/MapServer', }),
+					source: new ol.source.XYZ({
+						url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+						maxZoom: 19
+					})
 				}),
 				vectorLayer,
 			],
