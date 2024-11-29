@@ -12,58 +12,6 @@ var app = (function () {
 		snap: '#34495e',
 	};
 
-	function createStyleFunction(color) {
-		return function (feature) {
-
-			console.log(feature);
-
-			var geometry = feature.getGeometry();
-			color = color || colors.normal;
-
-			if (geometry.getType() === 'LineString') {
-				var styles = [
-					new ol.style.Style({
-						stroke: new ol.style.Stroke({
-							color: utilities.hexToRgbA(color, '1'),
-							width: 3
-						})
-					})
-				];
-				return styles;
-			}
-			if (geometry.getType() === 'Point') {
-				var styles = [
-					new ol.style.Style({
-						image: new ol.style.RegularShape({
-							fill: new ol.style.Fill({ color: colors.create }),
-							stroke: new ol.style.Stroke({ color: color, width: 2 }),
-							points: 4,
-							radius: 10,
-							radius2: 2,
-							angle: 0,
-						}),
-					})
-				];
-				return styles;
-			}
-			if (geometry.getType() === 'Polygon') {
-				var styles = [
-					new ol.style.Style({
-						stroke: new ol.style.Stroke({
-							color: utilities.hexToRgbA(color, 0),
-							width: 3
-						}),
-						fill: new ol.style.Fill({
-							color: utilities.hexToRgbA('#ffffff', '0.5')
-						})
-					})
-				];
-				return styles;
-			}
-			return false;
-		};
-	};
-
 	const mapDefaults = {
 		latitude: 39.6945,
 		longitude: -8.1234,
@@ -112,10 +60,10 @@ var app = (function () {
 		createVectorLayer: () => {
 			vectorLayer = new ol.layer.Vector({
 				source: new ol.source.Vector({ features: featureCollection }),
-				style: utilities.createStyles(colors.normal),
+				style: utilities.genericStyleFunction(colors.normal),
 			});
 		},
-		createStyles: (color) => [
+		genericStyleFunction: (color) => [
 			new ol.style.Style({
 				image: new ol.style.Circle({
 					fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }),
@@ -126,6 +74,57 @@ var app = (function () {
 				stroke: new ol.style.Stroke({ color, width: 2 }),
 			}),
 		],
+		drawStyleFunction(color) {
+			return function (feature) {
+
+				console.log(feature);
+
+				var geometry = feature.getGeometry();
+				color = color || colors.normal;
+
+				if (geometry.getType() === 'LineString') {
+					var styles = [
+						new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								color: utilities.hexToRgbA(color, '1'),
+								width: 3
+							})
+						})
+					];
+					return styles;
+				}
+				if (geometry.getType() === 'Point') {
+					var styles = [
+						new ol.style.Style({
+							image: new ol.style.RegularShape({
+								fill: new ol.style.Fill({ color: colors.create }),
+								stroke: new ol.style.Stroke({ color: color, width: 2 }),
+								points: 4,
+								radius: 10,
+								radius2: 2,
+								angle: 0,
+							}),
+						})
+					];
+					return styles;
+				}
+				if (geometry.getType() === 'Polygon') {
+					var styles = [
+						new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								color: utilities.hexToRgbA(color, 0),
+								width: 3
+							}),
+							fill: new ol.style.Fill({
+								color: utilities.hexToRgbA('#ffffff', '0.5')
+							})
+						})
+					];
+					return styles;
+				}
+				return false;
+			};
+		},
 		restoreDefaultColors: function () {
 			textarea.style.borderColor = "";
 			textarea.style.backgroundColor = "";
@@ -569,7 +568,7 @@ var app = (function () {
 		selectCtrl = new ol.control.Toggle({
 			html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
 			title: "Select",
-			interaction: new ol.interaction.Select({ hitTolerance: 2, style: createStyleFunction(colors.edit) }),
+			interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.genericStyleFunction(colors.edit) }),
 			bar: selectBar,
 			autoActivate: true,
 			active: true
@@ -581,7 +580,7 @@ var app = (function () {
 
 		modifyInteraction = new ol.interaction.ModifyFeature({
 			features: selectCtrl.getInteraction().getFeatures(),
-			style: utilities.createStyles(colors.snap),
+			style: utilities.genericStyleFunction(colors.snap),
 			insertVertexCondition: function () {
 				return true;
 			},
@@ -621,7 +620,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: createStyleFunction(colors.create),
+				style: utilities.drawStyleFunction(colors.create),
 			})
 		});
 
