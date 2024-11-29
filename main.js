@@ -14,7 +14,7 @@ var app = (function () {
 
 	const styleFunction = feature => {
 		var geometry = feature.getGeometry();
-		//		console.log('geometry', geometry.getType());
+
 		if (geometry.getType() === 'LineString') {
 			var styles = [
 				new ol.style.Style({
@@ -618,18 +618,6 @@ var app = (function () {
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
 				style: styleFunction
-				// style: [new ol.style.Style({
-				// 	image: new ol.style.RegularShape({
-				// 		fill: new ol.style.Fill({ color: colors.create }),
-				// 		stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
-				// 		points: 4,
-				// 		radius: 10,
-				// 		radius2: 2,
-				// 		angle: 0,
-				// 	}),
-				// 	fill: new ol.style.Fill({ color: utilities.hexToRgbA(colors.create) }),
-				// 	stroke: new ol.style.Stroke({ color: colors.create, width: 2 })
-				// }), new ol.style.Style({ stroke: new ol.style.Stroke({ color: colors.edit, width: 1 }) })]
 			})
 		});
 
