@@ -70,14 +70,12 @@ var app = (function () {
 					stroke: new ol.style.Stroke({ color, width: 2 }),
 					radius: 5,
 				}),
-				fill: new ol.style.Fill({ color: utilities.hexToRgbA('#ffffff', '0.5') }),
+				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.5') }),
 				stroke: new ol.style.Stroke({ color, width: 2 }),
 			}),
 		],
 		drawStyleFunction(color) {
 			return function (feature) {
-
-				console.log(feature);
 
 				var geometry = feature.getGeometry();
 				color = color || colors.normal;
@@ -116,7 +114,7 @@ var app = (function () {
 								width: 3
 							}),
 							fill: new ol.style.Fill({
-								color: utilities.hexToRgbA('#ffffff', '0.5')
+								color: utilities.hexToRgbA(color, '0.5')
 							})
 						})
 					];
