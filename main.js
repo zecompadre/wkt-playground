@@ -19,7 +19,7 @@ var app = (function () {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: hexToRgbA(colors.create, '1'),
+						color: utilities.hexToRgbA(colors.create, '1'),
 						width: 3
 					})
 				})
@@ -29,11 +29,14 @@ var app = (function () {
 		if (geometry.getType() === 'Point') {
 			var styles = [
 				new ol.style.Style({
-					image: new ol.style.Circle({
-						radius: 5,
-						stroke: new ol.style.Stroke({ color: hexToRgbA(colors.create, '1') }),
-						fill: new ol.style.Fill({ color: hexToRgbA(colors.create, '0.5') })
-					})
+					image: new ol.style.RegularShape({
+						fill: new ol.style.Fill({ color: colors.create }),
+						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
+						points: 4,
+						radius: 10,
+						radius2: 2,
+						angle: 0,
+					}),
 				})
 			];
 			return styles;
@@ -42,11 +45,11 @@ var app = (function () {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: hexToRgbA(colors.create, 0),
+						color: utilities.hexToRgbA(colors.create, 0),
 						width: 3
 					}),
 					fill: new ol.style.Fill({
-						color: hexToRgbA(colors.create, '0.3')
+						color: utilities.hexToRgbA(colors.create, '0.3')
 					})
 				})
 			];
