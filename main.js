@@ -569,7 +569,7 @@ var app = (function () {
 		selectCtrl = new ol.control.Toggle({
 			html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
 			title: "Select",
-			interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.createStyles(colors.edit) }),
+			interaction: new ol.interaction.Select({ hitTolerance: 2, style: createStyleFunction(colors.edit) }),
 			bar: selectBar,
 			autoActivate: true,
 			active: true
@@ -594,7 +594,6 @@ var app = (function () {
 		select = selectCtrl.getInteraction().on('select', function (evt) {
 			utilities.restoreDefaultColors();
 			if (evt.deselected.length > 0) {
-				console.log("deselected", evt)
 				evt.deselected.forEach(function (feature) {
 					textarea.value = utilities.getFeatureWKT(feature);
 					wktUtilities.update(feature.getId(), textarea.value);
@@ -603,7 +602,6 @@ var app = (function () {
 				selectBar.setVisible(false);
 			}
 			if (evt.selected.length > 0) {
-				console.log("selected", evt)
 				evt.selected.forEach(function (feature) {
 					textarea.value = utilities.getFeatureWKT(feature);
 				});
