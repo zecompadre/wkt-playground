@@ -749,7 +749,7 @@ var app = (function () {
 		map.addControl(layerSwitcherBtn);
 		mapControls.layerSwitcherBtn = layerSwitcherBtn;
 
-		layerSwitcherBtn.on('change:visible', function (evt) {
+		layerSwitcherBtn.on('layer:visible', function (evt) {
 			console.log(evt)
 		});
 
