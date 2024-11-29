@@ -70,7 +70,7 @@ var app = (function () {
 					stroke: new ol.style.Stroke({ color, width: 2 }),
 					radius: 5,
 				}),
-				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.5') }),
+				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.3') }),
 				stroke: new ol.style.Stroke({ color, width: 2 }),
 			}),
 		],
@@ -114,7 +114,7 @@ var app = (function () {
 								width: 3
 							}),
 							fill: new ol.style.Fill({
-								color: utilities.hexToRgbA(color, '0.5')
+								color: utilities.hexToRgbA(color, '0.3')
 							})
 						})
 					];
