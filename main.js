@@ -745,7 +745,13 @@ var app = (function () {
 			source: vectorLayer.getSource()
 		}));
 
-		map.addControl(new ol.control.LayerSwitcherImage());
+		var layerSwitcherBtn = new ol.control.LayerSwitcherImage()
+		map.addControl(layerSwitcherBtn);
+		mapControls.layerSwitcherBtn = layerSwitcherBtn;
+
+		layerSwitcherBtn.on('click', function (evt) {
+			console.log(evt)
+		});
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
