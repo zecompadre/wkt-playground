@@ -749,7 +749,7 @@ var app = (function () {
 		map.addControl(layerSwitcherBtn);
 		mapControls.layerSwitcherBtn = layerSwitcherBtn;
 
-		layerSwitcherBtn.on('toggle', function (evt) {
+		layerSwitcherBtn.on('click', function (evt) {
 			console.log(evt)
 		});
 
