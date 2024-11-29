@@ -468,7 +468,12 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				new ol.layer.Tile({ source: new ol.source.OSM() }),
+				// new ol.layer.Tile({
+				// 	source: new ol.source.OSM()
+				// }),
+				new ol.layer.Tile({
+					source: new ol.sourceTileArcGISRest({ url: 'https://sampleserver6.arcgisonline.com/ArcGIS/rest/services/' + 'USA/MapServer', }),
+				}),
 				vectorLayer,
 			],
 			target: 'map',
