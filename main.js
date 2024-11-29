@@ -12,6 +12,49 @@ var app = (function () {
 		snap: '#34495e',
 	};
 
+	const styleFunction = feature => {
+		var geometry = feature.getGeometry();
+		console.log('geometry', geometry.getType());
+		if (geometry.getType() === 'LineString') {
+			var styles = [
+				new ol.style.Style({
+					stroke: new ol.style.Stroke({
+						color: 'rgba(255, 102, 0, 1)',
+						width: 3
+					})
+				})
+			];
+			return styles;
+		}
+		if (geometry.getType() === 'Point') {
+			var styles = [
+				new ol.style.Style({
+					image: new ol.style.Circle({
+						radius: 5,
+						stroke: new ol.style.Stroke({ color: 'rgba(255, 0, 0, 1)' }),
+						fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 0.5)' })
+					})
+				})
+			];
+			return styles;
+		}
+		if (geometry.getType() === 'Polygon') {
+			var styles = [
+				new ol.style.Style({
+					stroke: new ol.style.Stroke({
+						color: 'rgba(255, 102, 0, 0)',
+						width: 3
+					}),
+					fill: new ol.style.Fill({
+						color: 'rgba(255, 102, 0, 0.3)'
+					})
+				})
+			];
+			return styles;
+		}
+		return false;
+	};
+
 	const mapDefaults = {
 		latitude: 39.6945,
 		longitude: -8.1234,
@@ -570,15 +613,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: new ol.style.Style({
-					stroke: new ol.style.Stroke({
-						color: 'rgba(255, 102, 0, 0)',
-						width: 3
-					}),
-					fill: new ol.style.Fill({
-						color: 'rgba(255, 102, 0, 0.3)'
-					})
-				})
+				style: styleFunction
 				// style: [new ol.style.Style({
 				// 	image: new ol.style.RegularShape({
 				// 		fill: new ol.style.Fill({ color: colors.create }),
