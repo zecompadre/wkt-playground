@@ -753,6 +753,8 @@ var app = (function () {
 			console.log(evt)
 		});
 
+		console.log(layerSwitcherBtn)
+
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
 				case 'Escape':
