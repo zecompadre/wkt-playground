@@ -14,12 +14,12 @@ var app = (function () {
 
 	const styleFunction = feature => {
 		var geometry = feature.getGeometry();
-		console.log('geometry', geometry.getType());
+		//		console.log('geometry', geometry.getType());
 		if (geometry.getType() === 'LineString') {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: 'rgba(255, 102, 0, 1)',
+						color: hexToRgbA(colors.create, '1'),
 						width: 3
 					})
 				})
@@ -31,8 +31,8 @@ var app = (function () {
 				new ol.style.Style({
 					image: new ol.style.Circle({
 						radius: 5,
-						stroke: new ol.style.Stroke({ color: 'rgba(255, 0, 0, 1)' }),
-						fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 0.5)' })
+						stroke: new ol.style.Stroke({ color: hexToRgbA(colors.create, '1') }),
+						fill: new ol.style.Fill({ color: hexToRgbA(colors.create, '0.5') })
 					})
 				})
 			];
@@ -42,11 +42,11 @@ var app = (function () {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: 'rgba(255, 102, 0, 0)',
+						color: hexToRgbA(colors.create, 0),
 						width: 3
 					}),
 					fill: new ol.style.Fill({
-						color: 'rgba(255, 102, 0, 0.3)'
+						color: hexToRgbA(colors.create, '0.3')
 					})
 				})
 			];
@@ -77,12 +77,13 @@ var app = (function () {
 
 	const utilities = {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
-		hexToRgbA: (hex) => {
+		hexToRgbA: (hex, opacity) => {
+			opacity = opacity || '0.2';
 			const bigint = parseInt(hex.replace(/^#/, ''), 16);
 			const r = (bigint >> 16) & 255;
 			const g = (bigint >> 8) & 255;
 			const b = bigint & 255;
-			return `rgba(${r}, ${g}, ${b}, 0.2)`;
+			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 		},
 		getFeatureWKT: (feature) => {
 			if (!feature)
