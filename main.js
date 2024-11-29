@@ -13,6 +13,9 @@ var app = (function () {
 	};
 
 	const styleFunction = (feature, color) => {
+
+		console.log(this, feature);
+
 		var geometry = feature.getGeometry();
 		color = color || colors.normal;
 
