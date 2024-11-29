@@ -608,7 +608,7 @@ var app = (function () {
 		// Activate with select
 		modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 		selectCtrl.getInteraction().on('change:active', function (evt) {
-			modifyInteraction.setActive(evt.active)
+			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 		}.bind(editBar));
 
 		drawCtrl = new ol.control.Toggle({
@@ -617,7 +617,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				//style: styleFunction
+				style: styleFunction
 			})
 		});
 
