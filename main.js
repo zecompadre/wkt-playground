@@ -12,54 +12,56 @@ var app = (function () {
 		snap: '#34495e',
 	};
 
-	const styleFunction = (feature, color) => {
+	function createStyleFunction(color) {
+		return function (feature) {
 
-		console.log(this, feature);
+			console.log(this, feature);
 
-		var geometry = feature.getGeometry();
-		color = color || colors.normal;
+			var geometry = feature.getGeometry();
+			color = color || colors.normal;
 
-		if (geometry.getType() === 'LineString') {
-			var styles = [
-				new ol.style.Style({
-					stroke: new ol.style.Stroke({
-						color: utilities.hexToRgbA(color, '1'),
-						width: 3
+			if (geometry.getType() === 'LineString') {
+				var styles = [
+					new ol.style.Style({
+						stroke: new ol.style.Stroke({
+							color: utilities.hexToRgbA(color, '1'),
+							width: 3
+						})
 					})
-				})
-			];
-			return styles;
-		}
-		if (geometry.getType() === 'Point') {
-			var styles = [
-				new ol.style.Style({
-					image: new ol.style.RegularShape({
-						fill: new ol.style.Fill({ color: colors.create }),
-						stroke: new ol.style.Stroke({ color: color, width: 2 }),
-						points: 4,
-						radius: 10,
-						radius2: 2,
-						angle: 0,
-					}),
-				})
-			];
-			return styles;
-		}
-		if (geometry.getType() === 'Polygon') {
-			var styles = [
-				new ol.style.Style({
-					stroke: new ol.style.Stroke({
-						color: utilities.hexToRgbA(color, 0),
-						width: 3
-					}),
-					fill: new ol.style.Fill({
-						color: utilities.hexToRgbA('#ffffff', '0.5')
+				];
+				return styles;
+			}
+			if (geometry.getType() === 'Point') {
+				var styles = [
+					new ol.style.Style({
+						image: new ol.style.RegularShape({
+							fill: new ol.style.Fill({ color: colors.create }),
+							stroke: new ol.style.Stroke({ color: color, width: 2 }),
+							points: 4,
+							radius: 10,
+							radius2: 2,
+							angle: 0,
+						}),
 					})
-				})
-			];
-			return styles;
-		}
-		return false;
+				];
+				return styles;
+			}
+			if (geometry.getType() === 'Polygon') {
+				var styles = [
+					new ol.style.Style({
+						stroke: new ol.style.Stroke({
+							color: utilities.hexToRgbA(color, 0),
+							width: 3
+						}),
+						fill: new ol.style.Fill({
+							color: utilities.hexToRgbA('#ffffff', '0.5')
+						})
+					})
+				];
+				return styles;
+			}
+			return false;
+		};
 	};
 
 	const mapDefaults = {
@@ -621,7 +623,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: styleFunction.apply(this, [colors.create]),
+				style: createStyleFunction(colors.create),
 			})
 		});
 
