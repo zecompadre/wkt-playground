@@ -15,7 +15,7 @@ var app = (function () {
 	function createStyleFunction(color) {
 		return function (feature) {
 
-			console.log(this, feature);
+			console.log(feature);
 
 			var geometry = feature.getGeometry();
 			color = color || colors.normal;
