@@ -750,7 +750,8 @@ var app = (function () {
 		mapControls.layerSwitcherBtn = layerSwitcherBtn;
 
 		layerSwitcherBtn.on('layer:visible', function (evt) {
-			console.log(evt)
+			console.log(evt.layer.getVisible())
+			console.log(layerSwitcherBtn.layers)
 		});
 
 		console.log(layerSwitcherBtn)
