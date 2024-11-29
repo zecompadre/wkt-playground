@@ -78,6 +78,7 @@ var app = (function () {
 				source: new ol.source.Vector({ features: featureCollection }),
 				style: utilities.genericStyleFunction(colors.normal),
 			});
+			vectorLayer.set('displayInLayerSwitcher', false);
 		},
 		genericStyleFunction: (color) => [
 			new ol.style.Style({
