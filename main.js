@@ -12,14 +12,15 @@ var app = (function () {
 		snap: '#34495e',
 	};
 
-	const styleFunction = feature => {
+	const styleFunction = (feature, color) => {
 		var geometry = feature.getGeometry();
+		color = color || colors.normal;
 
 		if (geometry.getType() === 'LineString') {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: utilities.hexToRgbA(colors.create, '1'),
+						color: utilities.hexToRgbA(color, '1'),
 						width: 3
 					})
 				})
@@ -31,7 +32,7 @@ var app = (function () {
 				new ol.style.Style({
 					image: new ol.style.RegularShape({
 						fill: new ol.style.Fill({ color: colors.create }),
-						stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
+						stroke: new ol.style.Stroke({ color: color, width: 2 }),
 						points: 4,
 						radius: 10,
 						radius2: 2,
@@ -45,7 +46,7 @@ var app = (function () {
 			var styles = [
 				new ol.style.Style({
 					stroke: new ol.style.Stroke({
-						color: utilities.hexToRgbA(colors.create, 0),
+						color: utilities.hexToRgbA(color, 0),
 						width: 3
 					}),
 					fill: new ol.style.Fill({
@@ -617,7 +618,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: styleFunction
+				style: styleFunction.apply(this, [colors.create]),
 			})
 		});
 
