@@ -49,7 +49,7 @@ var app = (function () {
 						width: 3
 					}),
 					fill: new ol.style.Fill({
-						color: utilities.hexToRgbA(colors.create, '0.3')
+						color: utilities.hexToRgbA(colors.create, '0.2')
 					})
 				})
 			];
