@@ -617,7 +617,7 @@ var app = (function () {
 			interaction: new ol.interaction.Draw({
 				type: 'Polygon',
 				source: vectorLayer.getSource(),
-				style: styleFunction
+				//style: styleFunction
 			})
 		});
 
