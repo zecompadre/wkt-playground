@@ -29,17 +29,17 @@ var app = (function () {
 		title: 'Satellite',
 		source: new ol.source.XYZ({
 			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+			attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer">ArcGIS</a>',
 		}),
 		visible: false, // Initially hidden
-		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
+		maxZoom: 20
 	});
 
 	const osmLayer = new ol.layer.Tile({
 		name: 'Streets',
 		title: 'Streets',
 		source: new ol.source.OSM(),
-		visible: true, // Initially visible
-		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
+		visible: true,
 	});
 
 	// Function to toggle layers
