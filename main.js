@@ -33,7 +33,6 @@ var app = (function () {
 		visible: false, // Initially hidden
 		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
-	layer.getPreview()
 
 	const osmLayer = new ol.layer.Tile({
 		name: 'Streets',
@@ -766,9 +765,10 @@ var app = (function () {
 		var layerChangeBtn = new ol.control.Button({
 			html: layerChangeBtnHtml,
 			title: 'Change layer...',
-			handleClick: toggleLayers
+			handleClick: toggleLayers,
+			className: 'ol-right ol-top'
 		});
-		locationBar.addControl(layerChangeBtn);
+		map.addControl(layerChangeBtn);
 
 		mapControls.layerChangeBtn = layerChangeBtn;
 
