@@ -374,8 +374,8 @@ textarea {
 }
 
 .ol-control.ol-bar.layerbar {
-	right: .5em;
-	left: 0;
+	right: 0;
+	left: unset;
 }
 
 .ol-bar .ol-button {
