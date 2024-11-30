@@ -1088,7 +1088,7 @@ var app = (function () {
 
 		console.log(attributionControl);
 
-		attributionControl.element.innerHTML = '<i class="fa-solid fa-circle-info fa-lg"></i>';
+		attributionControl.element.querySelector('button').innerHTML = '<i class="fa-solid fa-circle-info fa-lg"></i>';
 
 		map.addControl(attributionControl);
 
