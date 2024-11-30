@@ -754,32 +754,14 @@ var app = (function () {
 			source: vectorLayer.getSource()
 		}));
 
-		var layerSwitcherBtn = new ol.control.LayerSwitcherImage()
-		map.addControl(layerSwitcherBtn);
-		mapControls.layerSwitcherBtn = layerSwitcherBtn;
-
-		// layerSwitcherBtn.on('layer:visible', function (evt) {
-		// 	var title = evt.layer.get("title")
-
-		// 	switch (title) {
-		// 		case 'Satellite':
-		// 			streetLayer.setVisible(false);
-		// 			break;
-		// 		case 'Streets':
-		// 			satelliteLayer.setVisible(false);
-		// 			break;
-		// 	}
-		// });
-
-		osmLayer.on('change:visible', function (evt) {
-			satelliteLayer.setVisible(!this.getVisible());
+		var layerCahngeBtn = new ol.control.Button({
+			html: '<i class="fa-solid fa-layer-group fa-lg"></i>',
+			title: 'Change layer...',
+			handleClick: toggleLayers
 		});
+		locationBar.addControl(layerCahngeBtn);
 
-		console.log(layerSwitcherBtn)
-
-		// Example: Toggle on button click
-		// const button = document.getElementById('toggleButton');
-		// button.addEventListener('click', toggleLayers);
+		mapControls.layerCahngeBtn = layerCahngeBtn;
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
