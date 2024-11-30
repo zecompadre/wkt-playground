@@ -507,7 +507,7 @@ var app = (function () {
 				vectorLayer,
 			],
 			target: 'map',
-			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom }),
+			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom, maxZoom: 19 }),
 		});
 
 		// Add controls and interactions
