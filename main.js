@@ -24,7 +24,7 @@ var app = (function () {
 
 	let mapControls = {};
 
-	const satelliteLayer = new ol.layer.Tile({
+	const arcgisLayer = new ol.layer.Tile({
 		name: 'Satellite',
 		title: 'Satellite',
 		source: new ol.source.XYZ({
@@ -42,59 +42,162 @@ var app = (function () {
 	});
 
 	const utilities = {
+		/**
+		 * Transforms coordinates from one spatial reference system to another.
+		 *
+		 * This function uses OpenLayers' `ol.proj.transform` method to convert the given coordinates
+		 * from one projection to another (e.g., from Mercator to Geodetic).
+		 *
+		 * @param {Array<number>} coords - The coordinates to be transformed, represented as an array [x, y].
+		 * @param {string} from - The source projection's EPSG code (e.g., 'EPSG:3857' for Web Mercator).
+		 * @param {string} to - The target projection's EPSG code (e.g., 'EPSG:4326' for WGS 84).
+		 * @returns {Array<number>} - The transformed coordinates as an array [x, y].
+		 */
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
-		layerChangeBtnHtml: function () {
-			if (osmLayer.getVisible())
-				return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="' + satelliteLayer.name + '" title="' + satelliteLayer.name + '" />';
-			else if (satelliteLayer.getVisible())
-				return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="' + osmLayer.name + '" title="' + osmLayer.name + '" />';
+		/**
+		 * Generates HTML for a button image that represents the current visible map layer.
+		 *
+		 * This function checks which layer (OSM or ArcGIS) is currently visible, retrieves the corresponding
+		 * preview image and title, and returns an HTML image element to switch between layers.
+		 * 
+		 * @returns {string} - The HTML string representing an image button for the visible map layer.
+		 */
+		layerChangeBtnHtml: () => {
+			// Extract common information for OSM and ArcGIS layers
+			const osmTitle = osmLayer.get("title") || osmLayer.get("name"); // Fallback to 'name' if 'title' is not available
+			const osmImg = osmLayer.getPreview(); // Get OSM layer preview image
+			const arcgisTitle = arcgisLayer.get("title") || arcgisLayer.get("name"); // Fallback to 'name' if 'title' is not available
+			const arcgisImg = arcgisLayer.getPreview(); // Get ArcGIS layer preview image
+
+			// Determine which layer is currently visible
+			const isOsmVisible = osmLayer.getVisible(); // Check if OSM layer is visible
+			const imgSrc = isOsmVisible ? osmImg : arcgisImg; // Choose the image based on visible layer
+			const imgAlt = isOsmVisible ? arcgisTitle : osmTitle; // Set alternative text based on visible layer
+			const imgTitle = imgAlt; // Use the same text for title attribute
+
+			// Return the HTML for the button with the corresponding layer
+			return `<img src="${imgSrc}" width="36" height="36" alt="${imgAlt}" title="${imgTitle}" />`;
 		},
-		hexToRgbA: (hex, opacity) => {
-			opacity = opacity || '0.2';
+		/**
+		 * Converts a hexadecimal color code to an RGBA color string.
+		 *
+		 * This function takes a hexadecimal color code (e.g., "#FF5733") and an optional opacity value,
+		 * and returns the corresponding RGBA color string with the specified opacity.
+		 *
+		 * @param {string} hex - The hexadecimal color code, e.g., "#FF5733".
+		 * @param {string} [opacity='0.2'] - The opacity level for the color, default is '0.2'.
+		 * @returns {string} - The RGBA color string in the format 'rgba(r, g, b, opacity)'.
+		 */
+		hexToRgbA: (hex, opacity = '0.2') => {
+			// Remove the '#' from the hex code if present and parse it to a number
 			const bigint = parseInt(hex.replace(/^#/, ''), 16);
-			const r = (bigint >> 16) & 255;
-			const g = (bigint >> 8) & 255;
-			const b = bigint & 255;
+
+			// Extract the red, green, and blue components using bitwise operations
+			const r = (bigint >> 16) & 255; // Extract the first 8 bits (red)
+			const g = (bigint >> 8) & 255;  // Extract the next 8 bits (green)
+			const b = bigint & 255;         // Extract the last 8 bits (blue)
+
+			// Return the color in RGBA format with the specified opacity
 			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 		},
+		/**
+		 * Converts the geometry of a feature to Well-Known Text (WKT) format.
+		 *
+		 * This function retrieves the geometry of the provided feature, clones it to prevent 
+		 * modification of the original geometry, transforms it from Mercator to Geodetic projection, 
+		 * and then returns the WKT representation of the transformed geometry.
+		 *
+		 * @param {Object} feature - The feature object that contains the geometry to be converted.
+		 * @param {Object} feature.getGeometry - Method that returns the geometry of the feature.
+		 * @returns {string} - The WKT representation of the feature's geometry after transformation.
+		 */
 		getFeatureWKT: (feature) => {
-			if (!feature)
-				return "";
+			// Return an empty string if the feature is undefined or null
+			if (!feature) return "";
+
+			// Clone the geometry of the feature to avoid modifying the original
 			const geom = feature.getGeometry().clone();
-			return format.writeGeometry(geom.transform(projections.mercator, projections.geodetic));
+
+			// Transform the geometry from Mercator to Geodetic projection
+			const transformedGeom = geom.transform(projections.mercator, projections.geodetic);
+
+			// Convert the transformed geometry to WKT (Well-Known Text) format
+			return format.writeGeometry(transformedGeom);
 		},
+		/**
+		 * Generates a SHA-256 checksum for the given input string.
+		 *
+		 * @param {string} input - The input string to hash.
+		 * @returns {Promise<string>} - The hexadecimal representation of the SHA-256 checksum.
+		 */
 		generateChecksum: async (input) => {
+			// Return the input as-is if it is null or undefined
 			if (!input) return input;
+
+			// Encode the input string into a Uint8Array using UTF-8 encoding
 			const encoder = new TextEncoder();
 			const data = encoder.encode(input);
+
+			// Calculate the SHA-256 hash as an ArrayBuffer
 			const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-			return Array.from(new Uint8Array(hashBuffer))
-				.map((byte) => byte.toString(16).padStart(2, '0'))
-				.join('');
+
+			// Convert the ArrayBuffer to a hexadecimal string
+			return Array.from(new Uint8Array(hashBuffer)) // Create an array from the hash bytes
+				.map(byte => byte.toString(16).padStart(2, '0')) // Convert each byte to a two-character hex string
+				.join(''); // Join all hex strings into a single result
 		},
+		/**
+		 * Creates and initializes a new vector layer with specified features and style.
+		 *
+		 * This function creates a new vector layer using OpenLayers' `ol.layer.Vector`. The layer is populated
+		 * with features from a provided feature collection and styled using a generic style function.
+		 * The layer is also set to not be displayed in the layer switcher.
+		 *
+		 * @returns {void} This function does not return anything.
+		 */
 		createVectorLayer: () => {
 			vectorLayer = new ol.layer.Vector({
-				source: new ol.source.Vector({ features: featureCollection }),
-				style: utilities.genericStyleFunction(colors.normal),
+				source: new ol.source.Vector({ features: featureCollection }), // Set the features in the vector source
+				style: utilities.genericStyleFunction(colors.normal), // Apply a style function to the layer
 			});
-			vectorLayer.set('displayInLayerSwitcher', false);
+			vectorLayer.set('displayInLayerSwitcher', false); // Prevent the layer from appearing in the layer switcher
 		},
+		/**
+		 * Generates a style for a vector feature with a circle marker and custom color.
+		 *
+		 * This function creates a style object for a vector feature using OpenLayers' `ol.style.Style`. 
+		 * The style includes a circle marker with a fill and stroke, both of which use the specified color.
+		 * It also applies a semi-transparent fill to the feature and a stroke with a defined color and width.
+		 *
+		 * @param {string} color - The color to apply to the style, in hexadecimal format (e.g., '#FF5733').
+		 * @returns {Array<ol.style.Style>} - An array containing an OpenLayers style for the feature.
+		 */
 		genericStyleFunction: (color) => [
 			new ol.style.Style({
 				image: new ol.style.Circle({
-					fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }),
-					stroke: new ol.style.Stroke({ color, width: 2 }),
-					radius: 5,
+					fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }), // Apply the fill color (converted to RGBA)
+					stroke: new ol.style.Stroke({ color, width: 2 }), // Apply stroke color and width
+					radius: 5, // Set the radius of the circle marker
 				}),
-				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.3') }),
-				stroke: new ol.style.Stroke({ color, width: 2 }),
+				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.3') }), // Apply a semi-transparent fill for the feature
+				stroke: new ol.style.Stroke({ color, width: 2 }), // Apply stroke color and width to the feature
 			}),
 		],
-		drawStyleFunction(color) {
+		/**
+		 * Generates a style function for vector features based on their geometry type and a specified color.
+		 *
+		 * This function returns a style for vector features (Point, LineString, Polygon) depending on the
+		 * geometry type of the feature. The style includes custom stroke, fill, and shape properties. 
+		 * The color of the style is customizable. If no color is provided, a default color is used.
+		 *
+		 * @param {string} color - The color to apply to the style, in hexadecimal format (e.g., '#FF5733').
+		 * @returns {Function} - A function that returns the appropriate style for a feature based on its geometry type.
+		 *                        The returned function accepts a feature and returns an array of styles.
+		 */
+		drawStyleFunction: (color) => {
 			return function (feature) {
-
 				var geometry = feature.getGeometry();
-				color = color || colors.normal;
+				color = color || colors.normal; // Default color if no color is provided
 
 				if (geometry.getType() === 'LineString') {
 					var styles = [
@@ -107,21 +210,23 @@ var app = (function () {
 					];
 					return styles;
 				}
+
 				if (geometry.getType() === 'Point') {
 					var styles = [
 						new ol.style.Style({
 							image: new ol.style.RegularShape({
 								fill: new ol.style.Fill({ color: colors.create }),
 								stroke: new ol.style.Stroke({ color: color, width: 2 }),
-								points: 4,
-								radius: 10,
-								radius2: 2,
-								angle: 0,
+								points: 4, // Square shape
+								radius: 10, // Size of the shape
+								radius2: 2, // Inner radius (smaller)
+								angle: 0, // No rotation
 							}),
 						})
 					];
 					return styles;
 				}
+
 				if (geometry.getType() === 'Polygon') {
 					var styles = [
 						new ol.style.Style({
@@ -136,16 +241,35 @@ var app = (function () {
 					];
 					return styles;
 				}
-				return false;
+
+				return false; // Return false if geometry type is not recognized
 			};
 		},
+		/**
+		 * Restores the default border and background colors for the textarea element.
+		 *
+		 * This function resets the border color and background color of the textarea to their default values.
+		 * It removes any custom styling applied to these properties, allowing the browser's default styling to take effect.
+		 *
+		 * @returns {void} This function does not return any value.
+		 */
 		restoreDefaultColors: function () {
-			textarea.style.borderColor = "";
-			textarea.style.backgroundColor = "";
+			textarea.style.borderColor = ""; // Reset border color to default
+			textarea.style.backgroundColor = ""; // Reset background color to default
 		},
+		/**
+		 * Fetches the public IP address of the client using the ipify API.
+		 *
+		 * This asynchronous function makes a request to the ipify API to retrieve the client's public IP address.
+		 * If the request is successful, it returns the IP address. If there is an error (e.g., network failure),
+		 * it logs the error and returns a fallback message.
+		 *
+		 * @returns {Promise<string>} A promise that resolves to the public IP address as a string, or a fallback
+		 *                            message if an error occurs during the fetch operation.
+		 */
 		getIP: async function () {
 			try {
-				// Using ipify.org as an example API
+				// Using ipify.org as an example API to fetch the public IP address
 				const response = await fetch('https://api.ipify.org?format=json');
 
 				if (!response.ok) {
@@ -155,10 +279,21 @@ var app = (function () {
 				const data = await response.json();
 				return data.ip;
 			} catch (error) {
-				console.error('Error fetching IP:', error);
-				return 'Unable to retrieve IP address';
+				console.error('Error fetching IP:', error); // Log error to the console
+				return 'Unable to retrieve IP address'; // Return fallback message on error
 			}
 		},
+		/**
+		 * Retrieves the user's current geographical location (latitude and longitude).
+		 *
+		 * This asynchronous function checks if geolocation is available in the user's browser. If available,
+		 * it retrieves the user's current position using the `navigator.geolocation` API. If successful, it resolves
+		 * with an object containing the latitude and longitude (rounded to 4 decimal places). If there is an error,
+		 * it rejects with an appropriate error message.
+		 *
+		 * @returns {Promise<Object>} A promise that resolves with an object containing `latitude` and `longitude` properties
+		 *                            (both rounded to 4 decimal places), or rejects with an error message if geolocation fails.
+		 */
 		getLocation: async function () {
 			return new Promise((resolve, reject) => {
 				// Check if geolocation is available
@@ -167,17 +302,21 @@ var app = (function () {
 					return;
 				}
 
-				// Handle errors
+				// Handle errors related to geolocation
 				function handleError(error) {
 					switch (error.code) {
 						case error.PERMISSION_DENIED:
 							reject('User denied the request for Geolocation');
+							break;
 						case error.POSITION_UNAVAILABLE:
 							reject('Location information is unavailable');
+							break;
 						case error.TIMEOUT:
 							reject('The request to get user location timed out');
+							break;
 						case error.UNKNOWN_ERROR:
 							reject('An unknown error occurred while retrieving coordinates');
+							break;
 					}
 					reject('Error getting location');
 				}
@@ -185,27 +324,50 @@ var app = (function () {
 				// Get current position
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
-						resolve({ latitude: position.coords.latitude.toFixed(4), longitude: position.coords.longitude.toFixed(4) });
+						resolve({
+							latitude: position.coords.latitude.toFixed(4),  // Round latitude to 4 decimal places
+							longitude: position.coords.longitude.toFixed(4), // Round longitude to 4 decimal places
+						});
 					},
-					handleError
+					handleError // Handle geolocation error
 				);
 			});
 		},
+		/**
+		 * Captures a screenshot of the map element and appends it as an image to the body of the document.
+		 *
+		 * This function uses the `domtoimage` library to generate a PNG image of the map element (identified by the "map" ID).
+		 * The image is created with the current dimensions of the map. If the screenshot is successfully created, it is
+		 * appended to the document body as an image. If an error occurs during the process, it logs the error to the console.
+		 *
+		 * @param {Object} feature - The feature associated with the map (currently unused, but could be extended for specific use cases).
+		 * @returns {void} This function does not return any value.
+		 */
 		imageCanvas: function (feature) {
+			// Get the map element and its dimensions
 			const map = document.getElementById("map");
 			const width = map.offsetWidth;
 			const height = map.offsetHeight;
+
+			// Use domtoimage to capture a PNG image of the map
 			domtoimage.toPng(map, {
 				"width": width,
 				"height": height
-			}).then(function (dataUrl) {
-				var img = new Image();
-				img.src = dataUrl;
-				document.body.appendChild(img);
-			}).catch(function (error) {
-				console.error('oops, something went wrong!', error);
-			});
+			})
+				.then(function (dataUrl) {
+					// Create an image element and set its source to the data URL
+					var img = new Image();
+					img.src = dataUrl;
+
+					// Append the image to the body of the document
+					document.body.appendChild(img);
+				})
+				.catch(function (error) {
+					// Log any errors that occur during the image generation
+					console.error('oops, something went wrong!', error);
+				});
 		}
+
 	};
 
 	const featureUtilities = {
@@ -309,7 +471,7 @@ var app = (function () {
 		toggleLayers: function () {
 			const osmVisible = osmLayer.getVisible();
 			osmLayer.setVisible(!osmVisible); // Toggle visibility
-			satelliteLayer.setVisible(osmVisible); // Opposite visibility
+			arcgisLayer.setVisible(osmVisible); // Opposite visibility
 			mapControls.layerChangeBtn.setHtml(utilities.layerChangeBtnHtml());
 		},
 		reviewLayout: async function (center) {
@@ -490,7 +652,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				osmLayer, satelliteLayer,
+				osmLayer, arcgisLayer,
 				vectorLayer,
 			],
 			target: 'map',
