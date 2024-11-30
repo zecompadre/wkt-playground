@@ -32,7 +32,7 @@ var app = (function () {
 			attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer">ArcGIS</a>',
 		}),
 		visible: false, // Initially hidden
-		maxZoom: 20
+		maxZoom: 19
 	});
 
 	const osmLayer = new ol.layer.Tile({
@@ -40,6 +40,7 @@ var app = (function () {
 		title: 'Streets',
 		source: new ol.source.OSM(),
 		visible: true,
+		maxZoom: 19
 	});
 
 	// Function to toggle layers
