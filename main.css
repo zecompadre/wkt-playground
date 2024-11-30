@@ -5,6 +5,15 @@
 	--btnsize: 36px;
 	--barshadow: 0px 8px 15px rgba(0, 0, 0, 0.2), 0px 12px 30px rgba(0, 0, 0, 0.1);
 
+	--white: #fff;
+	--bordercolortextarea: #ced4da;
+	--colortextarea: #495057;
+	--bordercolorfocustextarea: #80bdff;
+	--boxshadowtextarea: rgba(0, 123, 255, .25);
+	--headercolor: #333;
+	--mapbgcolor: #ddd;
+	--primary: #007bff;
+
 	--indigo: #6610f2;
 	--purple: #6f42c1;
 	--pink: #e83e8c;
@@ -14,7 +23,7 @@
 	--green: #28a745;
 	--teal: #20c997;
 	--cyan: #17a2b8;
-	--white: #fff;
+
 	--gray: #6c757d;
 	--gray-dark: #343a40;
 	--primary: #007bff;
@@ -46,28 +55,6 @@ body {
 	font-family: Arial, sans-serif;
 }
 
-.form-control {
-	display: block;
-	width: 100%;
-	padding: .375rem .75rem;
-	font-size: 1rem;
-	line-height: 1.5;
-	color: #495057;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid #ced4da;
-	border-radius: .25rem;
-	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-.form-control:focus {
-	color: #495057;
-	background-color: #fff;
-	border-color: #80bdff;
-	outline: 0;
-	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
-}
-
 button,
 input,
 optgroup,
@@ -80,15 +67,34 @@ textarea {
 }
 
 textarea {
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--colortextarea);
+	background-color: var(--white);
+	background-clip: padding-box;
+	border: 1px solid var(--bordercolortextarea);
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	overflow: auto;
 	resize: vertical;
+}
+
+textarea:focus {
+	color: var(--colortextarea);
+	background-color: var(--white);
+	border-color: var(--bordercolorfocustextarea);
+	outline: 0;
+	box-shadow: 0 0 0 .2rem var(--boxshadowtextarea);
 }
 
 .headercontainer {
 	padding: 0;
 	height: var(--headerh);
-	background-color: #333;
-	color: #fff;
+	background-color: var(--headercolor);
+	color: var(--white);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -102,7 +108,7 @@ textarea {
 	vertical-align: middle;
 	margin: 0;
 	padding: 0 10px 0 0;
-	color: #fff;
+	color: var(--white);
 }
 
 .headercontainer .inspired {
@@ -138,7 +144,7 @@ textarea {
 .maincontainer .map-container #map {
 	width: 100%;
 	height: 100%;
-	background-color: #ddd;
+	background-color: var(--mapbgcolor);
 }
 
 .maincontainer .map-container #overlay {
@@ -212,19 +218,28 @@ textarea {
 	padding: 10px;
 }
 
+.ol-toggle.ol-active>button {
+	background-color: var(--primary);
+	color: var(--white);
+}
+
+.ol-control button {
+	color: var(--gray);
+}
+
 .ol-control.ol-bar.mainbar {
 	background-color: transparent;
 }
 
 .ol-control.ol-bar .ol-bar.editbar {
 	margin-right: 5px;
-	background-color: #fff;
+	background-color: var(--white);
 	box-shadow: var(--barshadow);
 }
 
 .ol-control.ol-bar .ol-bar.locationbar {
 	margin-left: 5px;
-	background-color: #fff;
+	background-color: var(--white);
 	box-shadow: var(--barshadow);
 }
 
@@ -279,7 +294,7 @@ textarea {
 }
 
 .ol-zoom.ol-unselectable.ol-control {
-	background-color: #fff;
+	background-color: var(--white);
 	border-radius: 0;
 	box-shadow: var(--barshadow);
 }
@@ -311,7 +326,7 @@ textarea {
 }
 
 .ol-attribution.ol-unselectable.ol-control {
-	background-color: #fff;
+	background-color: var(--white);
 	border-radius: 0;
 	box-shadow: var(--barshadow);
 }
