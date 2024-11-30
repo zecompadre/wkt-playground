@@ -458,8 +458,28 @@ textarea {
 	border-bottom: 1px solid #0000001c;
 }
 
-.ol-attribution {
-	right: 45px;
-	bottom: .5em;
-	height: 36px;
+.ol-attribution.ol-unselectable.ol-control {
+	background-color: #fff;
+	border-radius: 0;
+	box-shadow: var(--barshadow);
+}
+
+.ol-attribution button {
+	pointer-events: auto;
+	background-color: transparent;
+	border: 0;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	height: var(--btnsize);
+	outline: none;
+	padding: 0;
+	width: var(--btnsize);
+	margin: 0;
+	border-radius: 0;
+}
+
+.ol-attribution button:hover {
+	background-color: rgb(0 0 0 / 5%);
+	outline: none;
 }

@@ -1062,25 +1062,25 @@ var app = (function () {
 
 		mapControls.layerChangeBtn = layerChangeBtn;
 
-		var attrBar = new ol.control.Bar({
-			className: 'attrbar',
-			toggleOne: false,	// one control active at the same time
-			group: false,		// group controls together
-		});
-		map.addControl(attrBar);
-		mapControls.attrBar = attrBar;
+		// var attrBar = new ol.control.Bar({
+		// 	className: 'attrbar',
+		// 	toggleOne: false,	// one control active at the same time
+		// 	group: false,		// group controls together
+		// });
+		// map.addControl(attrBar);
+		// mapControls.attrBar = attrBar;
 
-		var attrToggleBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-circle-info fa-lg"></i>',
-			title: 'Show Attribution ...',
-			handleClick: () => {
-				let collaped = mapControls.attributionControl.getCollapsed();
-				mapControls.attributionControl.setCollapsed(!collaped);
-			}
-		});
-		attrBar.addControl(attrToggleBtn);
+		// var attrToggleBtn = new ol.control.Button({
+		// 	html: '<i class="fa-solid fa-circle-info fa-lg"></i>',
+		// 	title: 'Show Attribution ...',
+		// 	handleClick: () => {
+		// 		let collaped = mapControls.attributionControl.getCollapsed();
+		// 		mapControls.attributionControl.setCollapsed(!collaped);
+		// 	}
+		// });
+		// attrBar.addControl(attrToggleBtn);
 
-		mapControls.attrToggleBtn = attrToggleBtn;
+		// mapControls.attrToggleBtn = attrToggleBtn;
 
 		const attributionControl = new ol.control.Attribution({
 			collapsible: true,
