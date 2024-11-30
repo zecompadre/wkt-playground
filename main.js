@@ -24,7 +24,7 @@ var app = (function () {
 
 	let mapControls = {};
 
-	const satelliteLayer = new ol.layer.Tile({
+	const globalImageryLayer = new ol.layer.Tile({
 		name: 'Satellite',
 		title: 'Satellite',
 		source: new ol.source.XYZ({
@@ -34,13 +34,20 @@ var app = (function () {
 		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
 
-	const streetLayer = new ol.layer.Tile({
+	const osmLayer = new ol.layer.Tile({
 		name: 'Streets',
 		title: 'Streets',
 		source: new ol.source.OSM(),
 		visible: true, // Initially visible
 		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
+
+	// Function to toggle layers
+	function toggleLayers() {
+		const osmVisible = osmLayer.getVisible();
+		osmLayer.setVisible(!osmVisible); // Toggle visibility
+		globalImageryLayer.setVisible(osmVisible); // Opposite visibility
+	}
 
 	// let crosshair = new ol.style.Style({
 	//     image: new ol.style.Icon({
@@ -487,7 +494,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				streetLayer, satelliteLayer,
+				osmLayer, globalImageryLayer,
 				vectorLayer,
 			],
 			target: 'map',
@@ -764,11 +771,15 @@ var app = (function () {
 		// 	}
 		// });
 
-		streetLayer.on('change:visible', function (evt) {
+		osmLayer.on('change:visible', function (evt) {
 			satelliteLayer.setVisible(!this.getVisible());
 		});
 
 		console.log(layerSwitcherBtn)
+
+		// Example: Toggle on button click
+		// const button = document.getElementById('toggleButton');
+		// button.addEventListener('click', toggleLayers);
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
