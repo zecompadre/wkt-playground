@@ -382,6 +382,14 @@ textarea {
 	box-shadow: var(--barshadow);
 }
 
+.ol-control.ol-bar.attrbar {
+	right: -.5em;
+	left: unset;
+	top: unset;
+	bottom: -.5em;
+	box-shadow: var(--barshadow);
+}
+
 .ol-bar .ol-button {
 	border-radius: 0;
 }
