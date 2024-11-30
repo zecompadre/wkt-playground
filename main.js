@@ -1084,6 +1084,7 @@ var app = (function () {
 
 		const attributionControl = new ol.control.Attribution({
 			collapsible: true,
+			label: '<i class="fa-solid fa-circle-info fa-lg"></i>'
 		});
 
 		map.addControl(attributionControl);
