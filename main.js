@@ -18,7 +18,7 @@ var app = (function () {
 		zoom: 6,
 	};
 
-	let map, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
+	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
 
 	let lfkey = "zecompadre-wkt";
 
@@ -161,6 +161,28 @@ var app = (function () {
 				style: utilities.genericStyleFunction(colors.normal), // Apply a style function to the layer
 			});
 			vectorLayer.set('displayInLayerSwitcher', false); // Prevent the layer from appearing in the layer switcher
+		},
+		/**
+		 * Creates a customized attribution control for the map.
+		 * 
+		 * This function initializes an OpenLayers `Attribution` control, sets it to be collapsible,
+		 * and customizes the button icon to display an information symbol using Font Awesome.
+		 * 
+		 * @returns {void}
+		 */
+		createAttributeControl: function () {
+			// Initialize the attribution control with the collapsible option enabled
+			attributionControl = new ol.control.Attribution({
+				collapsible: true, // Allows the control to be collapsed
+			});
+
+			// Customize the button within the control to display an information icon
+			const buttonElement = attributionControl.element.querySelector('button');
+			if (buttonElement) {
+				buttonElement.innerHTML = '<i class="fa-solid fa-circle-info fa-lg"></i>';
+			} else {
+				console.warn('Attribution control button element not found.');
+			}
 		},
 		/**
 		 * Generates a style for a vector feature with a circle marker and custom color.
@@ -782,13 +804,16 @@ var app = (function () {
 
 		// Initialize map and layers
 		utilities.createVectorLayer();
+
+		utilities.createAttributeControl();
+
 		map = new ol.Map({
 			layers: [
 				osmLayer, arcgisLayer,
 				vectorLayer,
 			],
 			target: 'map',
-			controls: ol.control.defaults.defaults({ attribution: false }),
+			controls: ol.control.defaults.defaults({ attribution: false }).extend([attributionControl]),
 			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom, maxZoom: 19 }),
 		});
 
@@ -1061,38 +1086,6 @@ var app = (function () {
 		layerBar.addControl(layerChangeBtn);
 
 		mapControls.layerChangeBtn = layerChangeBtn;
-
-		// var attrBar = new ol.control.Bar({
-		// 	className: 'attrbar',
-		// 	toggleOne: false,	// one control active at the same time
-		// 	group: false,		// group controls together
-		// });
-		// map.addControl(attrBar);
-		// mapControls.attrBar = attrBar;
-
-		// var attrToggleBtn = new ol.control.Button({
-		// 	html: '<i class="fa-solid fa-circle-info fa-lg"></i>',
-		// 	title: 'Show Attribution ...',
-		// 	handleClick: () => {
-		// 		let collaped = mapControls.attributionControl.getCollapsed();
-		// 		mapControls.attributionControl.setCollapsed(!collaped);
-		// 	}
-		// });
-		// attrBar.addControl(attrToggleBtn);
-
-		// mapControls.attrToggleBtn = attrToggleBtn;
-
-		const attributionControl = new ol.control.Attribution({
-			collapsible: true
-		});
-
-		console.log(attributionControl);
-
-		attributionControl.element.querySelector('button').innerHTML = '<i class="fa-solid fa-circle-info fa-lg"></i>';
-
-		map.addControl(attributionControl);
-
-		mapControls.attributionControl = attributionControl;
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
