@@ -1083,9 +1083,12 @@ var app = (function () {
 		// mapControls.attrToggleBtn = attrToggleBtn;
 
 		const attributionControl = new ol.control.Attribution({
-			collapsible: true,
-			label: '<i class="fa-solid fa-circle-info fa-lg"></i>'
+			collapsible: true
 		});
+
+		console.log(attributionControl);
+
+		attributionControl.element.innerHtml = '<i class="fa-solid fa-circle-info fa-lg"></i>';
 
 		map.addControl(attributionControl);
 
