@@ -1086,6 +1086,8 @@ var app = (function () {
 			collapsible: false,
 		});
 
+		map.addControl(attributionControl);
+
 		mapControls.attributionControl = attributionControl;
 
 		document.addEventListener('keydown', function (evt) {
