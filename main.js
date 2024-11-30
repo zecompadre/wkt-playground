@@ -413,7 +413,7 @@ var app = (function () {
 		 * @returns {void} This method does not return a value. It modifies the textarea input value.
 		 */
 		createFromAllFeatures: () => {
-			const multi = this.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
+			const multi = featureUtilities.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
 			if (multi) {
 				const geo = multi.getGeometry().transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
 				textarea.value = format.writeGeometry(geo); // Write the WKT representation to textarea
