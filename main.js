@@ -751,9 +751,22 @@ var app = (function () {
 		map.addControl(layerSwitcherBtn);
 		mapControls.layerSwitcherBtn = layerSwitcherBtn;
 
-		layerSwitcherBtn.on('layer:visible', function (evt) {
-			console.log(evt.layer)
-		});
+		// layerSwitcherBtn.on('layer:visible', function (evt) {
+		// 	var title = evt.layer.get("title")
+
+		// 	switch (title) {
+		// 		case 'Satellite':
+		// 			streetLayer.setVisible(false);
+		// 			break;
+		// 		case 'Streets':
+		// 			satelliteLayer.setVisible(false);
+		// 			break;
+		// 	}
+		// });
+
+		satelliteLayer.on('change:visible', function (evt) {
+			console.log(evt);
+		}
 
 		console.log(layerSwitcherBtn)
 
