@@ -483,3 +483,8 @@ textarea {
 	background-color: rgb(0 0 0 / 5%);
 	outline: none;
 }
+
+.ol-attribution button i {
+	cursor: pointer;
+	line-height: 1em;
+}
