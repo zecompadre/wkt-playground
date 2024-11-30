@@ -763,7 +763,7 @@ var app = (function () {
 		}));
 
 		var layerChangeBtn = new ol.control.Button({
-			html: layerChangeBtnHtml,
+			html: layerChangeBtnHtml(),
 			title: 'Change layer...',
 			handleClick: toggleLayers,
 			className: 'ol-right ol-top'
