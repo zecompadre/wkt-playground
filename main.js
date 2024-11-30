@@ -762,13 +762,21 @@ var app = (function () {
 			source: vectorLayer.getSource()
 		}));
 
+		var layerBar = new ol.control.Bar({
+			className: 'layerbar',
+			toggleOne: false,	// one control active at the same time
+			group: false,		// group controls together
+			className: 'ol-top-right'
+		});
+		map.addControl(layerBar);
+		mapControls.layerBar = layerBar;
+
 		var layerChangeBtn = new ol.control.Button({
 			html: layerChangeBtnHtml(),
 			title: 'Change layer...',
 			handleClick: toggleLayers,
-			className: 'ol-top-right'
 		});
-		map.addControl(layerChangeBtn);
+		layerBar.addControl(layerChangeBtn);
 
 		mapControls.layerChangeBtn = layerChangeBtn;
 
