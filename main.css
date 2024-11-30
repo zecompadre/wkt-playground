@@ -1,18 +1,20 @@
 :root {
-	--headerh: 60px;
-	--maph: 75%;
-	--resulth: 25%;
-	--btnsize: 36px;
-	--barshadow: 0px 8px 15px rgba(0, 0, 0, 0.2), 0px 12px 30px rgba(0, 0, 0, 0.1);
+	--header-height: 60px;
+	--map-height: 75%;
+	--result-height: 25%;
+	--button-size: 36px;
+	--navbar-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2), 0px 12px 30px rgba(0, 0, 0, 0.1);
 
-	--white: #fff;
-	--bordercolortextarea: #ced4da;
-	--colortextarea: #495057;
-	--bordercolorfocustextarea: #80bdff;
-	--boxshadowtextarea: rgba(0, 123, 255, .25);
-	--headercolor: #333;
-	--mapbgcolor: #ddd;
-	--primary: #007bff;
+	--color-white: #fff;
+	--textarea-border-color: #ced4da;
+	--text-area-color: #495057;
+	--border-color-focused-textarea: #80bdff;
+	--box-shadow-text-area: rgba(0, 123, 255, .25);
+	--primary-header-color: #333;
+	--map-background-color: #ddd;
+	--color-primary: #007bff;
+	--button-hover-background: rgb(0 0 0 / 5%);
+	--button-divider-color: #0000001c;
 
 	--indigo: #6610f2;
 	--purple: #6f42c1;
@@ -26,7 +28,7 @@
 
 	--gray: #6c757d;
 	--gray-dark: #343a40;
-	--primary: #007bff;
+	--color-primary: #007bff;
 	--secondary: #6c757d;
 	--success: #28a745;
 	--info: #17a2b8;
@@ -72,10 +74,10 @@ textarea {
 	padding: .375rem .75rem;
 	font-size: 1rem;
 	line-height: 1.5;
-	color: var(--colortextarea);
-	background-color: var(--white);
+	color: var(--text-area-color);
+	background-color: var(--color-white);
 	background-clip: padding-box;
-	border: 1px solid var(--bordercolortextarea);
+	border: 1px solid var(--textarea-border-color);
 	border-radius: .25rem;
 	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	overflow: auto;
@@ -83,18 +85,18 @@ textarea {
 }
 
 textarea:focus {
-	color: var(--colortextarea);
-	background-color: var(--white);
-	border-color: var(--bordercolorfocustextarea);
+	color: var(--text-area-color);
+	background-color: var(--color-white);
+	border-color: var(--border-color-focused-textarea);
 	outline: 0;
-	box-shadow: 0 0 0 .2rem var(--boxshadowtextarea);
+	box-shadow: 0 0 0 .2rem var(--box-shadow-text-area);
 }
 
 .headercontainer {
 	padding: 0;
-	height: var(--headerh);
-	background-color: var(--headercolor);
-	color: var(--white);
+	height: var(--header-height);
+	background-color: var(--primary-header-color);
+	color: var(--color-white);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -103,18 +105,18 @@ textarea:focus {
 
 .headercontainer .title {
 	display: inline-block;
-	line-height: var(--headerh);
-	height: var(--headerh);
+	line-height: var(--header-height);
+	height: var(--header-height);
 	vertical-align: middle;
 	margin: 0;
 	padding: 0 10px 0 0;
-	color: var(--white);
+	color: var(--color-white);
 }
 
 .headercontainer .inspired {
 	display: inline-block;
-	line-height: var(--headerh);
-	height: var(--headerh);
+	line-height: var(--header-height);
+	height: var(--header-height);
 	font-size: 14px;
 	vertical-align: middle;
 	color: rgba(255, 255, 255, .5);
@@ -124,15 +126,15 @@ textarea:focus {
 .maincontainer {
 	display: flex;
 	flex-direction: column;
-	height: calc(100% - var(--headerh));
+	height: calc(100% - var(--header-height));
 	max-width: 100%;
 }
 
 /* Map container */
 .maincontainer .map-container {
-	flex: 0 0 var(--maph);
+	flex: 0 0 var(--map-height);
 	position: relative;
-	height: var(--maph);
+	height: var(--map-height);
 }
 
 .maincontainer.nowkt .map-container {
@@ -144,7 +146,7 @@ textarea:focus {
 .maincontainer .map-container #map {
 	width: 100%;
 	height: 100%;
-	background-color: var(--mapbgcolor);
+	background-color: var(--map-background-color);
 }
 
 .maincontainer .map-container #overlay {
@@ -165,9 +167,9 @@ textarea:focus {
 
 /* Text area container */
 .maincontainer .result-container {
-	flex: 0 0 var(--resulth);
+	flex: 0 0 var(--result-height);
 	position: relative;
-	height: var(--resulth);
+	height: var(--result-height);
 }
 
 .maincontainer.nowkt .result-container {
@@ -219,8 +221,8 @@ textarea:focus {
 }
 
 .ol-toggle.ol-active>button {
-	background-color: var(--primary);
-	color: var(--white);
+	background-color: var(--color-primary);
+	color: var(--color-white);
 }
 
 .ol-control button {
@@ -233,20 +235,20 @@ textarea:focus {
 
 .ol-control.ol-bar .ol-bar.editbar {
 	margin-right: 5px;
-	background-color: var(--white);
-	box-shadow: var(--barshadow);
+	background-color: var(--color-white);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar .ol-bar.locationbar {
 	margin-left: 5px;
-	background-color: var(--white);
-	box-shadow: var(--barshadow);
+	background-color: var(--color-white);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar.layerbar {
 	right: -.5em;
 	left: unset;
-	box-shadow: var(--barshadow);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar.attrbar {
@@ -254,7 +256,7 @@ textarea:focus {
 	left: unset;
 	top: unset;
 	bottom: .5em;
-	box-shadow: var(--barshadow);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-bar .ol-button {
@@ -268,18 +270,18 @@ textarea:focus {
 	box-sizing: border-box;
 	cursor: pointer;
 	display: block;
-	height: var(--btnsize);
+	height: var(--button-size);
 	outline: none;
 	padding: 0;
-	width: var(--btnsize);
+	width: var(--button-size);
 	margin: 0;
 	border-radius: 0;
-	border-right: 1px solid #0000001c;
+	border-right: 1px solid var(--button-divider-color);
 	/* Adjust color and style as needed */
 }
 
 .ol-control.ol-bar .ol-control button:hover {
-	background-color: rgb(0 0 0 / 5%);
+	background-color: var(--button-hover-background);
 }
 
 .ol-control.ol-bar .ol-control button i {
@@ -294,9 +296,9 @@ textarea:focus {
 }
 
 .ol-zoom.ol-unselectable.ol-control {
-	background-color: var(--white);
+	background-color: var(--color-white);
 	border-radius: 0;
-	box-shadow: var(--barshadow);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-zoom .ol-zoom-in,
@@ -307,10 +309,10 @@ textarea:focus {
 	box-sizing: border-box;
 	cursor: pointer;
 	display: block;
-	height: var(--btnsize);
+	height: var(--button-size);
 	outline: none;
 	padding: 0;
-	width: var(--btnsize);
+	width: var(--button-size);
 	margin: 0;
 	border-radius: 0;
 }
@@ -322,13 +324,13 @@ textarea:focus {
 }
 
 .ol-zoom .ol-zoom-in {
-	border-bottom: 1px solid #0000001c;
+	border-bottom: 1px solid var(--button-divider-color);
 }
 
 .ol-attribution.ol-unselectable.ol-control {
-	background-color: var(--white);
+	background-color: var(--color-white);
 	border-radius: 0;
-	box-shadow: var(--barshadow);
+	box-shadow: var(--navbar-shadow);
 }
 
 .ol-attribution button {
@@ -338,17 +340,17 @@ textarea:focus {
 	box-sizing: border-box;
 	cursor: pointer;
 	display: block;
-	height: var(--btnsize);
+	height: var(--button-size);
 	outline: none;
 	padding: 0;
-	width: var(--btnsize);
+	width: var(--button-size);
 	margin: 0;
 	border-radius: 0;
 }
 
 .ol-attribution button:focus,
 .ol-attribution button:hover {
-	background-color: rgb(0 0 0 / 5%);
+	background-color: var(--button-hover-background);
 	outline: none;
 }
 
