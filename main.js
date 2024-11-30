@@ -31,43 +31,24 @@ var app = (function () {
 			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 			attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer">ArcGIS</a>',
 		}),
-		visible: false, // Initially hidden
-		maxZoom: 19
+		visible: false,
 	});
 
 	const osmLayer = new ol.layer.Tile({
 		name: 'Streets',
 		title: 'Streets',
 		source: new ol.source.OSM(),
-		visible: true,
-		maxZoom: 19
+		visible: true
 	});
-
-	// Function to toggle layers
-	function toggleLayers() {
-		const osmVisible = osmLayer.getVisible();
-		osmLayer.setVisible(!osmVisible); // Toggle visibility
-		satelliteLayer.setVisible(osmVisible); // Opposite visibility
-		mapControls.layerChangeBtn.setHtml(layerChangeBtnHtml());
-	}
-
-	function layerChangeBtnHtml() {
-		if (osmLayer.getVisible())
-			return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
-		else if (satelliteLayer.getVisible())
-			return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
-	}
-
-	// let crosshair = new ol.style.Style({
-	//     image: new ol.style.Icon({
-	//         src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Crosshairs_Red.svg/100px-Crosshairs_Red.svg.png',
-	//         size: [100, 100],
-	//         opacity: 1,
-	//         scale: 0.4
-	//     })
 
 	const utilities = {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
+		layerChangeBtnHtml: function () {
+			if (osmLayer.getVisible())
+				return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
+			else if (satelliteLayer.getVisible())
+				return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
+		},
 		hexToRgbA: (hex, opacity) => {
 			opacity = opacity || '0.2';
 			const bigint = parseInt(hex.replace(/^#/, ''), 16);
@@ -325,6 +306,12 @@ var app = (function () {
 	};
 
 	const mapUtilities = {
+		toggleLayers: function () {
+			const osmVisible = osmLayer.getVisible();
+			osmLayer.setVisible(!osmVisible); // Toggle visibility
+			satelliteLayer.setVisible(osmVisible); // Opposite visibility
+			mapControls.layerChangeBtn.setHtml(utilities.layerChangeBtnHtml());
+		},
 		reviewLayout: async function (center) {
 			if (mapUtilities.getFeatureCount() > 0) {
 				main.classList.remove("nowkt");
@@ -772,9 +759,9 @@ var app = (function () {
 		mapControls.layerBar = layerBar;
 
 		var layerChangeBtn = new ol.control.Button({
-			html: layerChangeBtnHtml(),
+			html: utilities.layerChangeBtnHtml(),
 			title: 'Change layer...',
-			handleClick: toggleLayers
+			handleClick: mapUtilities.toggleLayers
 		});
 		layerBar.addControl(layerChangeBtn);
 
