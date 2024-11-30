@@ -71,7 +71,7 @@ var app = (function () {
 
 			// Determine which layer is currently visible
 			const isOsmVisible = osmLayer.getVisible(); // Check if OSM layer is visible
-			const imgSrc = isOsmVisible ? osmImg : arcgisImg; // Choose the image based on visible layer
+			const imgSrc = isOsmVisible ? arcgisImg : osmImg; // Choose the image based on visible layer
 			const imgAlt = isOsmVisible ? arcgisTitle : osmTitle; // Set alternative text based on visible layer
 			const imgTitle = imgAlt; // Use the same text for title attribute
 
@@ -371,100 +371,232 @@ var app = (function () {
 	};
 
 	const featureUtilities = {
-		deselectCurrentFeature: function (active) {
-			var selectInteraction = mapControls.selectCtrl.getInteraction();
-			var conditionSelection = selectInteraction.getActive();
-			if (!active)
+		/**
+		 * Deselects the currently selected feature if any. 
+		 * If `active` is false, the selection state is toggled.
+		 * 
+		 * @param {boolean} active - If true, the selection state remains active; if false, the selection state is toggled.
+		 * @returns {void} This method does not return a value.
+		 */
+		deselectCurrentFeature: (active) => {
+			const selectInteraction = mapControls.selectCtrl.getInteraction();
+			let conditionSelection = selectInteraction.getActive(); // Get the current selection state
+
+			// Toggle the selection state if active is false
+			if (!active) {
 				conditionSelection = !conditionSelection;
-			const selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
+			}
+
+			const selectedFeatures = selectInteraction.getFeatures(); // Get the collection of selected features
+
+			// If selection is active and features are selected
 			if (conditionSelection && selectedFeatures.getArray().length > 0) {
-				var activeFeature = selectedFeatures.item(0);
-				selectInteraction.dispatchEvent({ type: 'select', selected: [], deselected: [activeFeature] });
-				selectedFeatures.remove(activeFeature);
+				const activeFeature = selectedFeatures.item(0); // Get the first selected feature
+				selectInteraction.dispatchEvent({
+					type: 'select',
+					selected: [],
+					deselected: [activeFeature] // Deselect the feature
+				});
+
+				selectedFeatures.remove(activeFeature); // Remove the active feature from the selection
 			}
 		},
-		createFromAllFeatures: function () {
-			var multi = this.featuresToMultiPolygon();
-			var geo = multi.getGeometry().transform(projections.mercator, projections.geodetic);
-			textarea.value = format.writeGeometry(geo);
+		/**
+		 * Creates a MultiPolygon geometry from all features in the vector layer and writes its WKT 
+		 * representation to the textarea.
+		 * 
+		 * This method retrieves the features from the vector layer, filters for geometries of type 
+		 * Polygon or MultiPolygon, and combines them into a MultiPolygon. It then transforms the 
+		 * geometry from Mercator to Geodetic projection and writes the resulting WKT string to the 
+		 * textarea input.
+		 * 
+		 * @returns {void} This method does not return a value. It modifies the textarea input value.
+		 */
+		createFromAllFeatures: () => {
+			const multi = this.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
+			if (multi) {
+				const geo = multi.getGeometry().transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+				textarea.value = format.writeGeometry(geo); // Write the WKT representation to textarea
+			} else {
+				console.warn('No valid polygons or multipolygons found to create a MultiPolygon.');
+			}
 		},
+		/**
+		 * Centers and zooms the map view to fit the provided feature's geometry.
+		 * 
+		 * This function calculates the extent of the feature's geometry, determines its center point, 
+		 * and updates the map view to center on that point. It also adjusts the map's zoom level 
+		 * to fit the entire extent of the feature within the map's viewport with optional padding.
+		 * 
+		 * @param {ol.Feature} feature - The OpenLayers feature to center the map on.
+		 * @returns {void} This method does not return any value. It modifies the map view directly.
+		 */
 		centerOnFeature: (feature) => {
-			const extent = feature.getGeometry().getExtent();
-			const center = ol.extent.getCenter(extent);
+			if (!feature) {
+				console.error('Feature is required to center the map.');
+				return;
+			}
+
+			const geometry = feature.getGeometry();
+			const extent = geometry.getExtent(); // Get the geometry extent (bounding box)
+			const center = ol.extent.getCenter(extent); // Get the center of the extent
+
+			// Set the center of the map view to the calculated center
 			map.getView().setCenter(center);
+
+			// Fit the map view to the extent, with padding around the feature
 			map.getView().fit(extent, { size: map.getSize(), padding: [50, 50, 50, 50] });
 		},
-		centerOnVector: function (vector) {
+		/**
+		 * Centers and zooms the map view to fit all features within the specified vector layer's extent.
+		 * 
+		 * This function calculates the extent of all features within the provided vector layer's source,
+		 * and adjusts the map view to center on that extent. It also modifies the zoom level to fit all 
+		 * features within the map's viewport, with optional padding around the features.
+		 * 
+		 * @param {ol.layer.Vector} vector - The OpenLayers vector layer whose features will be centered.
+		 * @returns {void} This method does not return any value. It modifies the map view directly.
+		 */
+		centerOnVector: (vector) => {
+			// Check if there are any features in the vector source before proceeding
 			if (mapUtilities.getFeatureCount() > 0) {
-				const source = vectorLayer.getSource(); // Replace 'layer' with your vector layer variable
+				const source = vector.getSource(); // Get the source of the vector layer
 
-				// Calculate the extent of all features in the source
+				// Calculate the extent (bounding box) of all features in the source
 				const extent = source.getExtent();
 
-				// Fit the map view to the extent
+				// Fit the map view to the calculated extent, with optional padding around the features
 				map.getView().fit(extent, {
-					size: map.getSize(),  // Use the map size to determine the best fit
-					padding: [50, 50, 50, 50], // Add some padding (optional)
+					size: map.getSize(), // Use the current map size for the best fit
+					padding: [50, 50, 50, 50], // Optional padding around the extent
 				});
 			}
 		},
+		/**
+		 * Converts all Polygon and MultiPolygon features in the vector layer to a MultiPolygon feature.
+		 * 
+		 * This function filters all features of type `Polygon` and `MultiPolygon` from the vector layer's source.
+		 * It combines them into a single `MultiPolygon` feature. If there is only one polygon, it returns a 
+		 * single `Polygon` feature. The function transforms the geometries to ensure they are in the correct 
+		 * format before returning the final result.
+		 * 
+		 * @returns {ol.Feature|null} A MultiPolygon feature containing all filtered polygons, or null if no polygons are found.
+		 */
 		featuresToMultiPolygon: () => {
+			// Get all features from the vector layer source
 			const features = vectorLayer.getSource().getFeatures();
+
+			// Filter for features of type 'Polygon' or 'MultiPolygon'
 			const polygons = features.filter((f) =>
 				['Polygon', 'MultiPolygon'].includes(f.getGeometry().getType())
 			);
 
-			if (!polygons.length) return null;
+			// If no polygons were found, return null
+			if (polygons.length === 0) return null;
 
+			// Extract geometries from the filtered polygons
 			const geometries = polygons.map((f) => f.getGeometry());
 
+			// If only one polygon is found, return it as a Polygon feature
 			if (geometries.length === 1) {
 				return new ol.Feature(
 					new ol.geom.Polygon(geometries[0].getCoordinates())
 				);
 			}
 
+			// Otherwise, combine the geometries into a MultiPolygon and return
 			return new ol.Feature(
 				new ol.geom.MultiPolygon(
-					geometries.map((g) =>
-						g.getType() === 'Polygon' ? g.getCoordinates() : g.getCoordinates()
-					)
+					geometries.map((g) => g.getCoordinates())  // Flatten all coordinates into a MultiPolygon
 				)
 			);
 		},
-		addFeatures: async function () {
-			if (vectorLayer)
-				map.removeLayer(vectorLayer); // Remove a camada existente
-			utilities.createVectorLayer(); // Aguarda a criação da camada
-			if (vectorLayer)
-				map.addLayer(vectorLayer); // Adiciona a nova camada ao mapa
-			else
-				console.error("Falha ao criar a camada 'vector'. Verifique a função createVector.");
-		},
-		addToFeatures: function (id, wkt) {
-			var new_feature;
-			var wkt_string = wkt || textarea.value;
-			if (wkt_string === "") {
-				textarea.style.borderColor = "red";
-				textarea.style.backgroundColor = "#F7E8F3";
-				return;
-			} else {
-				try {
-					new_feature = format.readFeature(wkt_string);
-				} catch (err) {
-					console.error('Error reading WKT:', err);
+		/**
+		 * Removes the current vector layer (if it exists), creates a new vector layer, 
+		 * and then adds it to the map.
+		 * 
+		 * This function handles the process of clearing any existing vector layer and 
+		 * replacing it with a newly created vector layer. It ensures that the map displays
+		 * the most up-to-date features. If the vector layer creation fails, an error is logged.
+		 * 
+		 * @async
+		 * @returns {Promise<void>} A promise that resolves once the vector layer is added to the map.
+		 */
+		addFeatures: async () => {
+			try {
+				// If a vector layer exists, remove it from the map
+				if (vectorLayer) {
+					map.removeLayer(vectorLayer);
 				}
+
+				// Create a new vector layer and add it to the map
+				utilities.createVectorLayer();
+
+				// If vectorLayer exists after creation, add it to the map
+				if (vectorLayer) {
+					map.addLayer(vectorLayer);
+				} else {
+					// Log error if vector layer creation fails
+					console.error("Failed to create the 'vector' layer. Please check the createVector function.");
+				}
+			} catch (error) {
+				// Log any unexpected errors that may occur during the process
+				console.error("Error while adding features to the map:", error);
 			}
-			if (!new_feature) {
+		},
+		/**
+		 * Adds a new feature to the collection from a provided WKT (Well-Known Text) string.
+		 * 
+		 * This function attempts to read the WKT string, transform the geometry coordinates
+		 * from geodetic to mercator, and then adds the feature to the collection if valid.
+		 * If the WKT string is empty or invalid, it highlights the textarea and does not add
+		 * the feature to the collection.
+		 * 
+		 * @param {string} id - The unique identifier for the feature to be added.
+		 * @param {string} [wkt] - The Well-Known Text (WKT) string representing the feature geometry.
+		 *                            If not provided, the function will use the value from the textarea.
+		 * 
+		 * @returns {void}
+		 */
+		addToFeatures: function (id, wkt) {
+			let newFeature;
+			const wktString = wkt || textarea.value;
+
+			// Check if WKT string is empty
+			if (wktString === "") {
+				textarea.style.borderColor = "red";
+				textarea.style.backgroundColor = "#F7E8F3";
+				return; // Early exit if WKT string is empty
+			}
+
+			// Attempt to read the WKT string and create a feature
+			try {
+				newFeature = format.readFeature(wktString);
+			} catch (err) {
+				console.error('Error reading WKT:', err);
+				textarea.style.borderColor = "red";
+				textarea.style.backgroundColor = "#F7E8F3";
+				return; // Exit if there was an error parsing WKT
+			}
+
+			// If no feature is created, indicate an error
+			if (!newFeature) {
 				textarea.style.borderColor = "red";
 				textarea.style.backgroundColor = "#F7E8F3";
 				return;
-			} else {
-				new_feature.getGeometry().transform(projections.geodetic, projections.mercator);
-				new_feature.setId(id);
-				featureCollection.push(new_feature);
 			}
-		},
+
+			// Transform the feature geometry from geodetic to mercator projection
+			newFeature.getGeometry().transform(projections.geodetic, projections.mercator);
+
+			// Set the feature's unique ID and add it to the feature collection
+			newFeature.setId(id);
+			featureCollection.push(newFeature);
+
+			// Reset the textarea style on successful feature addition
+			textarea.style.borderColor = "";
+			textarea.style.backgroundColor = "";
+		}
 	};
 
 	const mapUtilities = {
