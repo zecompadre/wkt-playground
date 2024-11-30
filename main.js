@@ -45,9 +45,9 @@ var app = (function () {
 		transformCoordinates: (coords, from, to) => ol.proj.transform(coords, from, to),
 		layerChangeBtnHtml: function () {
 			if (osmLayer.getVisible())
-				return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
+				return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="' + satelliteLayer.name + '" title="' + satelliteLayer.name + '" />';
 			else if (satelliteLayer.getVisible())
-				return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
+				return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="' + osmLayer.name + '" title="' + osmLayer.name + '" />';
 		},
 		hexToRgbA: (hex, opacity) => {
 			opacity = opacity || '0.2';
