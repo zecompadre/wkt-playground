@@ -460,7 +460,7 @@ var app = (function () {
 		centerOnVector: (vector) => {
 			// Check if there are any features in the vector source before proceeding
 			if (mapUtilities.getFeatureCount() > 0) {
-				const source = vector.getSource(); // Get the source of the vector layer
+				const source = vectorLayer.getSource(); // Get the source of the vector layer
 
 				// Calculate the extent (bounding box) of all features in the source
 				const extent = source.getExtent();
