@@ -51,7 +51,7 @@ var app = (function () {
 	}
 
 	function layerChangeBtnHtml() {
-		if (osmVisible.getVisible())
+		if (osmLayer.getVisible())
 			return '<img src="' + osmLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
 		else if (satelliteLayer.getVisible())
 			return '<img src="' + satelliteLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
