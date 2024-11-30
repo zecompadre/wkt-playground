@@ -489,3 +489,7 @@ textarea {
 	cursor: pointer;
 	line-height: 1em;
 }
+
+.ol-attribution ul {
+	padding: 1px 1.25em;
+}
