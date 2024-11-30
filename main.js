@@ -24,7 +24,7 @@ var app = (function () {
 
 	let mapControls = {};
 
-	const globalImageryLayer = new ol.layer.Tile({
+	const satelliteLayer = new ol.layer.Tile({
 		name: 'Satellite',
 		title: 'Satellite',
 		source: new ol.source.XYZ({
@@ -33,6 +33,7 @@ var app = (function () {
 		visible: false, // Initially hidden
 		attributions: ['<b>&copy; autors - <a href ="http://www.openstreetmap.org/copyright">OpenStreetMap</a></b>']
 	});
+	layer.getPreview()
 
 	const osmLayer = new ol.layer.Tile({
 		name: 'Streets',
@@ -46,7 +47,15 @@ var app = (function () {
 	function toggleLayers() {
 		const osmVisible = osmLayer.getVisible();
 		osmLayer.setVisible(!osmVisible); // Toggle visibility
-		globalImageryLayer.setVisible(osmVisible); // Opposite visibility
+		satelliteLayer.setVisible(osmVisible); // Opposite visibility
+		layerChangeBtnHtml();
+	}
+
+	function layerChangeBtnHtml() {
+		if (osmVisible.getVisible())
+			return '<img src="' + osmLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
+		else if (satelliteLayer.getVisible())
+			return '<img src="' + satelliteLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
 	}
 
 	// let crosshair = new ol.style.Style({
@@ -494,7 +503,7 @@ var app = (function () {
 		utilities.createVectorLayer();
 		map = new ol.Map({
 			layers: [
-				osmLayer, globalImageryLayer,
+				osmLayer, satelliteLayer,
 				vectorLayer,
 			],
 			target: 'map',
@@ -754,14 +763,14 @@ var app = (function () {
 			source: vectorLayer.getSource()
 		}));
 
-		var layerCahngeBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-layer-group fa-lg"></i>',
+		var layerChangeBtn = new ol.control.Button({
+			html: layerChangeBtnHtml,
 			title: 'Change layer...',
 			handleClick: toggleLayers
 		});
-		locationBar.addControl(layerCahngeBtn);
+		locationBar.addControl(layerChangeBtn);
 
-		mapControls.layerCahngeBtn = layerCahngeBtn;
+		mapControls.layerChangeBtn = layerChangeBtn;
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
