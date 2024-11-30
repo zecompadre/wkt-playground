@@ -373,9 +373,9 @@ textarea {
 	background-color: #fff;
 }
 
-.ol-control.ol-bar .ol-bar.layerbar {
+.ol-control.ol-bar.layerbar {
 	right: .5em;
-	left: inherit;
+	left: 0;
 }
 
 .ol-bar .ol-button {
