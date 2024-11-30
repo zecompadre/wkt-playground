@@ -765,8 +765,9 @@ var app = (function () {
 		// });
 
 		satelliteLayer.on('change:visible', function (evt) {
-			console.log(evt);
-		}
+			console.log("satelite", this.getVisible());
+			console.log("street", streetLayer.getVisible());
+		});
 
 		console.log(layerSwitcherBtn)
 
