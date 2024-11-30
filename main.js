@@ -52,9 +52,9 @@ var app = (function () {
 
 	function layerChangeBtnHtml() {
 		if (osmLayer.getVisible())
-			return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
+			return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
 		else if (satelliteLayer.getVisible())
-			return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
+			return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
 	}
 
 	// let crosshair = new ol.style.Style({
@@ -766,7 +766,6 @@ var app = (function () {
 			className: 'layerbar',
 			toggleOne: false,	// one control active at the same time
 			group: false,		// group controls together
-			className: 'ol-top-right'
 		});
 		map.addControl(layerBar);
 		mapControls.layerBar = layerBar;
@@ -774,7 +773,8 @@ var app = (function () {
 		var layerChangeBtn = new ol.control.Button({
 			html: layerChangeBtnHtml(),
 			title: 'Change layer...',
-			handleClick: toggleLayers,
+			className: 'ol-top-right',
+			handleClick: toggleLayers
 		});
 		layerBar.addControl(layerChangeBtn);
 
