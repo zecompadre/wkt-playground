@@ -1062,8 +1062,10 @@ var app = (function () {
 		mapControls.layerChangeBtn = layerChangeBtn;
 
 		const attributionControl = new ol.control.Attribution({
-			collapsible: false, // Initially non-collapsible for easier handling
+			collapsible: false,
 		});
+
+		map.addControl(attributionControl);
 
 		var attrBar = new ol.control.Bar({
 			className: 'attrbar',
