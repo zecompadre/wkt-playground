@@ -780,12 +780,6 @@ var app = (function () {
 			projections.mercator
 		);
 
-		const attributionControl = new ol.control.Attribution({
-			collapsible: false,
-		});
-
-		mapControls.attributionControl = attributionControl;
-
 		// Initialize map and layers
 		utilities.createVectorLayer();
 		map = new ol.Map({
@@ -794,7 +788,7 @@ var app = (function () {
 				vectorLayer,
 			],
 			target: 'map',
-			controls: ol.control.defaults.defaults({ attribution: false }).extend([attributionControl]),
+			controls: ol.control.defaults.defaults({ attribution: false }),
 			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom, maxZoom: 19 }),
 		});
 
@@ -1087,6 +1081,12 @@ var app = (function () {
 		attrBar.addControl(attrToggleBtn);
 
 		mapControls.attrToggleBtn = attrToggleBtn;
+
+		const attributionControl = new ol.control.Attribution({
+			collapsible: false,
+		});
+
+		mapControls.attributionControl = attributionControl;
 
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
