@@ -3,6 +3,7 @@
 	--maph: 75%;
 	--resulth: 25%;
 	--btnsize: 36px;
+	--barshadow: 0px 8px 15px rgba(0, 0, 0, 0.2), 0px 12px 30px rgba(0, 0, 0, 0.1);
 
 	--indigo: #6610f2;
 	--purple: #6f42c1;
@@ -366,16 +367,19 @@ textarea {
 .ol-control.ol-bar .ol-bar.editbar {
 	margin-right: 5px;
 	background-color: #fff;
+	box-shadow: var(--barshadow);
 }
 
 .ol-control.ol-bar .ol-bar.locationbar {
 	margin-left: 5px;
 	background-color: #fff;
+	box-shadow: var(--barshadow);
 }
 
 .ol-control.ol-bar.layerbar {
 	right: -.5em;
 	left: unset;
+	box-shadow: var(--barshadow);
 }
 
 .ol-bar .ol-button {
@@ -417,6 +421,7 @@ textarea {
 .ol-zoom.ol-unselectable.ol-control {
 	background-color: #fff;
 	border-radius: 0;
+	box-shadow: var(--barshadow);
 }
 
 .ol-zoom .ol-zoom-in,
