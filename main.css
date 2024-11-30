@@ -457,3 +457,9 @@ textarea {
 .ol-zoom .ol-zoom-in {
 	border-bottom: 1px solid #0000001c;
 }
+
+.ol-attribution {
+	right: 45px;
+	bottom: .5em;
+	height: 36px;
+}

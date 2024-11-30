@@ -1083,7 +1083,7 @@ var app = (function () {
 		mapControls.attrToggleBtn = attrToggleBtn;
 
 		const attributionControl = new ol.control.Attribution({
-			collapsible: false,
+			collapsible: true,
 		});
 
 		map.addControl(attributionControl);
