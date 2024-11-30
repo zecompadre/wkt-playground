@@ -1061,6 +1061,30 @@ var app = (function () {
 
 		mapControls.layerChangeBtn = layerChangeBtn;
 
+		const attributionControl = new ol.control.Attribution({
+			collapsible: false, // Initially non-collapsible for easier handling
+		});
+
+		var attrBar = new ol.control.Bar({
+			className: 'attrbar',
+			toggleOne: false,	// one control active at the same time
+			group: false,		// group controls together
+		});
+		map.addControl(attrBar);
+		mapControls.attrBar = attrBar;
+
+		var attrToggleBtn = new ol.control.Button({
+			html: "atttr",
+			title: 'Show Attribution ...',
+			handleClick: () => {
+				let collaped = attributionControl.getCollapsed();
+				attributionControl.setCollapsed(!collaped);
+			}
+		});
+		attrBar.addControl(attrToggleBtn);
+
+		mapControls.attrToggleBtn = attrToggleBtn;
+
 		document.addEventListener('keydown', function (evt) {
 			switch (evt.key) {
 				case 'Escape':
