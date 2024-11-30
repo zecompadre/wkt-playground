@@ -47,14 +47,14 @@ var app = (function () {
 		const osmVisible = osmLayer.getVisible();
 		osmLayer.setVisible(!osmVisible); // Toggle visibility
 		satelliteLayer.setVisible(osmVisible); // Opposite visibility
-		layerChangeBtnHtml();
+		mapControls.layerChangeBtn.setHtml(layerChangeBtnHtml());
 	}
 
 	function layerChangeBtnHtml() {
 		if (osmLayer.getVisible())
-			return '<img src="' + osmLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
+			return '<img src="' + osmLayer.getPreview() + '" width="36" height="36" alt="Streets" title="Streets" />';
 		else if (satelliteLayer.getVisible())
-			return '<img src="' + satelliteLayer.getPreview() + '" width="20" height="20" alt="OSM" title="OSM" />';
+			return '<img src="' + satelliteLayer.getPreview() + '" width="36" height="36" alt="Satelite" title="Satelite" />';
 	}
 
 	// let crosshair = new ol.style.Style({
@@ -766,7 +766,7 @@ var app = (function () {
 			html: layerChangeBtnHtml(),
 			title: 'Change layer...',
 			handleClick: toggleLayers,
-			className: 'ol-right ol-top'
+			className: 'ol-top-right'
 		});
 		map.addControl(layerChangeBtn);
 
