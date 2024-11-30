@@ -1071,7 +1071,7 @@ var app = (function () {
 		mapControls.attrBar = attrBar;
 
 		var attrToggleBtn = new ol.control.Button({
-			html: "atttr",
+			html: '<i class="fa-solid fa-circle-info fa-lg"></i>',
 			title: 'Show Attribution ...',
 			handleClick: () => {
 				let collaped = mapControls.attributionControl.getCollapsed();
