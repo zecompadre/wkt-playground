@@ -794,7 +794,7 @@ var app = (function () {
 				vectorLayer,
 			],
 			target: 'map',
-			controls: [attributionControl],
+			controls: defaultControls({ attribution: false }).extend([attributionControl]),
 			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom, maxZoom: 19 }),
 		});
 
