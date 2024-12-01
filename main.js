@@ -2,6 +2,9 @@ var app = (function () {
 
 	class Loading {
 		constructor() {
+			// Google colors for the dots
+			this.colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
+
 			// Create overlay
 			this.overlay = document.createElement('div');
 			Object.assign(this.overlay.style, {
@@ -31,9 +34,9 @@ var app = (function () {
 			for (let i = 0; i < 4; i++) {
 				const dot = document.createElement('div');
 				Object.assign(dot.style, {
-					width: '10px',
-					height: '10px',
-					backgroundColor: 'white',
+					width: '15px',
+					height: '15px',
+					backgroundColor: this.colors[i],
 					borderRadius: '50%',
 					animation: `bounce 1.4s ease-in-out infinite`,
 					animationDelay: `${i * 0.2}s`,
