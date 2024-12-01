@@ -1048,11 +1048,8 @@ var app = (function () {
 		 * @async
 		 */
 		paste: async () => {
-
-			console.log("paste");
-
 			try {
-				await mapUtilities.loadWKTs();
+				await mapUtilities.loadWKTs(true);
 			} catch (error) {
 				console.error("Error pasting WKT:", error);
 			}
