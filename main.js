@@ -1215,18 +1215,18 @@ var app = (function () {
 
 		init: function () {
 
-			utilities.getLocation().then(location => {
-				console.log("location", location);
+			// utilities.getLocation().then(location => {
+			// 	console.log("location", location);
 
-				//mapDefaults.longitude = location.longitude;
-				//mapDefaults.latitude = location.latitude;
-				userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
-				defaultCenter = userLocation;
+			// 	//mapDefaults.longitude = location.longitude;
+			// 	//mapDefaults.latitude = location.latitude;
+			// 	userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
+			// 	defaultCenter = userLocation;
 
-				setupMap();
+			setupMap();
 
-				mapUtilities.loadWKTs(true);
-			});
+			mapUtilities.loadWKTs(true);
+			// });
 
 			utilities.getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
