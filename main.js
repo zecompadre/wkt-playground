@@ -322,10 +322,10 @@ var app = (function () {
 			new ol.style.Style({
 				image: new ol.style.RegularShape({
 					fill: new ol.style.Fill({ color: colors.create }),
-					stroke: new ol.style.Stroke({ color: color, width: 2 }),
+					stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
 					points: 4, // Square shape
 					radius: 10, // Size of the shape
-					radius2: 2, // Inner radius (smaller)
+					radius2: 0, // Inner radius (smaller)
 					angle: 0, // No rotation
 				}),
 				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.3') }), // Apply a semi-transparent fill for the feature
