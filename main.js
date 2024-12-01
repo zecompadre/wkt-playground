@@ -622,32 +622,73 @@ var app = (function () {
 	};
 
 	const mapUtilities = {
+		/**
+		 * Toggles the visibility of OSM and ArcGIS layers on the map.
+		 * 
+		 * This function switches the visibility state of two predefined layers (`osmLayer` and `arcgisLayer`).
+		 * It ensures only one of the layers is visible at a time and updates the HTML content of the layer change button.
+		 * 
+		 * @returns {void}
+		 */
 		toggleLayers: function () {
-			const osmVisible = osmLayer.getVisible();
-			osmLayer.setVisible(!osmVisible); // Toggle visibility
-			arcgisLayer.setVisible(osmVisible); // Opposite visibility
-			mapControls.layerChangeBtn.setHtml(utilities.layerChangeBtnHtml());
+			try {
+				// Get the current visibility state of the OSM layer
+				const osmVisible = osmLayer.getVisible();
+
+				// Toggle the visibility of OSM and ArcGIS layers
+				osmLayer.setVisible(!osmVisible); // OSM: toggle visibility
+				arcgisLayer.setVisible(osmVisible); // ArcGIS: opposite visibility
+
+				// Update the HTML of the layer change button
+				if (mapControls.layerChangeBtn) {
+					mapControls.layerChangeBtn.setHtml(utilities.layerChangeBtnHtml());
+				} else {
+					console.warn("Layer change button control is not available.");
+				}
+			} catch (error) {
+				console.error("Error toggling layers:", error);
+			}
 		},
+
+		/**
+		 * Reviews and updates the layout of the map and controls based on the current feature count.
+		 * 
+		 * - Updates UI elements (e.g., classes and control visibility) depending on whether features are present.
+		 * - Centers the map view if `center` is true and features exist.
+		 * - Always updates the map size after layout adjustments.
+		 * 
+		 * @async
+		 * @param {boolean} center - Whether to center the map on features if they exist.
+		 * @returns {Promise<void>} Resolves after the layout and optional centering are completed.
+		 */
 		reviewLayout: async function (center) {
-			if (mapUtilities.getFeatureCount() > 0) {
-				main.classList.remove("nowkt");
-				featureUtilities.createFromAllFeatures();
-				mapControls.centerObjectsBtn.setVisible(true);
-			}
-			else {
-				main.classList.add("nowkt");
-				mapControls.selectBar.setVisible(false);
-				mapControls.centerObjectsBtn.setVisible(false);
-			}
-			if (center) {
-				await mapUtilities.center().then(function () {
-					map.updateSize();
-				});
-			}
-			else {
+			try {
+				const featureCount = mapUtilities.getFeatureCount();
+
+				if (featureCount > 0) {
+					// Features exist: update layout and controls accordingly
+					main.classList.remove("nowkt");
+					featureUtilities.createFromAllFeatures();
+					mapControls.centerObjectsBtn.setVisible(true);
+				} else {
+					// No features: adjust layout and hide controls
+					main.classList.add("nowkt");
+					mapControls.selectBar.setVisible(false);
+					mapControls.centerObjectsBtn.setVisible(false);
+				}
+
+				if (center && featureCount > 0) {
+					// Center the map if requested and features exist
+					await mapUtilities.center();
+				}
+
+				// Ensure the map's layout is updated
 				map.updateSize();
+			} catch (error) {
+				console.error("Error in reviewLayout function:", error);
 			}
 		},
+
 		center: async function () {
 			if (!main.classList.contains("nowkt")) {
 				const extent = ol.extent.createEmpty();
