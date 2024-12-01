@@ -190,37 +190,6 @@ textarea:focus {
 	font-size: 10px;
 }
 
-.maincontainer .result-container .ui-tabs .ui-tabs-nav {
-	height: 24px;
-	padding: 0;
-}
-
-.ui-tabs .ui-tabs-nav li {
-	height: 20px;
-	line-height: 20px;
-}
-
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-	height: 20px;
-	line-height: 20px;
-	padding: 0 1em;
-	font-size: 10px;
-}
-
-.maincontainer .result-container .ui-tabs-panel {
-	padding: 0;
-}
-
-.maincontainer .result-container .btns {
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
-	bottom: 0;
-	background: rgba(192, 192, 192, .5);
-	border-radius: 5px;
-	padding: 10px;
-}
-
 .ol-bar .ol-button {
 	border-radius: 0;
 }
