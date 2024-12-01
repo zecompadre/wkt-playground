@@ -1326,7 +1326,7 @@ var app = (function () {
 				})
 			});
 
-			drawCtrl.getInteraction().setFreehand(false);
+			drawCtrl.getInteraction().set("freehand", false);
 
 			drawCtrl.getInteraction().on('drawend', handleDrawEnd);
 			return drawCtrl;
