@@ -1128,6 +1128,16 @@ var app = (function () {
 		editBar.addControl(selectCtrl);
 		mapControls.selectCtrl = selectCtrl;
 
+		const deleteBtn = createDeleteButton();
+		selectBar.addControl(deleteBtn);
+		mapControls.deleteBtn = deleteBtn;
+
+		const infoBtn = createInfoButton();
+		//selectBar.addControl(infoBtn);
+		mapControls.infoBtn = infoBtn;
+
+		selectBar.setVisible(false);
+
 		// Modify interaction setup
 		const modifyInteraction = createModifyInteraction(selectCtrl);
 		map.addInteraction(modifyInteraction);
@@ -1228,6 +1238,58 @@ var app = (function () {
 				});
 				mapControls.selectBar.setVisible(true);
 			}
+		}
+
+		/**
+		 * Creates a delete button for removing selected features from the map.
+		 * @returns {ol.control.Button} The delete button control.
+		 */
+		function createDeleteButton() {
+			return new ol.control.Button({
+				html: '<i class="fa fa-times fa-lg"></i>',
+				name: "Delete",
+				title: "Delete",
+				handleClick: function () {
+					var features = mapControls.selectCtrl.getInteraction().getFeatures();
+					if (!features.getLength()) {
+						textarea.value = "Select an object first...";
+					} else {
+						var feature = features.item(0);
+
+						console.log(feature, feature.getId());
+
+						wktUtilities.remove(feature.getId());
+						for (var i = 0, f; f = features.item(i); i++) {
+							vectorLayer.getSource().removeFeature(f);
+						}
+						features.clear();
+						mapUtilities.reviewLayout(false);
+						mapControls.selectBar.setVisible(false);
+					}
+				}
+			});
+		}
+
+		/**
+		 * Creates an info button to show the information of the selected feature.
+		 * @returns {ol.control.Button} The info button control.
+		 */
+		function createInfoButton() {
+			return new ol.control.Button({
+				html: '<i class="fa fa-info fa-lg"></i>',
+				name: "Info",
+				title: "Show information",
+				handleClick: function () {
+					switch (mapControls.selectCtrl.getInteraction().getFeatures().getLength()) {
+						case 0:
+							textarea.value = "Select an object first...";
+							break;
+						case 1:
+							textarea.value = utilities.getFeatureWKT(mapControls.selectCtrl.getInteraction().getFeatures().item(0));
+							break;
+					}
+				}
+			});
 		}
 
 		/**
