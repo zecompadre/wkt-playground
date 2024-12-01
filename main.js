@@ -790,23 +790,40 @@ var app = (function () {
 		},
 
 		/**
-		 * Adds a new WKT entry after generating a checksum to ensure uniqueness.
-		 * @param {string} wkt - The WKT string to add.
+		 * Adds a new WKT entry for a given feature after generating a checksum to ensure uniqueness.
+		 * Assigns the checksum as the feature's ID.
+		 * @param {ol.Feature} feature - The OpenLayers feature to add.
 		 * @async
 		 */
-		add: async function (wkt) {
+		add: async function (feature) {
 			try {
+				// Convert the feature into its WKT representation
+				const wkt = utilities.getFeatureWKT(feature);
+
+				if (!wkt) {
+					throw new Error("Feature WKT is undefined or invalid.");
+				}
+
+				// Generate a checksum for the WKT
 				const checksum = await utilities.generateChecksum(wkt);
+
+				// Retrieve current WKTs from the map or initialize an empty array
 				const wkts = map.get("wkts") || [];
+
+				// Check if the WKT already exists based on the checksum
 				const exists = wkts.some((item) => item.id === checksum);
 
-				if (wkt && !exists) {
+				// Set the checksum as the feature's ID
+				feature.setId(checksum);
+
+				// Add the new WKT to the collection if it does not already exist
+				if (!exists) {
 					wkts.push({ id: checksum, wkt });
-					map.set("wkts", wkts);
-					this.save();
+					map.set("wkts", wkts); // Update the map's WKT collection
+					this.save(); // Persist changes to localStorage
 				}
 			} catch (error) {
-				console.error("Error adding WKT:", error);
+				console.error("Error adding WKT:", error.message);
 			}
 		},
 
@@ -1058,8 +1075,7 @@ var app = (function () {
 		editBar.addControl(drawCtrl);
 
 		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
-			wkt = utilities.getFeatureWKT(evt.feature);
-			await wktUtilities.add(wkt).then(function (result) {
+			await wktUtilities.add(evt.feature).then(function (result) {
 				mapUtilities.reviewLayout(false);
 				featureUtilities.centerOnFeature(evt.feature);
 			});
