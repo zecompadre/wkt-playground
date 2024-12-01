@@ -1122,6 +1122,8 @@ var app = (function () {
 
 		// Selection controls and buttons
 		const selectBar = createControlBar();
+		mapControls.selectBar = selectBar;
+
 		const selectCtrl = createSelectControl(selectBar);
 		editBar.addControl(selectCtrl);
 		mapControls.selectCtrl = selectCtrl;
