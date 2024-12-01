@@ -494,7 +494,7 @@ var app = (function () {
 			const map = document.getElementById("map");
 			const width = map.offsetWidth;
 			const height = map.offsetHeight;
-
+			loading.show(); // Show the loading overlay while generating the image
 			// Use domtoimage to capture a PNG image of the map
 			domtoimage.toPng(map, {
 				"width": width,
@@ -507,10 +507,12 @@ var app = (function () {
 
 					// Append the image to the body of the document
 					document.body.appendChild(img);
+					loading.hide(); // Hide the loading overlay once the image is generated
 				})
 				.catch(function (error) {
 					// Log any errors that occur during the image generation
 					console.error('oops, something went wrong!', error);
+					loading.hide(); // Hide the loading overlay if an error occurs
 				});
 		}
 
@@ -813,73 +815,112 @@ var app = (function () {
 			}
 		},
 
+		/**
+ * Centers the map view based on the extent of features in the collection or resets to the default center if no features exist.
+ * @async
+ */
 		center: async function () {
-			if (!main.classList.contains("nowkt")) {
-				const extent = ol.extent.createEmpty();
-				featureCollection.forEach(feature => ol.extent.extend(extent, feature.getGeometry().getExtent()));
-				map.getView().fit(extent, {
-					size: map.getSize(),
-					padding: [50, 50, 50, 50],
-				});
-			} else {
-				map.getView().setCenter(defaultCenter);
-				map.getView().setZoom(16);
+			try {
+				if (!main.classList.contains("nowkt") && featureCollection.getLength() > 0) {
+					// Create an empty extent and calculate the combined extent of all features
+					const extent = ol.extent.createEmpty();
+					featureCollection.forEach(feature => {
+						ol.extent.extend(extent, feature.getGeometry().getExtent());
+					});
+
+					// Fit the map view to the extent of the features
+					map.getView().fit(extent, {
+						size: map.getSize(),
+						padding: [50, 50, 50, 50], // Add padding around the extent
+					});
+				} else {
+					// Reset to the default center and zoom level
+					map.getView().setCenter(defaultCenter);
+					map.getView().setZoom(16);
+				}
+			} catch (error) {
+				console.error("Error centering the map:", error);
 			}
 		},
+
+		/**
+		 * Gets the count of features in the vector layer on the map.
+		 * @returns {number} - The number of features in the vector layer, or 0 if no vector layer exists.
+		 */
 		getFeatureCount: function () {
-			var vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
-			if (!vectorLayer) {
-				console.error('No vector layer found on the map.');
+			try {
+				// Find the first vector layer in the map's layer array
+				const vectorLayer = map.getLayers().getArray().find(layer => layer instanceof ol.layer.Vector);
+
+				// Return 0 if no vector layer is found
+				if (!vectorLayer) {
+					console.warn('No vector layer found on the map.');
+					return 0;
+				}
+
+				// Get features from the vector layer's source and return their count
+				const features = vectorLayer.getSource().getFeatures();
+				return features.length;
+			} catch (error) {
+				console.error('Error retrieving feature count:', error);
 				return 0;
 			}
-			var features = vectorLayer.getSource().getFeatures();
-			return features.length;
 		},
-		loadWKTs: async function (readcb) {
-			var self = this;
 
-			wktUtilities.load();
+		/**
+		 * Loads WKT entries, checks for existing ones, and adds new ones if necessary.
+		 * @param {boolean} [readcb=false] - If true, reads WKT from clipboard before processing.
+		 * @returns {Promise<void>} - An asynchronous function that updates the map and layout.
+		 */
+		loadWKTs: async function (readcb = false) {
+			const self = this; // Capture the correct context
 
-			var wkts = wktUtilities.get();
+			try {
+				// Load existing WKT entries from localStorage
+				wktUtilities.load();
+				let wkts = wktUtilities.get();
 
-			textarea.focus();
+				// Focus on textarea to prepare for possible WKT paste
+				textarea.focus();
 
-			var wkt = "";
-			if (readcb)
-				wkt = await wktUtilities.readClipboard();
+				let wkt = readcb ? await wktUtilities.readClipboard() : "";
 
-			await utilities.generateChecksum(wkt).then(async function (checksum) {
-				if (wkts == null || wkts == undefined)
+				// Generate checksum for the WKT string
+				const checksum = await utilities.generateChecksum(wkt);
+
+				// Ensure wkts is an array
+				if (!Array.isArray(wkts)) {
 					wkts = [];
-
-				var exists = false;
-				var idx = 0;
-
-				if (wkts.length > 0) {
-					wkts.forEach(item => {
-						if (checksum !== "" && item.id === checksum)
-							exists = true;
-						featureUtilities.addToFeatures(item.id, item.wkt);
-						idx = idx + 1;
-					});
 				}
 
-				if (wkt != "" && !exists) {
-					wkts.push({ id: checksum, wkt: wkt });
-					featureUtilities.addToFeatures(checksum, wkt);
-					idx = idx + 1;
-				}
-
-				map.set("wkts", wkts);
-
-				wktUtilities.save()
-
-				await featureUtilities.addFeatures().then(async function () {
-					self.reviewLayout(true);
+				// Check for existing WKT entries and add them to features
+				let exists = false;
+				wkts.forEach(item => {
+					if (checksum && item.id === checksum) {
+						exists = true;
+					}
+					featureUtilities.addToFeatures(item.id, item.wkt);
 				});
-			});
-			// });
-		},
+
+				// Add the new WKT if it doesn't exist
+				if (wkt && !exists) {
+					wkts.push({ id: checksum, wkt });
+					featureUtilities.addToFeatures(checksum, wkt);
+				}
+
+				// Save the updated WKT list
+				map.set("wkts", wkts);
+				wktUtilities.save();
+
+				// Add features to the map and review layout
+				await featureUtilities.addFeatures();
+				await self.reviewLayout(true);
+
+			} catch (error) {
+				console.error('Error loading WKTs:', error);
+			}
+		}
+
 	};
 
 	/**
@@ -1060,278 +1101,247 @@ var app = (function () {
 		initializeMapControls(); // Function to initialize map controls
 	}
 
+	/**
+	 * Initializes the map controls and interactions.
+	 * Sets up tools for drawing, selecting, modifying, undoing/redoing, and centering on features or user location.
+	 */
 	function initializeMapControls() {
+		// Add basic map interactions
+		map.addInteraction(new ol.interaction.DragPan({ condition: () => true }));
+		map.addInteraction(new ol.interaction.MouseWheelZoom({ condition: () => true }));
 
-		map.addInteraction(new ol.interaction.DragPan({
-			condition: function (event) {
-				return true;
-			}
-		}));
-
-		map.addInteraction(new ol.interaction.MouseWheelZoom({
-			condition: function (event) {
-				return true;
-			}
-		}));
-
-		// Main control bar
-		var mainBar = new ol.control.Bar({ className: 'mainbar' });
+		// Main control bar setup
+		const mainBar = createControlBar('mainbar');
 		map.addControl(mainBar);
 
-		mapControls.mainBar = mainBar;
-
-		// Edit control bar 
-		var editBar = new ol.control.Bar({
-			className: 'editbar',
-			toggleOne: true,	// one control active at the same time
-			group: false			// group controls together
-		});
+		// Edit control bar setup
+		const editBar = createControlBar('editbar', true, false);
 		mainBar.addControl(editBar);
 
-		mapControls.editBar = editBar;
-
-		// Add selection tool:
-		//  1- a toggle control with a select interaction
-		//  2- an option bar to delete / get information on the selected feature
-		var selectBar = new ol.control.Bar();
-
-		mapControls.selectBar = selectBar;
-
-		var deleteBtn = new ol.control.Button({
-			html: '<i class="fa fa-times fa-lg"></i>',
-			name: "Delete",
-			title: "Delete",
-			handleClick: function () {
-				var features = selectCtrl.getInteraction().getFeatures();
-				if (!features.getLength())
-					textarea.value = "Select an object first...";
-				else {
-					var feature = features.item(0);
-
-					console.log(feature, feature.getId())
-
-					wktUtilities.remove(feature.getId());
-					for (var i = 0, f; f = features.item(i); i++) {
-						vectorLayer.getSource().removeFeature(f);
-					}
-					features.clear();
-					mapUtilities.reviewLayout(false);
-					mapControls.selectBar.setVisible(false);
-				}
-			}
-		});
-
-		mapControls.deleteBtn = deleteBtn;
-
-		selectBar.addControl(deleteBtn);
-
-		var infoBtn = new ol.control.Button({
-			html: '<i class="fa fa-info fa-lg"></i>',
-			name: "Info",
-			title: "Show informations",
-			handleClick: function () {
-				switch (selectCtrl.getInteraction().getFeatures().getLength()) {
-					case 0:
-						textarea.value = "Select an object first...";
-						break;
-					case 1:
-						textarea.value = utilities.getFeatureWKT(selectCtrl.getInteraction().getFeatures().item(0));
-						break;
-				}
-			}
-		});
-
-		mapControls.infoBtn = infoBtn;
-
-		//selectBar.addControl(infoBtn);
-
-		selectBar.setVisible(false);
-
-		selectCtrl = new ol.control.Toggle({
-			html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
-			title: "Select",
-			interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.genericStyleFunction(colors.edit) }),
-			bar: selectBar,
-			autoActivate: true,
-			active: true
-		});
-
-		mapControls.selectCtrl = selectCtrl;
-
+		// Selection controls and buttons
+		const selectBar = createControlBar();
+		const selectCtrl = createSelectControl(selectBar);
 		editBar.addControl(selectCtrl);
 
-		modifyInteraction = new ol.interaction.ModifyFeature({
-			features: selectCtrl.getInteraction().getFeatures(),
-			style: utilities.genericStyleFunction(colors.snap),
-			insertVertexCondition: function () {
-				return true;
-			},
-		})
-
-		mapControls.modifyInteraction = modifyInteraction;
-
+		// Modify interaction setup
+		const modifyInteraction = createModifyInteraction(selectCtrl);
 		map.addInteraction(modifyInteraction);
 
-		select = selectCtrl.getInteraction().on('select', function (evt) {
+		// Draw control setup
+		const drawCtrl = createDrawControl();
+		editBar.addControl(drawCtrl);
+
+		// Undo/Redo interaction
+		const undoInteraction = new ol.interaction.UndoRedo();
+		map.addInteraction(undoInteraction);
+
+		// Undo/Redo buttons
+		const undoBtn = createUndoButton(undoInteraction);
+		const redoBtn = createRedoButton(undoInteraction);
+		editBar.addControl(undoBtn);
+		editBar.addControl(redoBtn);
+
+		// Location and center controls
+		const locationBar = createControlBar('locationbar');
+		mainBar.addControl(locationBar);
+		const locationBtn = createLocationButton();
+		locationBar.addControl(locationBtn);
+
+		const centerObjectsBtn = createCenterObjectsButton();
+		locationBar.addControl(centerObjectsBtn);
+
+		// Layer control
+		const layerBar = createControlBar('layerbar');
+		map.addControl(layerBar);
+		const layerChangeBtn = createLayerChangeButton();
+		layerBar.addControl(layerChangeBtn);
+
+		// Add snap interaction for feature modification
+		map.addInteraction(new ol.interaction.Snap({ source: vectorLayer.getSource() }));
+
+		// Keyboard shortcuts for interaction
+		document.addEventListener('keydown', handleKeyboardShortcuts);
+
+		/**
+		 * Creates a control bar.
+		 * @param {string} className - The class name of the control bar.
+		 * @param {boolean} [toggleOne=false] - If only one control can be active at a time.
+		 * @param {boolean} [group=false] - If the controls should be grouped together.
+		 * @returns {ol.control.Bar} The created control bar.
+		 */
+		function createControlBar(className, toggleOne = false, group = false) {
+			return new ol.control.Bar({ className, toggleOne, group });
+		}
+
+		/**
+		 * Creates the select control with a button.
+		 * @param {ol.control.Bar} selectBar - The control bar for the select tool.
+		 * @returns {ol.control.Toggle} The created select control.
+		 */
+		function createSelectControl(selectBar) {
+			const selectCtrl = new ol.control.Toggle({
+				html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
+				title: "Select",
+				interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.genericStyleFunction(colors.edit) }),
+				bar: selectBar,
+				autoActivate: true,
+				active: true
+			});
+
+			// Handle select feature events
+			selectCtrl.getInteraction().on('select', handleSelectEvents);
+			return selectCtrl;
+		}
+
+		/**
+		 * Handles events when features are selected or deselected.
+		 * @param {ol.events.Event} evt - The event triggered by the select interaction.
+		 */
+		function handleSelectEvents(evt) {
 			utilities.restoreDefaultColors();
 			if (evt.deselected.length > 0) {
-				evt.deselected.forEach(function (feature) {
+				evt.deselected.forEach(feature => {
 					textarea.value = utilities.getFeatureWKT(feature);
 					wktUtilities.update(feature.getId(), textarea.value);
 					featureUtilities.createFromAllFeatures();
 				});
-				selectBar.setVisible(false);
+				mapControls.selectBar.setVisible(false);
 			}
 			if (evt.selected.length > 0) {
-				evt.selected.forEach(function (feature) {
+				evt.selected.forEach(feature => {
 					textarea.value = utilities.getFeatureWKT(feature);
 				});
-				selectBar.setVisible(true);
+				mapControls.selectBar.setVisible(true);
 			}
-		});
+		}
 
-		// Activate with select
-		modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
-		selectCtrl.getInteraction().on('change:active', function (evt) {
-			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
-		}.bind(editBar));
-
-		drawCtrl = new ol.control.Toggle({
-			html: '<i class="fa-solid fa-draw-polygon fa-lg"></i>',
-			title: 'Polygon',
-			interaction: new ol.interaction.Draw({
-				type: 'Polygon',
-				source: vectorLayer.getSource(),
-				style: utilities.drawStyleFunction(colors.create),
-			})
-		});
-
-		mapControls.drawCtrl = drawCtrl;
-
-		editBar.addControl(drawCtrl);
-
-		draw = drawCtrl.getInteraction().on('drawend', async function (evt) {
-			await wktUtilities.add(evt.feature).then(function (result) {
-				mapUtilities.reviewLayout(false);
-				featureUtilities.centerOnFeature(evt.feature);
-				mapControls.selectCtrl.setActive(true);
+		/**
+		 * Creates the modify interaction for feature editing.
+		 * @param {ol.control.Toggle} selectCtrl - The select control to get selected features.
+		 * @returns {ol.interaction.ModifyFeature} The created modify interaction.
+		 */
+		function createModifyInteraction(selectCtrl) {
+			return new ol.interaction.ModifyFeature({
+				features: selectCtrl.getInteraction().getFeatures(),
+				style: utilities.genericStyleFunction(colors.snap),
+				insertVertexCondition: () => true,
 			});
-		});
+		}
 
-		drawCtrl.getInteraction().on('change:active', function (evt) {
-			featureUtilities.deselectCurrentFeature(false);
-		}.bind(editBar));
+		/**
+		 * Creates the draw control for adding features to the map.
+		 * @returns {ol.control.Toggle} The created draw control.
+		 */
+		function createDrawControl() {
+			const drawCtrl = new ol.control.Toggle({
+				html: '<i class="fa-solid fa-draw-polygon fa-lg"></i>',
+				title: 'Polygon',
+				interaction: new ol.interaction.Draw({
+					type: 'Polygon',
+					source: vectorLayer.getSource(),
+					style: utilities.drawStyleFunction(colors.create),
+				})
+			});
 
-		// Undo redo interaction
-		undoInteraction = new ol.interaction.UndoRedo();
-		map.addInteraction(undoInteraction);
+			drawCtrl.getInteraction().on('drawend', handleDrawEnd);
+			return drawCtrl;
+		}
 
-		mapControls.undoInteraction = undoInteraction;
+		/**
+		 * Handles the end of the drawing interaction.
+		 * @param {ol.events.Event} evt - The event triggered by the draw interaction.
+		 */
+		async function handleDrawEnd(evt) {
+			await wktUtilities.add(evt.feature);
+			mapUtilities.reviewLayout(false);
+			featureUtilities.centerOnFeature(evt.feature);
+			mapControls.selectCtrl.setActive(true);
+		}
 
-		var undoBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
-			title: 'Undo...',
-			handleClick: function () {
-				undoInteraction.undo();
+		/**
+		 * Creates the undo button.
+		 * @param {ol.interaction.UndoRedo} undoInteraction - The undo/redo interaction.
+		 * @returns {ol.control.Button} The created undo button.
+		 */
+		function createUndoButton(undoInteraction) {
+			return new ol.control.Button({
+				html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
+				title: 'Undo...',
+				handleClick: () => undoInteraction.undo(),
+			});
+		}
+
+		/**
+		 * Creates the redo button.
+		 * @param {ol.interaction.UndoRedo} undoInteraction - The undo/redo interaction.
+		 * @returns {ol.control.Button} The created redo button.
+		 */
+		function createRedoButton(undoInteraction) {
+			return new ol.control.Button({
+				html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
+				title: 'Redo...',
+				handleClick: () => undoInteraction.redo(),
+			});
+		}
+
+		/**
+		 * Creates the location button to center the map on the user's location.
+		 * @returns {ol.control.Button} The created location button.
+		 */
+		function createLocationButton() {
+			return new ol.control.Button({
+				html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
+				title: 'Center in my location...',
+				handleClick: centerOnUserLocation,
+			});
+		}
+
+		/**
+		 * Centers the map on the user's location.
+		 */
+		function centerOnUserLocation() {
+			if (typeof userLocation === 'undefined') {
+				loading.show();
+				utilities.getLocation().then(location => {
+					map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
+					loading.hide();
+				});
+			} else {
+				map.getView().setCenter(userLocation);
 			}
-		});
+			map.getView().setZoom(map.getView().getZoom());
+			mapControls.selectCtrl.setActive(true);
+		}
 
-		editBar.addControl(undoBtn);
+		/**
+		 * Creates the button to center the map on map objects.
+		 * @returns {ol.control.Button} The created center objects button.
+		 */
+		function createCenterObjectsButton() {
+			return new ol.control.Button({
+				html: '<i class="fa-solid fa-arrows-to-dot fa-lg"></i>',
+				title: 'Center on map objects...',
+				handleClick: () => featureUtilities.centerOnVector(),
+			});
+		}
 
-		mapControls.undoBtn = undoBtn;
+		/**
+		 * Creates the layer change button.
+		 * @returns {ol.control.Button} The created layer change button.
+		 */
+		function createLayerChangeButton() {
+			return new ol.control.Button({
+				html: utilities.layerChangeBtnHtml(),
+				title: 'Change layer...',
+				handleClick: mapUtilities.toggleLayers,
+			});
+		}
 
-		redoBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
-			title: 'Redo...',
-			handleClick: function () {
-				undoInteraction.redo();
-			}
-		});
-
-		editBar.addControl(redoBtn);
-
-		mapControls.redoBtn = redoBtn;
-
-		/* undo/redo custom */
-		var style;
-		// Define undo redo for the style
-		undoInteraction.define(
-			'style',
-			// undo function: set previous style
-			function (s) {
-				style = s.before;
-				vectorLayer.changed();
-			},
-			// redo function: reset the style
-			function (s) {
-				style = s.after;
-				vectorLayer.changed();
-			}
-		);
-
-		var locationBar = new ol.control.Bar({
-			className: 'locationbar',
-			toggleOne: false,	// one control active at the same time
-			group: false			// group controls together
-		});
-		mainBar.addControl(locationBar);
-		mapControls.locationBar = locationBar;
-
-		var locationBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
-			title: 'Center in my location...',
-			handleClick: function () {
-				if (typeof userLocation === 'undefined') {
-					loading.show();
-					utilities.getLocation().then(location => {
-						map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
-						loading.hide();
-					});
-				} else {
-					map.getView().setCenter(userLocation);
-				}
-				map.getView().setZoom(map.getView().getZoom());
-				mapControls.selectCtrl.setActive(true);
-			}
-		});
-		locationBar.addControl(locationBtn);
-
-		mapControls.locationBtn = locationBtn;
-
-		var centerObjectsBtn = new ol.control.Button({
-			html: '<i class="fa-solid fa-arrows-to-dot fa-lg"></i>',
-			title: 'Center on map objects...',
-			handleClick: function () {
-				featureUtilities.centerOnVector();
-				mapControls.selectCtrl.setActive(true);
-			}
-		});
-		locationBar.addControl(centerObjectsBtn);
-
-		mapControls.centerObjectsBtn = centerObjectsBtn;
-
-		map.addInteraction(new ol.interaction.Snap({
-			source: vectorLayer.getSource()
-		}));
-
-		var layerBar = new ol.control.Bar({
-			className: 'layerbar',
-			toggleOne: false,	// one control active at the same time
-			group: false,		// group controls together
-		});
-		map.addControl(layerBar);
-		mapControls.layerBar = layerBar;
-
-		var layerChangeBtn = new ol.control.Button({
-			html: utilities.layerChangeBtnHtml(),
-			title: 'Change layer...',
-			handleClick: mapUtilities.toggleLayers
-		});
-		layerBar.addControl(layerChangeBtn);
-
-		mapControls.layerChangeBtn = layerChangeBtn;
-
-		document.addEventListener('keydown', function (evt) {
+		/**
+		 * Handles keyboard shortcuts.
+		 * @param {KeyboardEvent} evt - The keyboard event.
+		 */
+		function handleKeyboardShortcuts(evt) {
 			switch (evt.key) {
 				case 'Escape':
 					if (!mapControls.selectCtrl.getActive()) {
@@ -1342,28 +1352,21 @@ var app = (function () {
 					break;
 				case 'Delete':
 					if (mapControls.selectCtrl.getActive()) {
-						var selectInteraction = mapControls.selectCtrl.getInteraction();
-						if (mapControls.selectCtrl.getActive()) {
-							selectedFeatures = selectInteraction.getFeatures(); // Get the selected features collection
-							if (selectedFeatures.getArray().length > 0) {
-								mapControls.deleteBtn.getButtonElement().click();
-							}
+						const selectInteraction = mapControls.selectCtrl.getInteraction();
+						const selectedFeatures = selectInteraction.getFeatures();
+						if (selectedFeatures.getArray().length > 0) {
+							mapControls.deleteBtn.getButtonElement().click();
 						}
 					}
 					break;
 				case 'z':
-					if (evt.ctrlKey) {
-						mapControls.undoInteraction.undo();
-					}
+					if (evt.ctrlKey) undoInteraction.undo();
 					break;
 				case 'y':
-					if (evt.ctrlKey) {
-						mapControls.undoInteraction.redo();
-					}
+					if (evt.ctrlKey) undoInteraction.redo();
 					break;
 			}
-		}, false);
-
+		}
 	}
 
 	return {
