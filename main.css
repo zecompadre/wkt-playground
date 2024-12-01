@@ -253,6 +253,7 @@ textarea:focus {
 .ol-control.ol-bar.layerbar {
 	right: -.5em;
 	left: unset;
+	background-color: var(--color-white);
 	box-shadow: var(--navbar-shadow);
 }
 
@@ -277,7 +278,7 @@ textarea:focus {
 
 .ol-zoom.ol-unselectable.ol-control {
 	background-color: var(--color-white);
-	border-radius: 0;
+	border-radius: 4px;
 	box-shadow: var(--navbar-shadow);
 }
 
@@ -344,9 +345,11 @@ textarea:focus {
 }
 
 .ol-control.ol-bar.layerbar button img {
-	width: 32px;
+	width: 33px;
 	height: 31px;
 	/* border-radius: 6px; */
 	vertical-align: super;
 	margin-top: 1px;
+	border-radius: 4px;
+	margin-left: 1px;
 }
