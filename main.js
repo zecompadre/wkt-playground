@@ -1151,6 +1151,10 @@ var app = (function () {
 		map.addInteraction(modifyInteraction);
 		mapControls.modifyInteraction = modifyInteraction;
 
+		drawCtrl.getInteraction().on('change:active', function (evt) {
+			featureUtilities.deselectCurrentFeature(false);
+		}.bind(editBar));
+
 		modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
 		selectCtrl.getInteraction().on('change:active', function (evt) {
 			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
