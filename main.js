@@ -140,6 +140,8 @@ var app = (function () {
 		zoom: 6,
 	};
 
+	const loading = new Loading({ dotCount: 4, dotSize: 25 });
+
 	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
 
 	let lfkey = "zecompadre-wkt";
@@ -1280,8 +1282,10 @@ var app = (function () {
 			title: 'Center in my location...',
 			handleClick: function () {
 				if (typeof userLocation === 'undefined') {
+					loading.show();
 					utilities.getLocation().then(location => {
 						map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
+						loading.hide();
 					});
 				} else {
 					map.getView().setCenter(userLocation);
@@ -1378,7 +1382,7 @@ var app = (function () {
 
 			mapUtilities.loadWKTs(true);
 			// });
-
+			loading.show();
 			utilities.getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
 					navigator.geolocation.getCurrentPosition(position => {
@@ -1389,11 +1393,8 @@ var app = (function () {
 				} else {
 					console.log(`Retrieved IP address: ${ip}`);
 				}
+				loading.hide();
 			});
-
-			const loading = new Loading({ dotCount: 4, dotSize: 25 }); // Create loading indicator
-			loading.show(); // Show loading
-			setTimeout(() => loading.hide(), 10000); // Hide loading after 3 seconds
 
 		}
 	};
