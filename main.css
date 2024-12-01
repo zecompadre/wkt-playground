@@ -224,6 +224,8 @@ textarea:focus {
 .ol-toggle.ol-active>button {
 	background-color: var(--color-primary);
 	color: var(--color-white);
+	height: 33px;
+	margin-bottom: 3px;
 }
 
 .ol-control button {
