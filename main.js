@@ -1048,6 +1048,9 @@ var app = (function () {
 		 * @async
 		 */
 		paste: async () => {
+
+			console.log("paste");
+
 			try {
 				await mapUtilities.loadWKTs();
 			} catch (error) {
