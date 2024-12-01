@@ -632,10 +632,12 @@ var app = (function () {
 			if (mapUtilities.getFeatureCount() > 0) {
 				main.classList.remove("nowkt");
 				featureUtilities.createFromAllFeatures();
+				mapControls.centerObjectsBtn.setVisible(true);
 			}
 			else {
 				main.classList.add("nowkt");
 				mapControls.selectBar.setVisible(false);
+				mapControls.centerObjectsBtn.setVisible(false);
 			}
 			if (center) {
 				await mapUtilities.center().then(function () {
