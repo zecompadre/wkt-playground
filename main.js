@@ -1141,15 +1141,20 @@ var app = (function () {
 
 		selectBar.setVisible(false);
 
+		// Draw control setup
+		const drawCtrl = createDrawControl();
+		editBar.addControl(drawCtrl);
+		mapControls.drawCtrl = drawCtrl;
+
 		// Modify interaction setup
 		const modifyInteraction = createModifyInteraction(selectCtrl);
 		map.addInteraction(modifyInteraction);
 		mapControls.modifyInteraction = modifyInteraction;
 
-		// Draw control setup
-		const drawCtrl = createDrawControl();
-		editBar.addControl(drawCtrl);
-		mapControls.drawCtrl = drawCtrl;
+		modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
+		selectCtrl.getInteraction().on('change:active', function (evt) {
+			modifyInteraction.setActive(selectCtrl.getInteraction().getActive())
+		}.bind(editBar));
 
 		// Undo/Redo interaction
 		const undoInteraction = new ol.interaction.UndoRedo();
