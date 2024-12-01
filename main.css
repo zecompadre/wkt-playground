@@ -221,6 +221,31 @@ textarea:focus {
 	padding: 10px;
 }
 
+.ol-bar .ol-button {
+	border-radius: 0;
+}
+
+.ol-control.ol-bar .ol-control button {
+	pointer-events: auto;
+	background-color: transparent;
+	border: 0;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	height: var(--button-size);
+	outline: none;
+	padding: 0;
+	width: var(--button-size);
+	margin: 0;
+	border-radius: 0;
+	border-right: 1px solid var(--button-divider-color);
+	/* Adjust color and style as needed */
+}
+
+.ol-control.ol-bar .ol-control button:hover {
+	background-color: var(--button-hover-background);
+}
+
 .ol-toggle.ol-active>button {
 	background-color: var(--color-primary);
 	color: var(--color-white);
@@ -260,31 +285,6 @@ textarea:focus {
 	top: unset;
 	bottom: .5em;
 	box-shadow: var(--navbar-shadow);
-}
-
-.ol-bar .ol-button {
-	border-radius: 0;
-}
-
-.ol-control.ol-bar .ol-control button {
-	pointer-events: auto;
-	background-color: transparent;
-	border: 0;
-	box-sizing: border-box;
-	cursor: pointer;
-	display: block;
-	height: var(--button-size);
-	outline: none;
-	padding: 0;
-	width: var(--button-size);
-	margin: 0;
-	border-radius: 0;
-	border-right: 1px solid var(--button-divider-color);
-	/* Adjust color and style as needed */
-}
-
-.ol-control.ol-bar .ol-control button:hover {
-	background-color: var(--button-hover-background);
 }
 
 .ol-control.ol-bar .ol-control button i {
