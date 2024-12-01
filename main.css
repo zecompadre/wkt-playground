@@ -331,7 +331,6 @@ textarea:focus {
 .ol-attribution.ol-unselectable.ol-control {
 	background-color: var(--color-white);
 	border-radius: 0;
-	box-shadow: var(--navbar-shadow);
 }
 
 .ol-attribution button {
@@ -362,12 +361,6 @@ textarea:focus {
 
 .ol-attribution ul {
 	padding: 1px 1.25em;
-}
-
-.ol-control.ol-bar.layerbar>div {
-	background-color: var(--color-white);
-	border-radius: 0;
-	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar.layerbar button img {
