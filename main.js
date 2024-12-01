@@ -322,7 +322,7 @@ var app = (function () {
 			new ol.style.Style({
 				image: new ol.style.RegularShape({
 					fill: new ol.style.Fill({ color: colors.normal }),
-					stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
+					stroke: new ol.style.Stroke({ color: colors.normal, width: 3 }),
 					points: 4, // Square shape
 					radius: 10, // Size of the shape
 					radius2: 0, // Inner radius (smaller)
@@ -365,10 +365,10 @@ var app = (function () {
 						new ol.style.Style({
 							image: new ol.style.RegularShape({
 								fill: new ol.style.Fill({ color: colors.normal }),
-								stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
+								stroke: new ol.style.Stroke({ color: colors.normal, width: 3 }),
 								points: 4, // Square shape
 								radius: 10, // Size of the shape
-								radius2: 2, // Inner radius (smaller)
+								radius2: 0, // Inner radius (smaller)
 								angle: 0, // No rotation
 							}),
 						})
