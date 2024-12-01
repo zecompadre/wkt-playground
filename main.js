@@ -320,10 +320,13 @@ var app = (function () {
 		 */
 		genericStyleFunction: (color) => [
 			new ol.style.Style({
-				image: new ol.style.Circle({
-					fill: new ol.style.Fill({ color: utilities.hexToRgbA(color) }), // Apply the fill color (converted to RGBA)
-					stroke: new ol.style.Stroke({ color, width: 2 }), // Apply stroke color and width
-					radius: 5, // Set the radius of the circle marker
+				image: new ol.style.RegularShape({
+					fill: new ol.style.Fill({ color: colors.create }),
+					stroke: new ol.style.Stroke({ color: color, width: 2 }),
+					points: 4, // Square shape
+					radius: 10, // Size of the shape
+					radius2: 2, // Inner radius (smaller)
+					angle: 0, // No rotation
 				}),
 				fill: new ol.style.Fill({ color: utilities.hexToRgbA(color, '0.3') }), // Apply a semi-transparent fill for the feature
 				stroke: new ol.style.Stroke({ color, width: 2 }), // Apply stroke color and width to the feature
