@@ -321,8 +321,8 @@ var app = (function () {
 		genericStyleFunction: (color) => [
 			new ol.style.Style({
 				image: new ol.style.RegularShape({
-					fill: new ol.style.Fill({ color: colors.create }),
-					stroke: new ol.style.Stroke({ color: colors.create, width: 2 }),
+					fill: new ol.style.Fill({ color: colors.normal }),
+					stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
 					points: 4, // Square shape
 					radius: 10, // Size of the shape
 					radius2: 0, // Inner radius (smaller)
@@ -364,8 +364,8 @@ var app = (function () {
 					var styles = [
 						new ol.style.Style({
 							image: new ol.style.RegularShape({
-								fill: new ol.style.Fill({ color: colors.create }),
-								stroke: new ol.style.Stroke({ color: color, width: 2 }),
+								fill: new ol.style.Fill({ color: colors.normal }),
+								stroke: new ol.style.Stroke({ color: colors.normal, width: 2 }),
 								points: 4, // Square shape
 								radius: 10, // Size of the shape
 								radius2: 2, // Inner radius (smaller)
