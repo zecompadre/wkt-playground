@@ -1322,6 +1322,7 @@ var app = (function () {
 					type: 'Polygon',
 					source: vectorLayer.getSource(),
 					style: utilities.drawStyleFunction(colors.create),
+					freehand: true,
 				})
 			});
 
