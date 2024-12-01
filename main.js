@@ -816,9 +816,9 @@ var app = (function () {
 		},
 
 		/**
- * Centers the map view based on the extent of features in the collection or resets to the default center if no features exist.
- * @async
- */
+		 * Centers the map view based on the extent of features in the collection or resets to the default center if no features exist.
+		 * @async
+		 */
 		center: async function () {
 			try {
 				if (!main.classList.contains("nowkt") && featureCollection.getLength() > 0) {
@@ -1047,9 +1047,8 @@ var app = (function () {
 		 * @param {HTMLTextAreaElement} ele - The HTML element containing the WKT value.
 		 * @async
 		 */
-		paste: async function (ele) {
+		paste: async () => {
 			try {
-				await this.add(ele.value);
 				await mapUtilities.loadWKTs();
 			} catch (error) {
 				console.error("Error pasting WKT:", error);
@@ -1186,6 +1185,8 @@ var app = (function () {
 
 		// Keyboard shortcuts for interaction
 		document.addEventListener('keydown', handleKeyboardShortcuts);
+
+		document.addEventListener('paste', wktUtilities.paste);
 
 		/**
 		 * Creates a control bar.
@@ -1450,18 +1451,10 @@ var app = (function () {
 
 		init: function () {
 
-			// utilities.getLocation().then(location => {
-			// 	console.log("location", location);
-
-			// 	//mapDefaults.longitude = location.longitude;
-			// 	//mapDefaults.latitude = location.latitude;
-			// 	userLocation = ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator);
-			// 	defaultCenter = userLocation;
-
 			setupMap();
 
 			mapUtilities.loadWKTs(true);
-			// });
+
 			loading.show();
 			utilities.getIP().then(ip => {
 				if (typeof ip === 'string' && ip.startsWith('http')) {
