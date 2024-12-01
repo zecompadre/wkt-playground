@@ -758,79 +758,122 @@ var app = (function () {
 		},
 	};
 
-	var wktUtilities = {
+	/**
+	 * Utility functions for handling WKT (Well-Known Text) operations,
+	 * including saving, loading, removing, updating, and interacting with the clipboard.
+	 */
+	const wktUtilities = {
+		/**
+		 * Loads WKT data from localStorage into the map.
+		 */
 		load: function () {
-			var wkts = localStorage.getItem(lfkey) || "[]";
+			const wkts = localStorage.getItem(lfkey) || "[]";
 			map.set("wkts", JSON.parse(wkts));
 		},
+
+		/**
+		 * Removes a WKT entry from the map by its ID.
+		 * @param {string} id - The ID of the WKT to remove.
+		 */
 		remove: function (id) {
-			var wkts = map.get("wkts");
-			wkts = wkts.filter(function (item) {
-				return item.id !== id;
-			});
+			let wkts = map.get("wkts");
+			wkts = wkts.filter((item) => item.id !== id);
 			map.set("wkts", wkts);
 			this.save();
 		},
+
+		/**
+		 * Saves the current WKT data from the map into localStorage.
+		 */
 		save: function () {
 			localStorage.setItem(lfkey, JSON.stringify(this.get()));
 		},
-		add: async function (wkt) {
-			var self = this;
-			await utilities.generateChecksum(wkt).then(function (checksum) {
-				var exists = false;
-				var wkts = map.get("wkts");
-				if (wkts.length > 0) {
-					wkts.forEach(item => {
-						if (checksum !== "" && item.id === checksum)
-							exists = true;
-					});
-				}
-				if (wkt != "" && !exists) {
-					wkts.push({ id: checksum, wkt: wkt });
-				}
-				map.set("wkts", wkts);
-				self.save();
-			});
 
-		},
-		get: function () {
-			return map.get("wkts");
-		},
-		update: function (id, wkt) {
-			var wkts = map.get("wkts");
-			if (wkts.length > 0) {
-				wkts.forEach(function (item) {
-					if (item.id === id)
-						item.wkt = wkt;
-				});
+		/**
+		 * Adds a new WKT entry after generating a checksum to ensure uniqueness.
+		 * @param {string} wkt - The WKT string to add.
+		 * @async
+		 */
+		add: async function (wkt) {
+			try {
+				const checksum = await utilities.generateChecksum(wkt);
+				const wkts = map.get("wkts") || [];
+				const exists = wkts.some((item) => item.id === checksum);
+
+				if (wkt && !exists) {
+					wkts.push({ id: checksum, wkt });
+					map.set("wkts", wkts);
+					this.save();
+				}
+			} catch (error) {
+				console.error("Error adding WKT:", error);
 			}
+		},
+
+		/**
+		 * Retrieves all WKT entries from the map.
+		 * @returns {Array} - An array of WKT objects.
+		 */
+		get: function () {
+			return map.get("wkts") || [];
+		},
+
+		/**
+		 * Updates an existing WKT entry by ID.
+		 * @param {string} id - The ID of the WKT to update.
+		 * @param {string} wkt - The updated WKT string.
+		 */
+		update: function (id, wkt) {
+			const wkts = map.get("wkts") || [];
+			wkts.forEach((item) => {
+				if (item.id === id) {
+					item.wkt = wkt;
+				}
+			});
 			map.set("wkts", wkts);
 			this.save();
 		},
+
+		/**
+		 * Reads text from the clipboard, focusing on text containing "POLYGON".
+		 * @async
+		 * @returns {string} - The WKT string from the clipboard, or an empty string if not found.
+		 */
 		readClipboard: async function () {
-			var returnVal = "";
+			let returnVal = "";
 			try {
 				textarea.focus();
-				const permission = await navigator.permissions.query({ name: 'clipboard-read' });
-				if (permission.state === 'denied') {
-					throw new Error('Not allowed to read clipboard.');
+				const permission = await navigator.permissions.query({ name: "clipboard-read" });
+
+				if (permission.state === "denied") {
+					throw new Error("Not allowed to read clipboard.");
 				}
+
 				const text = await navigator.clipboard.readText();
-				if (text.indexOf('POLYGON') !== -1) {
+				if (text.includes("POLYGON")) {
 					returnVal = text;
-					navigator.clipboard.writeText("");
+					await navigator.clipboard.writeText(""); // Clear clipboard
 				}
 			} catch (error) {
-				console.error('readClipboard:', error.message);
+				console.error("Error reading clipboard:", error.message);
 			}
 			return returnVal;
 		},
+
+		/**
+		 * Adds a WKT entry from an element's value, then reloads the WKTs into the map.
+		 * @param {HTMLTextAreaElement} ele - The HTML element containing the WKT value.
+		 * @async
+		 */
 		paste: async function (ele) {
-			await wktUtilities.add(ele.value).then(async function (result) {
+			try {
+				await this.add(ele.value);
 				await mapUtilities.loadWKTs();
-			});
+			} catch (error) {
+				console.error("Error pasting WKT:", error);
+			}
 		},
-	}
+	};
 
 	function setupMap() {
 
@@ -911,6 +954,9 @@ var app = (function () {
 					textarea.value = "Select an object first...";
 				else {
 					var feature = features.item(0);
+
+					console.log(feature, feature.getId())
+
 					wktUtilities.remove(feature.getId());
 					for (var i = 0, f; f = features.item(i); i++) {
 						vectorLayer.getSource().removeFeature(f);
