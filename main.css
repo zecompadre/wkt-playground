@@ -363,3 +363,17 @@ textarea:focus {
 .ol-attribution ul {
 	padding: 1px 1.25em;
 }
+
+.ol-control.ol-bar.layerbar>div {
+	background-color: var(--color-white);
+	border-radius: 0;
+	box-shadow: var(--navbar-shadow);
+}
+
+.ol-control.ol-bar.layerbar button img {
+	width: 32px;
+	height: 31px;
+	/* border-radius: 6px; */
+	vertical-align: super;
+	margin-top: 1px;
+}
