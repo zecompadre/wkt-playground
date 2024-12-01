@@ -892,36 +892,48 @@ var app = (function () {
 		},
 	};
 
+	/**
+	 * Sets up the map with its layers, controls, and default configuration.
+	 */
 	function setupMap() {
-
+		// Cache essential DOM elements
 		main = document.querySelector(".maincontainer");
 		textarea = document.querySelector("#wktdefault textarea");
 
+		// Initialize WKT format parser and feature collection
 		format = new ol.format.WKT();
 		featureCollection = new ol.Collection();
+
+		// Set default center with transformed coordinates
 		defaultCenter = utilities.transformCoordinates(
 			[mapDefaults.longitude, mapDefaults.latitude],
 			projections.geodetic,
 			projections.mercator
 		);
 
-		// Initialize map and layers
-		utilities.createVectorLayer();
+		// Initialize layers and controls
+		utilities.createVectorLayer(); // Create the vector layer
+		utilities.createAttributeControl(); // Create the attribution control
 
-		utilities.createAttributeControl();
-
+		// Configure the map
 		map = new ol.Map({
+			target: 'map', // Target container ID
 			layers: [
-				osmLayer, arcgisLayer,
-				vectorLayer,
+				osmLayer,      // OpenStreetMap layer
+				arcgisLayer,   // ArcGIS layer
+				vectorLayer    // Vector layer for user features
 			],
-			target: 'map',
-			controls: ol.control.defaults.defaults({ attribution: false }).extend([attributionControl]),
-			view: new ol.View({ center: defaultCenter, zoom: mapDefaults.zoom, maxZoom: 19 }),
+			controls: ol.control.defaults.defaults({ attribution: false }) // Disable default attribution
+				.extend([attributionControl]), // Add custom attribution control
+			view: new ol.View({
+				center: defaultCenter,       // Set the initial center
+				zoom: mapDefaults.zoom,      // Set the initial zoom level
+				maxZoom: 19                  // Set the maximum zoom level
+			}),
 		});
 
-		// Add controls and interactions
-		initializeMapControls();
+		// Add additional controls and interactions
+		initializeMapControls(); // Function to initialize map controls
 	}
 
 	function initializeMapControls() {
@@ -1078,6 +1090,7 @@ var app = (function () {
 			await wktUtilities.add(evt.feature).then(function (result) {
 				mapUtilities.reviewLayout(false);
 				featureUtilities.centerOnFeature(evt.feature);
+				mapControls.selectCtrl.setActive(true);
 			});
 		});
 
