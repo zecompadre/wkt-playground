@@ -1350,6 +1350,7 @@ var app = (function () {
 			mapUtilities.reviewLayout(false);
 			featureUtilities.centerOnFeature(evt.feature);
 			mapControls.selectCtrl.setActive(true);
+			featureUtilities.deselectCurrentFeature(false);
 		}
 
 		/**
