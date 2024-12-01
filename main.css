@@ -234,6 +234,16 @@ textarea:focus {
 	box-shadow: var(--navbar-shadow);
 }
 
+.ol-control.ol-bar .ol-bar.editbar .ol-control.ol-bar.ol-control.ol-option-bar {
+	background-color: var(--color-white);
+	box-shadow: var(--navbar-shadow);
+}
+
+.ol-control.ol-bar .ol-bar.editbar .ol-control.ol-bar.ol-control.ol-option-bar button:hover {
+	height: calc(var(--button-size) - 3px) !important;
+	margin-bottom: calc(var(--button-size) - 33px) !important;
+}
+
 .ol-control.ol-bar .ol-bar.locationbar {
 	margin-left: 5px;
 	background-color: var(--color-white);
