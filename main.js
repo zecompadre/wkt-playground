@@ -1322,11 +1322,11 @@ var app = (function () {
 					type: 'Polygon',
 					source: vectorLayer.getSource(),
 					style: utilities.drawStyleFunction(colors.create),
-					freehand: true,
+					// freehand: true,
 				})
 			});
 
-			drawCtrl.getInteraction().freehand_ = false;
+			// drawCtrl.getInteraction().freehand_ = false;
 
 			drawCtrl.getInteraction().on('drawend', handleDrawEnd);
 			return drawCtrl;
