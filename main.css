@@ -121,6 +121,7 @@ textarea:focus {
 	font-size: 14px;
 	vertical-align: middle;
 	color: rgba(255, 255, 255, .5);
+	margin-left: 10px;
 }
 
 /* Container layout */
