@@ -1,5 +1,74 @@
 var app = (function () {
 
+	class Loading {
+		constructor() {
+			// Create loading elements
+			this.overlay = document.createElement('div');
+			this.spinner = document.createElement('div');
+
+			// Style overlay
+			Object.assign(this.overlay.style, {
+				position: 'fixed',
+				top: 0,
+				left: 0,
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'rgba(0, 0, 0, 0.5)',
+				zIndex: 1000,
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				opacity: 0,
+				transition: 'opacity 0.3s',
+			});
+
+			// Style spinner
+			Object.assign(this.spinner.style, {
+				width: '50px',
+				height: '50px',
+				border: '5px solid rgba(255, 255, 255, 0.3)',
+				borderTop: '5px solid white',
+				borderRadius: '50%',
+				animation: 'spin 1s linear infinite',
+			});
+
+			// Add keyframe animation for spinner
+			const styleSheet = document.createElement('style');
+			styleSheet.type = 'text/css';
+			styleSheet.innerText = `
+				@keyframes spin {
+					0% { transform: rotate(0deg); }
+					100% { transform: rotate(360deg); }
+				}
+			`;
+			document.head.appendChild(styleSheet);
+
+			// Append spinner to overlay
+			this.overlay.appendChild(this.spinner);
+			this.isVisible = false;
+		}
+
+		show() {
+			if (this.isVisible) return;
+			document.body.appendChild(this.overlay);
+			requestAnimationFrame(() => {
+				this.overlay.style.opacity = 1;
+			});
+			this.isVisible = true;
+		}
+
+		hide() {
+			if (!this.isVisible) return;
+			this.overlay.style.opacity = 0;
+			this.overlay.addEventListener('transitionend', () => {
+				if (this.overlay.parentNode) {
+					document.body.removeChild(this.overlay);
+				}
+			}, { once: true });
+			this.isVisible = false;
+		}
+	}
+
 	const projections = {
 		geodetic: 'EPSG:4326',
 		mercator: 'EPSG:3857',
@@ -1268,6 +1337,10 @@ var app = (function () {
 					console.log(`Retrieved IP address: ${ip}`);
 				}
 			});
+
+			const loading = new Loading();
+			loading.show(); // Show loading
+			setTimeout(() => loading.hide(), 10000); // Hide loading after 3 seconds
 
 		}
 	};
