@@ -1113,48 +1113,61 @@ var app = (function () {
 		// Main control bar setup
 		const mainBar = createControlBar('mainbar');
 		map.addControl(mainBar);
+		mapControls.mainBar = mainBar;
 
 		// Edit control bar setup
 		const editBar = createControlBar('editbar', true, false);
 		mainBar.addControl(editBar);
+		mapControls.editBar = editBar;
 
 		// Selection controls and buttons
 		const selectBar = createControlBar();
 		const selectCtrl = createSelectControl(selectBar);
 		editBar.addControl(selectCtrl);
+		mapControls.selectCtrl = selectCtrl;
 
 		// Modify interaction setup
 		const modifyInteraction = createModifyInteraction(selectCtrl);
 		map.addInteraction(modifyInteraction);
+		mapControls.modifyInteraction = modifyInteraction;
 
 		// Draw control setup
 		const drawCtrl = createDrawControl();
 		editBar.addControl(drawCtrl);
+		mapControls.drawCtrl = drawCtrl;
 
 		// Undo/Redo interaction
 		const undoInteraction = new ol.interaction.UndoRedo();
 		map.addInteraction(undoInteraction);
+		mapControls.undoInteraction = undoInteraction;
 
 		// Undo/Redo buttons
 		const undoBtn = createUndoButton(undoInteraction);
 		const redoBtn = createRedoButton(undoInteraction);
 		editBar.addControl(undoBtn);
+		mapControls.undoBtn = undoBtn;
 		editBar.addControl(redoBtn);
+		mapControls.redoBtn = redoBtn;
 
 		// Location and center controls
 		const locationBar = createControlBar('locationbar');
 		mainBar.addControl(locationBar);
+		mapControls.locationBar = locationBar;
+
 		const locationBtn = createLocationButton();
 		locationBar.addControl(locationBtn);
+		mapControls.locationBtn = locationBtn;
 
 		const centerObjectsBtn = createCenterObjectsButton();
 		locationBar.addControl(centerObjectsBtn);
+		mapControls.centerObjectsBtn = centerObjectsBtn;
 
 		// Layer control
 		const layerBar = createControlBar('layerbar');
 		map.addControl(layerBar);
 		const layerChangeBtn = createLayerChangeButton();
 		layerBar.addControl(layerChangeBtn);
+		mapControls.layerChangeBtn = layerChangeBtn;
 
 		// Add snap interaction for feature modification
 		map.addInteraction(new ol.interaction.Snap({ source: vectorLayer.getSource() }));
