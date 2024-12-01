@@ -1,11 +1,30 @@
 var app = (function () {
 
+	/**
+ * Class representing a loading overlay with animated bouncing dots.
+ */
 	class Loading {
-		constructor() {
-			// Google colors for the dots
+		/**
+		 * Creates an instance of the Loading class.
+		 * @param {Object} [options={}] - Configuration options for the loading overlay.
+		 * @param {number} [options.dotCount=4] - Number of dots in the loading animation.
+		 * @param {number} [options.dotSize=15] - Size of each dot in pixels.
+		 * @param {number} [options.dotGap=10] - Gap between dots in pixels.
+		 * @param {number} [options.animationDuration=1.4] - Duration of the bounce animation in seconds.
+		 */
+		constructor({ dotCount = 4, dotSize = 15, dotGap = 10, animationDuration = 1.4 } = {}) {
+			/**
+			 * Colors used for the dots.
+			 * @type {string[]}
+			 * @private
+			 */
 			this.colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
 
-			// Create overlay
+			/**
+			 * Overlay element for the loading screen.
+			 * @type {HTMLDivElement}
+			 * @private
+			 */
 			this.overlay = document.createElement('div');
 			Object.assign(this.overlay.style, {
 				position: 'fixed',
@@ -15,6 +34,7 @@ var app = (function () {
 				height: '100%',
 				backgroundColor: 'rgba(0, 0, 0, 0.5)',
 				display: 'flex',
+				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
 				zIndex: 1000,
@@ -22,23 +42,31 @@ var app = (function () {
 				transition: 'opacity 0.3s',
 			});
 
-			// Create the container for dots
+			/**
+			 * Container element for the dots.
+			 * @type {HTMLDivElement}
+			 * @private
+			 */
 			this.dotsContainer = document.createElement('div');
 			Object.assign(this.dotsContainer.style, {
 				display: 'flex',
-				gap: '10px',
+				gap: `${dotGap}px`,
 			});
 
-			// Create and style dots
+			/**
+			 * Array of dot elements.
+			 * @type {HTMLDivElement[]}
+			 * @private
+			 */
 			this.dots = [];
-			for (let i = 0; i < 4; i++) {
+			for (let i = 0; i < dotCount; i++) {
 				const dot = document.createElement('div');
 				Object.assign(dot.style, {
-					width: '15px',
-					height: '15px',
-					backgroundColor: this.colors[i],
+					width: `${dotSize}px`,
+					height: `${dotSize}px`,
+					backgroundColor: this.colors[i % this.colors.length],
 					borderRadius: '50%',
-					animation: `bounce 1.4s ease-in-out infinite`,
+					animation: `bounce ${animationDuration}s ease-in-out infinite`,
 					animationDelay: `${i * 0.2}s`,
 				});
 				this.dots.push(dot);
@@ -49,19 +77,27 @@ var app = (function () {
 			const styleSheet = document.createElement('style');
 			styleSheet.type = 'text/css';
 			styleSheet.innerText = `
-				@keyframes bounce {
-					0%, 80%, 100% { transform: scale(0); }
-					40% { transform: scale(1); }
-				}
-			`;
+			@keyframes bounce {
+				0%, 80%, 100% { transform: scale(0); }
+				40% { transform: scale(1); }
+			}
+		`;
 			document.head.appendChild(styleSheet);
 
 			// Append dots container to overlay
 			this.overlay.appendChild(this.dotsContainer);
 
+			/**
+			 * Visibility status of the overlay.
+			 * @type {boolean}
+			 * @private
+			 */
 			this.isVisible = false;
 		}
 
+		/**
+		 * Shows the loading overlay.
+		 */
 		show() {
 			if (this.isVisible) return;
 			document.body.appendChild(this.overlay);
@@ -71,6 +107,9 @@ var app = (function () {
 			this.isVisible = true;
 		}
 
+		/**
+		 * Hides the loading overlay.
+		 */
 		hide() {
 			if (!this.isVisible) return;
 			this.overlay.style.opacity = 0;
@@ -1352,7 +1391,7 @@ var app = (function () {
 				}
 			});
 
-			const loading = new Loading();
+			const loading = new Loading({ dotCount: 4, dotSize: 25 }); // Create loading indicator
 			loading.show(); // Show loading
 			setTimeout(() => loading.hide(), 10000); // Hide loading after 3 seconds
 
