@@ -2,11 +2,8 @@ var app = (function () {
 
 	class Loading {
 		constructor() {
-			// Create loading elements
+			// Create overlay
 			this.overlay = document.createElement('div');
-			this.spinner = document.createElement('div');
-
-			// Style overlay
 			Object.assign(this.overlay.style, {
 				position: 'fixed',
 				top: 0,
@@ -14,37 +11,51 @@ var app = (function () {
 				width: '100%',
 				height: '100%',
 				backgroundColor: 'rgba(0, 0, 0, 0.5)',
-				zIndex: 1000,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
+				zIndex: 1000,
 				opacity: 0,
 				transition: 'opacity 0.3s',
 			});
 
-			// Style spinner
-			Object.assign(this.spinner.style, {
-				width: '50px',
-				height: '50px',
-				border: '5px solid rgba(255, 255, 255, 0.3)',
-				borderTop: '5px solid white',
-				borderRadius: '50%',
-				animation: 'spin 1s linear infinite',
+			// Create the container for dots
+			this.dotsContainer = document.createElement('div');
+			Object.assign(this.dotsContainer.style, {
+				display: 'flex',
+				gap: '10px',
 			});
 
-			// Add keyframe animation for spinner
+			// Create and style dots
+			this.dots = [];
+			for (let i = 0; i < 4; i++) {
+				const dot = document.createElement('div');
+				Object.assign(dot.style, {
+					width: '10px',
+					height: '10px',
+					backgroundColor: 'white',
+					borderRadius: '50%',
+					animation: `bounce 1.4s ease-in-out infinite`,
+					animationDelay: `${i * 0.2}s`,
+				});
+				this.dots.push(dot);
+				this.dotsContainer.appendChild(dot);
+			}
+
+			// Add keyframe animation for bouncing dots
 			const styleSheet = document.createElement('style');
 			styleSheet.type = 'text/css';
 			styleSheet.innerText = `
-				@keyframes spin {
-					0% { transform: rotate(0deg); }
-					100% { transform: rotate(360deg); }
+				@keyframes bounce {
+					0%, 80%, 100% { transform: scale(0); }
+					40% { transform: scale(1); }
 				}
 			`;
 			document.head.appendChild(styleSheet);
 
-			// Append spinner to overlay
-			this.overlay.appendChild(this.spinner);
+			// Append dots container to overlay
+			this.overlay.appendChild(this.dotsContainer);
+
 			this.isVisible = false;
 		}
 
