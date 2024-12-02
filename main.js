@@ -1255,6 +1255,7 @@ var app = (function () {
 				tooltip.setPosition(event.coordinate);
 				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
 				tooltip.getElement().style.display = 'block';
+				tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
 			} else {
 				tooltip.getElement().style.display = 'none';
 			}

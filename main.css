@@ -422,7 +422,7 @@ textarea:focus {
 }
 
 /* Tooltip arrow - sleek triangle with rounded edges */
-#tooltip::after {
+#vtooltip::after {
 	content: "";
 	position: absolute;
 	border-width: 10px;
