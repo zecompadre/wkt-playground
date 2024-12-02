@@ -1212,6 +1212,31 @@ var app = (function () {
 				maxZoom: 19                  // Set the maximum zoom level
 			}),
 		});
+		const tooltip = new Overlay({
+			element: document.getElementById('tooltip'),
+			offset: [15, 15],
+			positioning: 'bottom-left',
+		});
+		map.on('pointermove', function (event) {
+			const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+				return feature;
+			});
+
+			if (feature) {
+				// Calculate area of the polygon in square meters
+				const areaInSquareMeters = ol.sphere.Geodesic.getArea(feature.getGeometry());
+
+				// Convert to square feet
+				//const areaInSquareFeet = areaInSquareMeters * 10.7639;
+
+				// Display the area in the tooltip
+				tooltip.setPosition(event.coordinate);
+				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)}m2`;
+				tooltip.getElement().style.display = 'block';
+			} else {
+				tooltip.getElement().style.display = 'none';
+			}
+		});
 
 		// Add additional controls and interactions
 		initializeMapControls(); // Function to initialize map controls
