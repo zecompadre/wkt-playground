@@ -1225,20 +1225,6 @@ var app = (function () {
 		map.addInteraction(modifyInteraction);
 		mapControls.modifyInteraction = modifyInteraction;
 
-		modifyInteraction.on('modify', (event) => {
-			midpointSource.clear(); // Clear existing midpoints
-			event.features.forEach((feature) => {
-				const geometry = feature.getGeometry();
-				if (geometry.getType() === 'LineString') {
-					const midpoints = calculateMidpoints(geometry);
-					midpoints.forEach((coords) => {
-						const midpointFeature = new Feature(new Point(coords));
-						midpointSource.addFeature(midpointFeature);
-					});
-				}
-			});
-		});
-
 		drawCtrl.getInteraction().on('change:active', function (evt) {
 			featureUtilities.deselectCurrentFeature(false);
 		}.bind(editBar));
@@ -1423,9 +1409,6 @@ var app = (function () {
 					style: utilities.drawStyleFunction(colors.create),
 				})
 			});
-
-			// drawCtrl.getInteraction().freehand_ = false;
-
 			drawCtrl.getInteraction().on('drawend', handleDrawEnd);
 			return drawCtrl;
 		}
