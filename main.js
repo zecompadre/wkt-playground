@@ -1224,7 +1224,7 @@ var app = (function () {
 
 			if (feature) {
 				// Calculate area of the polygon in square meters
-				const areaInSquareMeters = ol.sphere.Geodesic.getArea(feature.getGeometry());
+				const areaInSquareMeters = ol.sphere.getArea(feature.getGeometry());
 
 				// Convert to square feet
 				//const areaInSquareFeet = areaInSquareMeters * 10.7639;
