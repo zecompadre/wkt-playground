@@ -3,6 +3,9 @@ var app = (function () {
 	class Translation {
 		constructor() {
 			this.language = navigator.language || 'en'; // Default to English if no language is detected
+
+			console.log(this.language);
+
 			this.translations = {
 				en: {
 					changebutton: "Change layer...",
@@ -1233,6 +1236,9 @@ var app = (function () {
 				tooltip.setPosition(event.coordinate);
 				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)}m2`;
 				tooltip.getElement().style.display = 'block';
+
+				console.log(`Area: ${areaInSquareMeters.toFixed(2)}m2`);
+
 			} else {
 				tooltip.getElement().style.display = 'none';
 			}
