@@ -1236,6 +1236,8 @@ var app = (function () {
 			offset: [15, 15],
 			positioning: 'bottom-left',
 		});
+		map.addOverlay(tooltip);
+
 		map.on('pointermove', function (event) {
 			const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
 				return feature;
