@@ -354,3 +354,40 @@ textarea:focus {
 	border-radius: 4px;
 	margin-left: 1px;
 }
+
+#tooltip {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.7);
+	/* Semi-transparent background */
+	color: white;
+	/* Text color */
+	padding: 8px 12px;
+	/* Padding inside the tooltip */
+	border-radius: 5px;
+	/* Rounded corners */
+	font-size: 14px;
+	/* Font size */
+	font-family: Arial, sans-serif;
+	/* Font style */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	/* Box shadow for better visibility */
+	pointer-events: none;
+	/* Disable pointer events to avoid interaction interference */
+	white-space: nowrap;
+	/* Prevent text wrapping */
+	z-index: 1000;
+	/* Ensure it appears on top of the map */
+}
+
+/* Tooltip arrow (optional) */
+#tooltip::after {
+	content: "";
+	position: absolute;
+	border-width: 6px;
+	border-style: solid;
+	border-color: rgba(0, 0, 0, 0.7) transparent transparent transparent;
+	/* Arrow color */
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+}
