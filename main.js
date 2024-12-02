@@ -1333,7 +1333,7 @@ var app = (function () {
 		function createSelectControl(selectBar) {
 			const selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
-				title: translation.get("select"),
+				title: translator.get("select"),
 				interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.genericStyleFunction(colors.edit) }),
 				bar: selectBar,
 				autoActivate: true,
@@ -1375,7 +1375,7 @@ var app = (function () {
 			return new ol.control.Button({
 				html: '<i class="fa fa-times fa-lg"></i>',
 				name: "Delete",
-				title: translation.get("delete"),
+				title: translator.get("delete"),
 				handleClick: function () {
 					var features = mapControls.selectCtrl.getInteraction().getFeatures();
 					if (!features.getLength()) {
@@ -1405,7 +1405,7 @@ var app = (function () {
 			return new ol.control.Button({
 				html: '<i class="fa fa-info fa-lg"></i>',
 				name: "Info",
-				title: translation.get("showinfo"),
+				title: translator.get("showinfo"),
 				handleClick: function () {
 					switch (mapControls.selectCtrl.getInteraction().getFeatures().getLength()) {
 						case 0:
@@ -1441,7 +1441,7 @@ var app = (function () {
 		function createDrawControl() {
 			const drawCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-draw-polygon fa-lg"></i>',
-				title: translation.get("polygon"),
+				title: translator.get("polygon"),
 				interaction: new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vectorLayer.getSource(),
@@ -1472,7 +1472,7 @@ var app = (function () {
 		function createUndoButton(undoInteraction) {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
-				title: translation.get("undo"),
+				title: translator.get("undo"),
 				handleClick: () => undoInteraction.undo(),
 			});
 		}
@@ -1485,7 +1485,7 @@ var app = (function () {
 		function createRedoButton(undoInteraction) {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
-				title: translation.get("redo"),
+				title: translator.get("redo"),
 				handleClick: () => undoInteraction.redo(),
 			});
 		}
@@ -1497,7 +1497,7 @@ var app = (function () {
 		function createLocationButton() {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
-				title: translation.get("centeronmylocation"),
+				title: translator.get("centeronmylocation"),
 				handleClick: centerOnUserLocation,
 			});
 		}
@@ -1554,7 +1554,7 @@ var app = (function () {
 		function createCenterObjectsButton() {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-arrows-to-dot fa-lg"></i>',
-				title: translation.get("centerobjects"),
+				title: translator.get("centerobjects"),
 				handleClick: () => featureUtilities.centerOnVector(),
 			});
 		}
@@ -1566,7 +1566,7 @@ var app = (function () {
 		function createLayerChangeButton() {
 			return new ol.control.Button({
 				html: utilities.layerChangeBtnHtml(),
-				title: translation.get("changebutton"),
+				title: translator.get("changebutton"),
 				handleClick: mapUtilities.toggleLayers,
 			});
 		}
