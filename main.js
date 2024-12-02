@@ -359,7 +359,7 @@ var app = (function () {
 				// Style for Real Vertices
 				const styles = utilities.genericStyleFunction(color);
 
-				console.log(feature, { color: '#007BFF', icon: '🔥' });
+				//console.log(feature, { color: '#007BFF', icon: '🔥' });
 				// console.log(segments, { color: '#007BFF', icon: '🔥' });
 
 				// // Add Virtual Vertices (Midpoints)
@@ -1404,7 +1404,8 @@ var app = (function () {
 				features: selectCtrl.getInteraction().getFeatures(),
 				//style: utilities.modifyStyleFunction,
 				style: utilities.modifyStyleFunction(colors.edit),
-				insertVertexCondition: () => true
+				insertVertexCondition: () => true,
+				virtualVertices: true
 			});
 		}
 
@@ -1420,7 +1421,6 @@ var app = (function () {
 					type: 'Polygon',
 					source: vectorLayer.getSource(),
 					style: utilities.drawStyleFunction(colors.create),
-					// freehand: true,
 				})
 			});
 
