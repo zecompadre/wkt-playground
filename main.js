@@ -3,8 +3,24 @@ var app = (function () {
 	class Translation {
 		constructor() {
 			this.language = navigator.language || 'en'; // Default to English if no language is detected
-
-			console.log(this.language);
+			switch (this.language) {
+				case 'en-US':
+				case 'en-GB':
+					this.language = 'en';
+					break;
+				case 'fr-FR':
+				case 'fr':
+					this.language = 'fr';
+					break;
+				case 'es-ES':
+				case 'es':
+					this.language = 'es';
+					break;
+				case 'pt-PT':
+				case 'pt':
+					this.language = 'pt';
+					break;
+			}
 
 			this.translations = {
 				en: {
