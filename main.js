@@ -1316,6 +1316,7 @@ var app = (function () {
 				features: selectCtrl.getInteraction().getFeatures(),
 				style: utilities.genericStyleFunction(colors.snap),
 				insertVertexCondition: () => true,
+				createVertices: true
 			});
 		}
 
