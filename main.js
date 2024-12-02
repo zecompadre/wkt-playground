@@ -353,30 +353,33 @@ var app = (function () {
 				console.warn('Attribution control button element not found.');
 			}
 		},
-		modifyStyleFunction: (feature, segments) => {
-			// Style for Real Vertices
-			const styles = utilities.genericStyleFunction(colors.edit);
+		modifyStyleFunction: (color) => {
 
-			console.log("fdfdsf", { color: '#007BFF', icon: '🔥' });
+			return function (feature, segments) {
+				// Style for Real Vertices
+				const styles = utilities.genericStyleFunction(color);
 
-			// // Add Virtual Vertices (Midpoints)
-			// segments.forEach((segment) => {
-			// 	const midpoint = [
-			// 		(segment[0][0] + segment[1][0]) / 2,
-			// 		(segment[0][1] + segment[1][1]) / 2,
-			// 	];
-			// 	styles.push(
-			// 		new Style({
-			// 			geometry: new Point(midpoint),
-			// 			image: new ol.style.Circle({
-			// 				radius: 5,
-			// 				fill: new ol.style.Fill({ color: 'red' }),
-			// 			}),
-			// 		})
-			// 	);
-			// });
+				console.log("fdfdsf", { color: '#007BFF', icon: '🔥' });
 
-			return styles;
+				// // Add Virtual Vertices (Midpoints)
+				// segments.forEach((segment) => {
+				// 	const midpoint = [
+				// 		(segment[0][0] + segment[1][0]) / 2,
+				// 		(segment[0][1] + segment[1][1]) / 2,
+				// 	];
+				// 	styles.push(
+				// 		new Style({
+				// 			geometry: new Point(midpoint),
+				// 			image: new ol.style.Circle({
+				// 				radius: 5,
+				// 				fill: new ol.style.Fill({ color: 'red' }),
+				// 			}),
+				// 		})
+				// 	);
+				// });
+
+				return styles;
+			};
 		},
 		/**
 		 * Generates a style for a vector feature with a circle marker and custom color.
@@ -1398,8 +1401,8 @@ var app = (function () {
 		function createModifyInteraction(selectCtrl) {
 			return new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
-				style: utilities.modifyStyleFunction,
-				//style: utilities.modifyStyleFunction(colors.snap),
+				//style: utilities.modifyStyleFunction,
+				style: utilities.modifyStyleFunction(colors.edit),
 				insertVertexCondition: () => true,
 				createVertices: true
 			});
