@@ -341,7 +341,7 @@ var app = (function () {
 		},
 		modifyStyleFunction: (feature, segments) => {
 			// Style for Real Vertices
-			const styles = genericStyleFunction(colors.edit);
+			const styles = utilities.genericStyleFunction(colors.edit);
 
 			console.log(this);
 
