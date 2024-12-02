@@ -1,8 +1,39 @@
 var app = (function () {
 
+	(() => {
+		// Save the original console.log
+		const originalLog = console.log;
+
+		// Enhanced console.log
+		console.log = (message, options = {}) => {
+			const {
+				color = '#4CAF50', // Default text color
+				backgroundColor = '#222', // Default background color
+				fontSize = '14px', // Default font size
+				fontWeight = 'normal', // Default font weight
+				icon = '', // Icon or emoji
+			} = options;
+
+			if (typeof message === 'string') {
+				const style = `
+			  color: ${color};
+			  background-color: ${backgroundColor};
+			  font-size: ${fontSize};
+			  font-weight: ${fontWeight};
+			  padding: 4px 8px;
+			  border-radius: 4px;
+			`;
+				originalLog(`%c${icon ? icon + ' ' : ''}${message}`, style);
+			} else {
+				// Fallback to default logging for non-string inputs
+				originalLog(message);
+			}
+		};
+	})();
+
 	/**
- * Class representing a loading overlay with animated bouncing dots.
- */
+	 * Class representing a loading overlay with animated bouncing dots.
+	 */
 	class Loading {
 		/**
 		 * Creates an instance of the Loading class.
@@ -310,31 +341,26 @@ var app = (function () {
 		},
 		modifyStyleFunction: (feature, segments) => {
 			// Style for Real Vertices
-			const styles = [
-				new ol.style.Style({
-					image: new ol.style.Circle({
-						radius: 5,
-						fill: new ol.style.Fill({ color: 'blue' }),
-					}),
-				}),
-			];
+			const styles = genericStyleFunction(colors.edit);
 
-			// Add Virtual Vertices (Midpoints)
-			segments.forEach((segment) => {
-				const midpoint = [
-					(segment[0][0] + segment[1][0]) / 2,
-					(segment[0][1] + segment[1][1]) / 2,
-				];
-				styles.push(
-					new Style({
-						geometry: new Point(midpoint),
-						image: new ol.style.Circle({
-							radius: 5,
-							fill: new ol.style.Fill({ color: 'red' }),
-						}),
-					})
-				);
-			});
+			console.log(this);
+
+			// // Add Virtual Vertices (Midpoints)
+			// segments.forEach((segment) => {
+			// 	const midpoint = [
+			// 		(segment[0][0] + segment[1][0]) / 2,
+			// 		(segment[0][1] + segment[1][1]) / 2,
+			// 	];
+			// 	styles.push(
+			// 		new Style({
+			// 			geometry: new Point(midpoint),
+			// 			image: new ol.style.Circle({
+			// 				radius: 5,
+			// 				fill: new ol.style.Fill({ color: 'red' }),
+			// 			}),
+			// 		})
+			// 	);
+			// });
 
 			return styles;
 		},
