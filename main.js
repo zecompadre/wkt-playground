@@ -1,49 +1,86 @@
 var app = (function () {
 
-	// Function to calculate midpoints
-	function calculateMidpoints(line) {
-		const midpoints = [];
-		const coordinates = line.getCoordinates();
-		for (let i = 0; i < coordinates.length - 1; i++) {
-			const midpoint = [
-				(coordinates[i][0] + coordinates[i + 1][0]) / 2,
-				(coordinates[i][1] + coordinates[i + 1][1]) / 2,
-			];
-			midpoints.push(midpoint);
+	class Translation {
+		constructor() {
+			this.language = navigator.language || 'en'; // Default to English if no language is detected
+			this.translations = {
+				en: {
+					changebutton: "Change layer...",
+					centerobjects: "Center on map objects...",
+					centeronmylocation: "Center in my location...",
+					redo: 'Redo...',
+					undo: 'Undo...',
+					polygon: 'Polygon',
+					showinfo: "Show information",
+					delete: 'Delete',
+					select: 'Select',
+				},
+				fr: {
+					changebutton: "Changer de couche...",
+					centerobjects: "Centrer sur les objets de la carte...",
+					centeronmylocation: "Centrer sur ma position...",
+					redo: 'Refaire...',
+					undo: 'Annuler...',
+					polygon: 'Polygone',
+					showinfo: "Afficher les informations",
+					delete: 'Supprimer',
+					select: 'Sélectionner',
+				},
+				es: {
+					changebutton: "Cambiar capa...",
+					centerobjects: "Centrar en objetos del mapa...",
+					centeronmylocation: "Centrar en mi ubicación...",
+					redo: 'Rehacer...',
+					undo: 'Deshacer...',
+					polygon: 'Polígono',
+					showinfo: "Mostrar información",
+					delete: 'Eliminar',
+					select: 'Seleccionar',
+				},
+				pt: {
+					changebutton: "Alterar camada...",
+					centerobjects: "Centralizar em objetos no mapa...",
+					centeronmylocation: "Centralizar na minha localização...",
+					redo: 'Refazer...',
+					undo: 'Desfazer...',
+					polygon: 'Polígono',
+					showinfo: "Mostrar informações",
+					delete: 'Excluir',
+					select: 'Selecionar',
+				}
+			};
+
+			this.setLanguage(this.language);
 		}
-		return midpoints;
-	}
 
-	(() => {
-		// Save the original console.log
-		const originalLog = console.log;
+		// Set language and update translations
+		setLanguage(lang) {
+			this.language = lang;
+			this.updateContent();
+		}
 
-		// Enhanced console.log
-		console.log = (message, options = {}) => {
-			const {
-				color = '#4CAF50', // Default text color
-				backgroundColor = '#222', // Default background color
-				fontSize = '14px', // Default font size
-				fontWeight = 'normal', // Default font weight
-				icon = '', // Icon or emoji
-			} = options;
-
-			if (typeof message === 'string') {
-				const style = `
-			  color: ${color};
-			  background-color: ${backgroundColor};
-			  font-size: ${fontSize};
-			  font-weight: ${fontWeight};
-			  padding: 4px 8px;
-			  border-radius: 4px;
-			`;
-				originalLog(`%c${icon ? icon + ' ' : ''}${message}`, style);
-			} else {
-				// Fallback to default logging for non-string inputs
-				originalLog(message);
+		// Get translation by key for the current language
+		get(key) {
+			if (this.translations[this.language] && this.translations[this.language][key]) {
+				return this.translations[this.language][key];
 			}
-		};
-	})();
+			return key; // Return the key itself if no translation is found
+		}
+
+		// Update content on the page
+		updateContent() {
+			const elementsToTranslate = document.querySelectorAll('[data-translate]');
+			elementsToTranslate.forEach(element => {
+				const key = element.getAttribute('data-translate');
+				element.textContent = this.get(key);
+			});
+		}
+
+		// Get the current language
+		getCurrentLanguage() {
+			return this.language;
+		}
+	}
 
 	/**
 	 * Class representing a loading overlay with animated bouncing dots.
@@ -186,6 +223,8 @@ var app = (function () {
 	};
 
 	const loading = new Loading({ dotCount: 4, dotSize: 25 });
+
+	const translator = new Translation();
 
 	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
 
@@ -1294,7 +1333,7 @@ var app = (function () {
 		function createSelectControl(selectBar) {
 			const selectCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
-				title: "Select",
+				title: translation.get("select"),
 				interaction: new ol.interaction.Select({ hitTolerance: 2, style: utilities.genericStyleFunction(colors.edit) }),
 				bar: selectBar,
 				autoActivate: true,
@@ -1336,7 +1375,7 @@ var app = (function () {
 			return new ol.control.Button({
 				html: '<i class="fa fa-times fa-lg"></i>',
 				name: "Delete",
-				title: "Delete",
+				title: translation.get("delete"),
 				handleClick: function () {
 					var features = mapControls.selectCtrl.getInteraction().getFeatures();
 					if (!features.getLength()) {
@@ -1366,7 +1405,7 @@ var app = (function () {
 			return new ol.control.Button({
 				html: '<i class="fa fa-info fa-lg"></i>',
 				name: "Info",
-				title: "Show information",
+				title: translation.get("showinfo"),
 				handleClick: function () {
 					switch (mapControls.selectCtrl.getInteraction().getFeatures().getLength()) {
 						case 0:
@@ -1402,7 +1441,7 @@ var app = (function () {
 		function createDrawControl() {
 			const drawCtrl = new ol.control.Toggle({
 				html: '<i class="fa-solid fa-draw-polygon fa-lg"></i>',
-				title: 'Polygon',
+				title: translation.get("polygon"),
 				interaction: new ol.interaction.Draw({
 					type: 'Polygon',
 					source: vectorLayer.getSource(),
@@ -1433,7 +1472,7 @@ var app = (function () {
 		function createUndoButton(undoInteraction) {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-rotate-left fa-lg"></i>',
-				title: 'Undo...',
+				title: translation.get("undo"),
 				handleClick: () => undoInteraction.undo(),
 			});
 		}
@@ -1446,7 +1485,7 @@ var app = (function () {
 		function createRedoButton(undoInteraction) {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-rotate-right fa-lg"></i>',
-				title: 'Redo...',
+				title: translation.get("redo"),
 				handleClick: () => undoInteraction.redo(),
 			});
 		}
@@ -1458,7 +1497,7 @@ var app = (function () {
 		function createLocationButton() {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-location-crosshairs fa-lg"></i>',
-				title: 'Center in my location...',
+				title: translation.get("centeronmylocation"),
 				handleClick: centerOnUserLocation,
 			});
 		}
@@ -1515,7 +1554,7 @@ var app = (function () {
 		function createCenterObjectsButton() {
 			return new ol.control.Button({
 				html: '<i class="fa-solid fa-arrows-to-dot fa-lg"></i>',
-				title: 'Center on map objects...',
+				title: translation.get("centerobjects"),
 				handleClick: () => featureUtilities.centerOnVector(),
 			});
 		}
@@ -1527,7 +1566,7 @@ var app = (function () {
 		function createLayerChangeButton() {
 			return new ol.control.Button({
 				html: utilities.layerChangeBtnHtml(),
-				title: 'Change layer...',
+				title: translation.get("changebutton"),
 				handleClick: mapUtilities.toggleLayers,
 			});
 		}
