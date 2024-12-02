@@ -308,6 +308,36 @@ var app = (function () {
 				console.warn('Attribution control button element not found.');
 			}
 		},
+		modifyStyleFunction: (feature, segments) => {
+			// Style for Real Vertices
+			const styles = [
+				new Style({
+					image: new Circle({
+						radius: 5,
+						fill: new Fill({ color: 'blue' }),
+					}),
+				}),
+			];
+
+			// Add Virtual Vertices (Midpoints)
+			segments.forEach((segment) => {
+				const midpoint = [
+					(segment[0][0] + segment[1][0]) / 2,
+					(segment[0][1] + segment[1][1]) / 2,
+				];
+				styles.push(
+					new Style({
+						geometry: new Point(midpoint),
+						image: new Circle({
+							radius: 5,
+							fill: new Fill({ color: 'red' }),
+						}),
+					})
+				);
+			});
+
+			return styles;
+		},
 		/**
 		 * Generates a style for a vector feature with a circle marker and custom color.
 		 *
@@ -1314,7 +1344,8 @@ var app = (function () {
 		function createModifyInteraction(selectCtrl) {
 			return new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
-				style: utilities.genericStyleFunction(colors.snap),
+				style: utilities.modifyStyleFunction,
+				//style: utilities.modifyStyleFunction(colors.snap),
 				insertVertexCondition: () => true,
 				createVertices: true
 			});
