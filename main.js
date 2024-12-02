@@ -1,5 +1,19 @@
 var app = (function () {
 
+	// Function to calculate midpoints
+	function calculateMidpoints(line) {
+		const midpoints = [];
+		const coordinates = line.getCoordinates();
+		for (let i = 0; i < coordinates.length - 1; i++) {
+			const midpoint = [
+				(coordinates[i][0] + coordinates[i + 1][0]) / 2,
+				(coordinates[i][1] + coordinates[i + 1][1]) / 2,
+			];
+			midpoints.push(midpoint);
+		}
+		return midpoints;
+	}
+
 	(() => {
 		// Save the original console.log
 		const originalLog = console.log;
@@ -343,7 +357,7 @@ var app = (function () {
 			// Style for Real Vertices
 			const styles = utilities.genericStyleFunction(colors.edit);
 
-			console.log(this);
+			console.log(this, { color: '#007BFF', icon: '🔥' });
 
 			// // Add Virtual Vertices (Midpoints)
 			// segments.forEach((segment) => {
@@ -1206,6 +1220,20 @@ var app = (function () {
 		const modifyInteraction = createModifyInteraction(selectCtrl);
 		map.addInteraction(modifyInteraction);
 		mapControls.modifyInteraction = modifyInteraction;
+
+		modifyInteraction.on('modify', (event) => {
+			midpointSource.clear(); // Clear existing midpoints
+			event.features.forEach((feature) => {
+				const geometry = feature.getGeometry();
+				if (geometry.getType() === 'LineString') {
+					const midpoints = calculateMidpoints(geometry);
+					midpoints.forEach((coords) => {
+						const midpointFeature = new Feature(new Point(coords));
+						midpointSource.addFeature(midpointFeature);
+					});
+				}
+			});
+		});
 
 		drawCtrl.getInteraction().on('change:active', function (evt) {
 			featureUtilities.deselectCurrentFeature(false);
