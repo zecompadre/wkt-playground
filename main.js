@@ -360,6 +360,7 @@ var app = (function () {
 				const styles = utilities.genericStyleFunction(color);
 
 				console.log(feature, { color: '#007BFF', icon: '🔥' });
+				console.log(segments, { color: '#007BFF', icon: '🔥' });
 
 				// // Add Virtual Vertices (Midpoints)
 				// segments.forEach((segment) => {
