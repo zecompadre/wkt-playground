@@ -362,22 +362,22 @@ var app = (function () {
 				console.log(feature, { color: '#007BFF', icon: '🔥' });
 				console.log(segments, { color: '#007BFF', icon: '🔥' });
 
-				// // Add Virtual Vertices (Midpoints)
-				// segments.forEach((segment) => {
-				// 	const midpoint = [
-				// 		(segment[0][0] + segment[1][0]) / 2,
-				// 		(segment[0][1] + segment[1][1]) / 2,
-				// 	];
-				// 	styles.push(
-				// 		new Style({
-				// 			geometry: new Point(midpoint),
-				// 			image: new ol.style.Circle({
-				// 				radius: 5,
-				// 				fill: new ol.style.Fill({ color: 'red' }),
-				// 			}),
-				// 		})
-				// 	);
-				// });
+				// Add Virtual Vertices (Midpoints)
+				segments.forEach((segment) => {
+					const midpoint = [
+						(segment[0][0] + segment[1][0]) / 2,
+						(segment[0][1] + segment[1][1]) / 2,
+					];
+					styles.push(
+						new Style({
+							geometry: new Point(midpoint),
+							image: new ol.style.Circle({
+								radius: 5,
+								fill: new ol.style.Fill({ color: 'red' }),
+							}),
+						})
+					);
+				});
 
 				return styles;
 			};
