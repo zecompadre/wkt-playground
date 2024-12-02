@@ -1231,9 +1231,9 @@ var app = (function () {
 				maxZoom: 19                  // Set the maximum zoom level
 			}),
 		});
-		const tooltip = new ol.Overlay({
+		const tooltip = new Overlay({
 			element: document.getElementById('tooltip'),
-			offset: [15, 15],
+			offset: [15, 15], // Adjust the offset if necessary
 			positioning: 'bottom-left',
 		});
 		map.addOverlay(tooltip);
@@ -1252,11 +1252,8 @@ var app = (function () {
 
 				// Display the area in the tooltip
 				tooltip.setPosition(event.coordinate);
-				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)}m2`;
+				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
 				tooltip.getElement().style.display = 'block';
-
-				console.log(`Area: ${areaInSquareMeters.toFixed(2)}m2`);
-
 			} else {
 				tooltip.getElement().style.display = 'none';
 			}
