@@ -357,7 +357,7 @@ var app = (function () {
 			// Style for Real Vertices
 			const styles = utilities.genericStyleFunction(colors.edit);
 
-			console.log(this, { color: '#007BFF', icon: '🔥' });
+			console.log("fdfdsf", { color: '#007BFF', icon: '🔥' });
 
 			// // Add Virtual Vertices (Midpoints)
 			// segments.forEach((segment) => {
