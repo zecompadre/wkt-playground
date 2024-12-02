@@ -1212,7 +1212,7 @@ var app = (function () {
 				maxZoom: 19                  // Set the maximum zoom level
 			}),
 		});
-		const tooltip = new Overlay({
+		const tooltip = new ol.Overlay({
 			element: document.getElementById('tooltip'),
 			offset: [15, 15],
 			positioning: 'bottom-left',
