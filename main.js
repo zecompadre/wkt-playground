@@ -311,10 +311,10 @@ var app = (function () {
 		modifyStyleFunction: (feature, segments) => {
 			// Style for Real Vertices
 			const styles = [
-				new Style({
-					image: new Circle({
+				new ol.style.Style({
+					image: new ol.style.Circle({
 						radius: 5,
-						fill: new Fill({ color: 'blue' }),
+						fill: new ol.style.Fill({ color: 'blue' }),
 					}),
 				}),
 			];
@@ -328,9 +328,9 @@ var app = (function () {
 				styles.push(
 					new Style({
 						geometry: new Point(midpoint),
-						image: new Circle({
+						image: new ol.style.Circle({
 							radius: 5,
-							fill: new Fill({ color: 'red' }),
+							fill: new ol.style.Fill({ color: 'red' }),
 						}),
 					})
 				);
