@@ -1485,11 +1485,39 @@ var app = (function () {
 		 */
 		function centerOnUserLocation() {
 			if (typeof userLocation === 'undefined') {
+				/**
+				 * Obtém a localização geográfica do usuário e ajusta a visualização do mapa para o centro dessa localização.
+				 * Após obter a localização, o mapa é atualizado com as coordenadas de latitude e longitude.
+				 * 
+				 * @returns {void}
+				 */
 				loading.show();
-				utilities.getLocation().then(location => {
-					map.getView().setCenter(ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator));
-					loading.hide();
-				});
+				utilities.getLocation()
+					.then(location => {
+						/**
+						 * Define o centro da visualização do mapa usando as coordenadas da localização.
+						 * As coordenadas são transformadas de um sistema de projeção geodético para Mercator.
+						 * 
+						 * @param {Object} location - O objeto contendo as coordenadas geográficas do usuário.
+						 * @param {number} location.latitude - A latitude da localização do usuário.
+						 * @param {number} location.longitude - A longitude da localização do usuário.
+						 * @returns {void}
+						 */
+						map.getView().setCenter(
+							ol.proj.transform([location.longitude, location.latitude], projections.geodetic, projections.mercator)
+						);
+						loading.hide();
+					})
+					/**
+					 * Captura e trata erros caso a obtenção da localização falhe.
+					 * 
+					 * @param {Error} error - O erro gerado pela falha na obtenção da localização.
+					 * @returns {void}
+					 */
+					.catch(error => {
+						console.error(`Error obtaining location: ${error.message}`);
+						loading.hide();
+					});
 			} else {
 				map.getView().setCenter(userLocation);
 			}
@@ -1561,19 +1589,56 @@ var app = (function () {
 
 			mapUtilities.loadWKTs(true);
 
+			/**
+			 * Obtém o endereço IP do usuário e sua localização geográfica (latitude e longitude).
+			 * Se o IP começar com "http", a geolocalização será consultada.
+			 * Caso contrário, o IP será exibido no console.
+			 * 
+			 * @returns {void}
+			 */
 			loading.show();
-			utilities.getIP().then(ip => {
-				if (typeof ip === 'string' && ip.startsWith('http')) {
-					navigator.geolocation.getCurrentPosition(position => {
-						latitude = position.coords.latitude;
-						longitude = position.coords.longitude;
-						console.log(`Estimated IP based on location: ${latitude}, ${longitude}`);
-					});
-				} else {
-					console.log(`Retrieved IP address: ${ip}`);
-				}
-				loading.hide();
-			});
+			utilities.getIP()
+				.then(ip => {
+					// Verifica se o IP começa com "http" (indicando que é uma URL ou serviço remoto)
+					if (typeof ip === 'string' && ip.startsWith('http')) {
+						/**
+						 * Obtém a posição geográfica do usuário.
+						 * Exibe a latitude e longitude no console.
+						 * 
+						 * @param {GeolocationPosition} position - O objeto com a localização do usuário.
+						 * @returns {void}
+						 */
+						navigator.geolocation.getCurrentPosition(
+							position => {
+								const latitude = position.coords.latitude;
+								const longitude = position.coords.longitude;
+								console.log(`Estimated IP based on location: ${latitude}, ${longitude}`);
+							},
+							/**
+							 * Função de callback para erros ao tentar obter a geolocalização.
+							 * 
+							 * @param {GeolocationPositionError} error - O objeto de erro da geolocalização.
+							 * @returns {void}
+							 */
+							error => {
+								console.error(`Geolocation error: ${error.message}`);
+							}
+						);
+					} else {
+						console.log(`Retrieved IP address: ${ip}`);
+					}
+					loading.hide();
+				})
+				/**
+				 * Captura erros durante a obtenção do IP ou da geolocalização.
+				 * 
+				 * @param {Error} error - O erro gerado pela tentativa de obter o IP ou a geolocalização.
+				 * @returns {void}
+				 */
+				.catch(error => {
+					console.error(`Error retrieving IP or location: ${error.message}`);
+					loading.hide();
+				});
 
 		}
 	};
