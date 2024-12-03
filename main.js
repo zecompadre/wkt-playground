@@ -1688,7 +1688,7 @@ var app = (function () {
 
 			setupMap();
 
-			const tabContainer = document.querySelector('.tabs');
+			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);
 
 			mapUtilities.loadWKTs(true);
