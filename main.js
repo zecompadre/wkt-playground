@@ -45,6 +45,15 @@ var app = (function () {
 			localStorage.setItem(this.storageKey, JSON.stringify(settings));
 		}
 
+		getSettings() {
+			return JSON.parse(localStorage.getItem(this.storageKey)) || {};
+		}
+
+		getSettingById(id) {
+			const settings = this.getSettings();
+			return settings[id] !== undefined ? settings[id] : null;
+		}
+
 		// Adicionar ouvintes de evento para salvar automaticamente em mudanças
 		attachEventListeners() {
 			this.container.querySelectorAll('input, select').forEach((element) => {
@@ -323,11 +332,16 @@ var app = (function () {
 
 	const loading = new Loading({ dotCount: 4, dotSize: 25 });
 
+	const tabContainer = document.querySelector('#controls');
+	if (tabContainer) new TabSystem(tabContainer);
+
+	let settings = new SettingsManager('settingsContainer', 'wkt-settings');
+
 	const translator = new Translation();
 
 	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, textarea, modifyInteraction, undoInteraction;
 
-	let lfkey = "zecompadre-wkt";
+	let lfkey = "wkt-objects";
 
 	let mapControls = {};
 
@@ -1318,26 +1332,29 @@ var app = (function () {
 		map.addOverlay(tooltip);
 
 		map.on('pointermove', function (event) {
-			const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
-				return feature;
-			});
 
-			if (feature) {
-				// Calculate area of the polygon in square meters
-				const areaInSquareMeters = ol.sphere.getArea(feature.getGeometry());
+			if (settings.getSettingById('show-area')) {
+				const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+					return feature;
+				});
 
-				// Convert to square feet
-				//const areaInSquareFeet = areaInSquareMeters * 10.7639;
-				tooltip.getElement().style.display = 'none';
-				if (areaInSquareMeters > 0) {
-					// Display the area in the tooltip
-					tooltip.setPosition(event.coordinate);
-					tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
-					tooltip.getElement().style.display = 'block';
-					tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
+				if (feature) {
+					// Calculate area of the polygon in square meters
+					const areaInSquareMeters = ol.sphere.getArea(feature.getGeometry());
+
+					// Convert to square feet
+					//const areaInSquareFeet = areaInSquareMeters * 10.7639;
+					tooltip.getElement().style.display = 'none';
+					if (areaInSquareMeters > 0) {
+						// Display the area in the tooltip
+						tooltip.setPosition(event.coordinate);
+						tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
+						tooltip.getElement().style.display = 'block';
+						tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
+					}
+				} else {
+					tooltip.getElement().style.display = 'none';
 				}
-			} else {
-				tooltip.getElement().style.display = 'none';
 			}
 		});
 
@@ -1736,11 +1753,6 @@ var app = (function () {
 		init: function () {
 
 			setupMap();
-
-			const tabContainer = document.querySelector('#controls');
-			if (tabContainer) new TabSystem(tabContainer);
-
-			new SettingsManager('settingsContainer', 'wkt-settings');
 
 			mapUtilities.loadWKTs(true);
 
