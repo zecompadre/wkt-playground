@@ -1582,7 +1582,7 @@ var app = (function () {
 		 * @returns {ol.interaction.ModifyFeature} The created modify interaction.
 		 */
 		function createModifyInteraction(selectCtrl) {
-			return new ol.interaction.ModifyTouch({
+			return new ol.interaction.ModifyFeature({
 				features: selectCtrl.getInteraction().getFeatures(),
 				//style: utilities.modifyStyleFunction,
 				style: utilities.modifyStyleFunction(colors.edit),
