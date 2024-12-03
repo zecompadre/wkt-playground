@@ -312,6 +312,22 @@ var app = (function () {
 		}
 	}
 
+	/**
+	 * Format area output.
+	 * @param {Polygon} polygon The polygon.
+	 * @return {string} Formatted area.
+	 */
+	const formatArea = function (feature) {
+		const area = ol.sphere.getArea(feature.getGeometry());
+		let output;
+		if (area > 10000) {
+			output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
+		} else {
+			output = Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>';
+		}
+		return output;
+	};
+
 	const projections = {
 		geodetic: 'EPSG:4326',
 		mercator: 'EPSG:3857',
@@ -1336,16 +1352,13 @@ var app = (function () {
 				});
 
 				if (feature) {
-					// Calculate area of the polygon in square meters
-					const areaInSquareMeters = ol.sphere.getArea(feature.getGeometry());
-
 					// Convert to square feet
 					//const areaInSquareFeet = areaInSquareMeters * 10.7639;
 					tooltip.getElement().style.display = 'none';
 					if (areaInSquareMeters > 0) {
 						// Display the area in the tooltip
 						tooltip.setPosition(event.coordinate);
-						tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
+						tooltip.getElement().innerHTML = formatArea(feature);
 						tooltip.getElement().style.display = 'block';
 						tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
 					}
