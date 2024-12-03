@@ -119,21 +119,6 @@ textarea {
 	flex: none;
 }
 
-.form-container {
-	position: relative;
-	color: #d0e1f9;
-	max-height: 30%;
-	overflow-y: auto;
-	-webkit-box-flex: 1;
-	-ms-flex: 1;
-	flex: 1;
-	width: 100%;
-	max-width: 100%;
-	padding: 1em;
-	padding-top: 0;
-	margin-right: 0;
-}
-
 .tabs {
 	font-family: Arial, sans-serif;
 }
@@ -172,8 +157,19 @@ textarea {
 }
 
 .tab-pane {
-	color: var(--color-white);
 	display: none;
+	position: relative;
+	color: var(--color-white);
+	max-height: 30%;
+	overflow-y: auto;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	width: 100%;
+	max-width: 100%;
+	padding: 1em;
+	padding-top: 0;
+	margin-right: 0;
 }
 
 .tab-pane.active {
