@@ -55,6 +55,21 @@ body {
 	background-color: #1e1f26;
 }
 
+#controls #header {
+	text-align: center;
+}
+
+#controls #header h1 {
+	color: #fff;
+	font-size: 1.5em;
+	margin: 10px 0;
+}
+
+#controls #header p {
+	color: #9ca3af font-size: 1em;
+	margin: 10px 0;
+}
+
 .flex-col {
 	flex-direction: column;
 }
