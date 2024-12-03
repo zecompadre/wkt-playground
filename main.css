@@ -21,6 +21,8 @@
 
 	--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+	--font-size: .85em;
 }
 
 * {
@@ -182,6 +184,15 @@ textarea {
 	margin-bottom: 20px;
 }
 
+.settings label span {
+	padding-left: 10px;
+	font-size: var(--font-size);
+	line-height: 20px;
+	height: 20px;
+	display: inline-block;
+	vertical-align: top;
+}
+
 /* Modern Checkbox */
 .settings input[type="checkbox"] {
 	appearance: none;
@@ -211,7 +222,7 @@ textarea {
 	transform: rotate(-45deg);
 	position: absolute;
 	top: 5px;
-	left: 4px;
+	left: 1px;
 }
 
 /* Modern Select */
