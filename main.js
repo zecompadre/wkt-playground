@@ -23,6 +23,10 @@ var app = (function () {
 			// Add active class to the clicked button and the corresponding pane
 			button.classList.add('active');
 			const targetPane = this.container.querySelector(`#${button.dataset.tab}`);
+
+			console.log(button.dataset.tab)
+			console.log(targetPane)
+
 			if (targetPane) targetPane.classList.add('active');
 		}
 	}
