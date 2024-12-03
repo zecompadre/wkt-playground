@@ -139,23 +139,35 @@ textarea {
 }
 
 .tab-buttons {
-	margin-bottom: 1em;
+	display: flex;
+	justify-content: space-between;
+	/* Espaço uniforme entre os botões */
 }
 
 .tab-buttons button {
-	padding: 10px 20px;
+	flex: 1;
+	/* Cada botão ocupa um espaço igual */
+	text-align: center;
+	/* Centraliza o texto dentro do botão */
+	padding: 10px 0;
+	/* Espaçamento vertical */
 	border: none;
 	background-color: #f0f0f0;
 	cursor: pointer;
+	border-radius: 5px 5px 0 0;
+}
+
+.tab-buttons button:not(:last-child) {
+	margin-right: 2px;
+	/* Espaço entre botões (opcional) */
 }
 
 .tab-buttons button.active {
-	background-color: #007BFF;
-	color: white;
+	background-color: var(--color-primary);
+	color: var(--color-white);
 }
 
 .tab-content {
-	border: 1px solid #ddd;
 	padding: 20px;
 }
 
