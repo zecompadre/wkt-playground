@@ -172,6 +172,7 @@ textarea {
 }
 
 .tab-pane {
+	color: var(--color-white);
 	display: none;
 }
 
