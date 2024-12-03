@@ -31,8 +31,8 @@
 	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css" />
 	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.js"></script>
 
-	<script src="/main.js?v=202412032020"></script>
-	<link rel="stylesheet" href="/main.css?v=202412032020">
+	<script src="/main.js?v=202412032135"></script>
+	<link rel="stylesheet" href="/main.css?v=202412032135">
 
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-HQWSTRZMSN"></script>
@@ -50,11 +50,22 @@
 		<div id="controls">
 			<div id="header" class="flex-none grow-0">
 				<img src="logo.png" title="WKT Playground" width="167" height="50">
+				<div class="tabs">
+					<div class="tab-buttons">
+						<button data-tab="importContainer" class="active">Import</button>
+						<button data-tab="settingsContainer">Settings</button>
+					</div>
+				</div>
 			</div>
-			<div id="importContainer" class="form-container flex-none grow-0">
-				<form>
-					<div id='wktdefault' class='wkt-container'><textarea class='form-control' rows='5'></textarea></div>
-				</form>
+			<div class="tab-content">
+				<div id="importContainer" class="form-container flex-none grow-0">
+					<form>
+						<div id='wktdefault' class='wkt-container'><textarea class='form-control' rows='5'></textarea></div>
+					</form>
+				</div>
+				<div id="settingsContainer" class="settings-page tabPage flex-none grow-0">
+					fdfdsfdsfsdf
+				</div>
 			</div>
 		</div>
 	</div>

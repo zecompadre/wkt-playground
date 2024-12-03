@@ -1,7 +1,7 @@
 :root {
 	--header-height: 60px;
-	--map-height: 75%;
-	--result-height: 25%;
+	--map-width: 75%;
+	--controls-width: 25%;
 	--button-size: 36px;
 	/* --navbar-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px; */
 	/* --navbar-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
@@ -35,6 +35,16 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+button,
+input,
+select,
+textarea {
+	margin: 0;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
 #wrapper {
 	position: relative;
 	z-index: 0;
@@ -46,13 +56,14 @@ body {
 }
 
 #map {
-	width: 75%;
+	width: var(--map-width);
 	max-width: 100%;
 	max-height: 100%;
+	background-color: var(--map-background-color);
 }
 
 #controls {
-	width: 25%;
+	width: var(--controls-width);
 	max-height: 100%;
 	background-color: var(--controls-background);
 }
@@ -71,7 +82,7 @@ body {
 	width: 100%;
 	height: 150px;
 	padding: .375rem .75rem;
-	font-size: 1rem;
+	font-size: .75em;
 	line-height: 1.5;
 	color: var(--text-area-color);
 	background-color: var(--color-white);
@@ -123,46 +134,37 @@ body {
 	margin-right: 0;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-	margin: 0;
-	font-family: inherit;
-	font-size: inherit;
-	line-height: inherit;
+.tabs {
+	font-family: Arial, sans-serif;
 }
 
-.headercontainer {
-	padding: 0;
-	height: var(--header-height);
-	background-color: var(--primary-header-color);
-	color: var(--color-white);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 18px;
+.tab-buttons {
+	margin-bottom: 1em;
 }
 
-.headercontainer .title {
-	display: inline-block;
-	line-height: var(--header-height);
-	height: var(--header-height);
-	vertical-align: middle;
-	margin: 0;
-	padding: 0 10px 0 0;
-	color: var(--color-white);
+.tab-buttons button {
+	padding: 10px 20px;
+	border: none;
+	background-color: #f0f0f0;
+	cursor: pointer;
 }
 
-.headercontainer .inspired {
-	display: inline-block;
-	line-height: var(--header-height);
-	height: var(--header-height);
-	font-size: 14px;
-	vertical-align: middle;
-	color: rgba(255, 255, 255, .5);
-	margin-left: 10px;
+.tab-buttons button.active {
+	background-color: #007BFF;
+	color: white;
+}
+
+.tab-content {
+	border: 1px solid #ddd;
+	padding: 20px;
+}
+
+.tab-pane {
+	display: none;
+}
+
+.tab-pane.active {
+	display: block;
 }
 
 /* Container layout */
