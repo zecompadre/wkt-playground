@@ -332,10 +332,7 @@ var app = (function () {
 
 	const loading = new Loading({ dotCount: 4, dotSize: 25 });
 
-	const tabContainer = document.querySelector('#controls');
-	if (tabContainer) new TabSystem(tabContainer);
-
-	let settings = new SettingsManager('settingsContainer', 'wkt-settings');
+	let settings = null;
 
 	const translator = new Translation();
 
@@ -1753,6 +1750,11 @@ var app = (function () {
 		init: function () {
 
 			setupMap();
+
+			const tabContainer = document.querySelector('#controls');
+			if (tabContainer) new TabSystem(tabContainer);
+
+			settings = new SettingsManager('settingsContainer', 'wkt-settings');
 
 			mapUtilities.loadWKTs(true);
 
