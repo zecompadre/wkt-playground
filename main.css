@@ -16,6 +16,8 @@
 	--color-primary: #007bff;
 	--button-hover-background: rgb(0 0 0 / 5%);
 	--button-divider-color: #0000001c;
+	--header-color-text: #9ca3af;
+	--controls-background: #1e1f26;
 
 	--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -52,7 +54,7 @@ body {
 #controls {
 	width: 25%;
 	max-height: 100%;
-	background-color: #1e1f26;
+	background-color: var(--controls-background);
 }
 
 #controls #header {
@@ -66,10 +68,34 @@ body {
 }
 
 #controls #header p {
-	color: #9ca3af;
+	color: var(--header-color-text);
 	font-size: 1em;
 	margin: 10px 0;
 	text-align: right;
+}
+
+#controls textarea {
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--text-area-color);
+	background-color: var(--color-white);
+	background-clip: padding-box;
+	border: 1px solid var(--textarea-border-color);
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	overflow: auto;
+	resize: vertical;
+}
+
+#controls textarea:focus {
+	color: var(--text-area-color);
+	background-color: var(--color-white);
+	border-color: var(--border-color-focused-textarea);
+	outline: 0;
+	box-shadow: 0 0 0 .2rem var(--box-shadow-text-area);
 }
 
 .flex-col {
@@ -112,30 +138,6 @@ textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
-}
-
-textarea {
-	display: block;
-	width: 100%;
-	padding: .375rem .75rem;
-	font-size: 1rem;
-	line-height: 1.5;
-	color: var(--text-area-color);
-	background-color: var(--color-white);
-	background-clip: padding-box;
-	border: 1px solid var(--textarea-border-color);
-	border-radius: .25rem;
-	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-	overflow: auto;
-	resize: vertical;
-}
-
-textarea:focus {
-	color: var(--text-area-color);
-	background-color: var(--color-white);
-	border-color: var(--border-color-focused-textarea);
-	outline: 0;
-	box-shadow: 0 0 0 .2rem var(--box-shadow-text-area);
 }
 
 .headercontainer {
