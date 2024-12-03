@@ -1250,12 +1250,15 @@ var app = (function () {
 
 				// Convert to square feet
 				//const areaInSquareFeet = areaInSquareMeters * 10.7639;
-
-				// Display the area in the tooltip
+				tooltip.getElement().style.display = 'none';
+				if(areaInSquareMeters > 0)
+				{
+					// Display the area in the tooltip
 				tooltip.setPosition(event.coordinate);
 				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
 				tooltip.getElement().style.display = 'block';
 				tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
+				}
 			} else {
 				tooltip.getElement().style.display = 'none';
 			}
