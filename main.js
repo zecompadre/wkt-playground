@@ -322,9 +322,9 @@ var app = (function () {
 		if (area === 0) return '';
 		let output;
 		if (area > 10000) {
-			output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
+			output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km²';
 		} else {
-			output = Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>';
+			output = Math.round(area * 100) / 100 + ' ' + 'm²';
 		}
 		return output;
 	};
