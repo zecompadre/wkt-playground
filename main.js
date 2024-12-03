@@ -1740,7 +1740,7 @@ var app = (function () {
 			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);
 
-			new SettingsManager('settings', 'wkt-settings');
+			new SettingsManager('settingsContainer', 'wkt-settings');
 
 			mapUtilities.loadWKTs(true);
 
