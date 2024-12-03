@@ -66,8 +66,10 @@ body {
 }
 
 #controls #header p {
-	color: #9ca3af font-size: 1em;
+	color: #9ca3af;
+	font-size: 1em;
 	margin: 10px 0;
+	text-align: right;
 }
 
 .flex-col {
