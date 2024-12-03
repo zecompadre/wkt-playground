@@ -6,14 +6,14 @@
 	/* --navbar-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px; */
 	/* --navbar-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
 	--navbar-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5), 0px 7px 13px -3px rgba(0, 0, 0, 0.3), 0px -3px 0px 0px rgba(0, 0, 0, 0.2) inset;
-	--color-white: #fff;
+	--color-base-white: #fff;
+	--color-theme-primary: #007bff;
 	--textarea-border-color: #ced4da;
 	--text-area-color: #495057;
 	--border-color-focused-textarea: #80bdff;
 	--box-shadow-text-area: rgba(0, 123, 255, .25);
 	--primary-header-color: #333;
 	--map-background-color: #ddd;
-	--color-primary: #007bff;
 	--button-hover-background: rgb(0 0 0 / 5%);
 	--button-divider-color: #0000001c;
 	--header-color-text: #9ca3af;
@@ -85,7 +85,7 @@ textarea {
 	font-size: .75em;
 	line-height: 1.5;
 	color: var(--text-area-color);
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	background-clip: padding-box;
 	border: 1px solid var(--textarea-border-color);
 	border-radius: .25rem;
@@ -97,7 +97,7 @@ textarea {
 
 #controls textarea:focus {
 	color: var(--text-area-color);
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	border-color: var(--border-color-focused-textarea);
 	outline: 0;
 	box-shadow: 0 0 0 .2rem var(--box-shadow-text-area);
@@ -148,8 +148,8 @@ textarea {
 }
 
 .tab-buttons button.active {
-	background-color: var(--color-primary);
-	color: var(--color-white);
+	background-color: var(--color-theme-primary);
+	color: var(--color-base-white);
 }
 
 .tab-content {
@@ -159,7 +159,7 @@ textarea {
 .tab-pane {
 	display: none;
 	position: relative;
-	color: var(--color-white);
+	color: var(--color-base-white);
 	max-height: 30%;
 	overflow-y: auto;
 	-webkit-box-flex: 1;
@@ -176,48 +176,37 @@ textarea {
 	display: block;
 }
 
-#settingsContainer {
-	max-width: 400px;
-	margin: 20px auto;
-	padding: 20px;
-	background-color: #ffffff;
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 /* Labels */
-label {
+.settings label {
 	display: block;
 	margin-bottom: 20px;
-	font-size: 14px;
-	color: #555;
 }
 
 /* Modern Checkbox */
-input[type="checkbox"] {
+.settings input[type="checkbox"] {
 	appearance: none;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #007BFF;
+	border: 2px solid var(--color-theme-primary);
 	border-radius: 4px;
 	outline: none;
-	background-color: #ffffff;
+	background-color: var(--color-base-white);
 	cursor: pointer;
 	transition: background-color 0.3s, border-color 0.3s;
 }
 
-input[type="checkbox"]:checked {
-	background-color: #007BFF;
-	border-color: #007BFF;
+.settings input[type="checkbox"]:checked {
+	background-color: var(--color-theme-primary);
+	border-color: var(--color-theme-primary);
 	position: relative;
 }
 
-input[type="checkbox"]:checked::after {
+.settings input[type="checkbox"]:checked::after {
 	content: "";
 	display: block;
 	width: 10px;
 	height: 5px;
-	border: 2px solid #fff;
+	border: 2px solid var(--color-base-white);
 	border-width: 0 0 2px 2px;
 	transform: rotate(-45deg);
 	position: absolute;
@@ -226,13 +215,13 @@ input[type="checkbox"]:checked::after {
 }
 
 /* Modern Select */
-select {
+.settings select {
 	width: 100%;
 	padding: 10px 15px;
 	font-size: 14px;
 	border: 2px solid #ddd;
 	border-radius: 5px;
-	background-color: #ffffff;
+	background-color: var(--color-base-white);
 	appearance: none;
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="gray"><path d="M0 0l5 6 5-6z"/></svg>');
 	background-repeat: no-repeat;
@@ -242,94 +231,27 @@ select {
 	transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-select:focus {
-	border-color: #007BFF;
+.settings select:focus {
+	border-color: var(--color-theme-primary);
 	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 	outline: none;
 }
 
 /* Botão (opcional, caso precise) */
-button {
+.settings button {
 	width: 100%;
 	padding: 10px;
 	font-size: 16px;
-	background-color: #007BFF;
-	color: white;
+	background-color: var(--color-theme-primary);
+	color: var(--color-base-white);
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.3s;
 }
 
-button:hover {
+.settings button:hover {
 	background-color: #0056b3;
-}
-
-/* Container layout */
-.maincontainer {
-	display: flex;
-	flex-direction: column;
-	height: calc(100% - var(--header-height));
-	max-width: 100%;
-}
-
-/* Map container */
-.maincontainer .map-container {
-	flex: 0 0 var(--map-height);
-	position: relative;
-	height: var(--map-height);
-}
-
-.maincontainer.nowkt .map-container {
-	flex: 0 0 100%;
-	position: relative;
-	height: 100%;
-}
-
-.maincontainer .map-container #map {
-	width: 100%;
-	height: 100%;
-	background-color: var(--map-background-color);
-}
-
-.maincontainer .map-container #overlay {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	z-index: 1;
-}
-
-.maincontainer .map-container .btns {
-	background-color: transparent;
-	z-index: 1;
-	position: absolute;
-	top: 280px;
-	right: 26px;
-	display: none;
-}
-
-/* Text area container */
-.maincontainer .result-container {
-	flex: 0 0 var(--result-height);
-	position: relative;
-	height: var(--result-height);
-}
-
-.maincontainer.nowkt .result-container {
-	display: none;
-}
-
-.maincontainer .result-container .wkt-container {
-	width: 100%;
-	height: 100%;
-}
-
-.maincontainer .result-container .wkt-container textarea {
-	width: 100%;
-	height: 100%;
-	resize: none;
-	padding: 5px;
-	font-size: 10px;
 }
 
 .ol-bar .ol-button {
@@ -372,12 +294,12 @@ button:hover {
 
 .ol-control.ol-bar .ol-bar.editbar {
 	margin-right: 5px;
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar .ol-bar.editbar .ol-control.ol-bar.ol-control.ol-option-bar {
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	box-shadow: var(--navbar-shadow);
 }
 
@@ -388,14 +310,14 @@ button:hover {
 
 .ol-control.ol-bar .ol-bar.locationbar {
 	margin-left: 5px;
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	box-shadow: var(--navbar-shadow);
 }
 
 .ol-control.ol-bar.layerbar {
 	right: -.5em;
 	left: unset;
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	box-shadow: var(--navbar-shadow);
 }
 
@@ -419,7 +341,7 @@ button:hover {
 }
 
 .ol-zoom.ol-unselectable.ol-control {
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	border-radius: 4px;
 	box-shadow: var(--navbar-shadow);
 }
@@ -451,7 +373,7 @@ button:hover {
 }
 
 .ol-attribution.ol-unselectable.ol-control {
-	background-color: var(--color-white);
+	background-color: var(--color-base-white);
 	border-radius: 0;
 	box-shadow: var(--navbar-shadow);
 }
