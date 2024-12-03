@@ -245,7 +245,7 @@ var app = (function () {
 
 	const translator = new Translation();
 
-	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, main, textarea, modifyInteraction, undoInteraction;
+	let map, attributionControl, vectorLayer, format, defaultCenter, userLocation, featureCollection, textarea, modifyInteraction, undoInteraction;
 
 	let lfkey = "zecompadre-wkt";
 
@@ -928,12 +928,10 @@ var app = (function () {
 
 				if (featureCount > 0) {
 					// Features exist: update layout and controls accordingly
-					main.classList.remove("nowkt");
 					featureUtilities.createFromAllFeatures();
 					mapControls.centerObjectsBtn.setVisible(true);
 				} else {
 					// No features: adjust layout and hide controls
-					main.classList.add("nowkt");
 					mapControls.selectBar.setVisible(false);
 					mapControls.centerObjectsBtn.setVisible(false);
 				}
@@ -956,7 +954,7 @@ var app = (function () {
 		 */
 		center: async function () {
 			try {
-				if (!main.classList.contains("nowkt") && featureCollection.getLength() > 0) {
+				if (featureCollection.getLength() > 0) {
 					// Create an empty extent and calculate the combined extent of all features
 					const extent = ol.extent.createEmpty();
 					featureCollection.forEach(feature => {
@@ -1251,13 +1249,12 @@ var app = (function () {
 				// Convert to square feet
 				//const areaInSquareFeet = areaInSquareMeters * 10.7639;
 				tooltip.getElement().style.display = 'none';
-				if(areaInSquareMeters > 0)
-				{
+				if (areaInSquareMeters > 0) {
 					// Display the area in the tooltip
-				tooltip.setPosition(event.coordinate);
-				tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
-				tooltip.getElement().style.display = 'block';
-				tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
+					tooltip.setPosition(event.coordinate);
+					tooltip.getElement().innerHTML = `Area: ${areaInSquareMeters.toFixed(2)} m²`;
+					tooltip.getElement().style.display = 'block';
+					tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
 				}
 			} else {
 				tooltip.getElement().style.display = 'none';
