@@ -1,5 +1,58 @@
 var app = (function () {
 
+	class SettingsManager {
+		constructor(containerId, storageKey) {
+			this.container = document.getElementById(containerId);
+			this.storageKey = storageKey;
+
+			if (!this.container) {
+				throw new Error("Container not found");
+			}
+
+			this.loadSettings();
+			this.attachEventListeners();
+		}
+
+		// Carregar configurações do localStorage
+		loadSettings() {
+			const savedSettings = JSON.parse(localStorage.getItem(this.storageKey)) || {};
+
+			this.container.querySelectorAll('input, select').forEach((element) => {
+				const { id, type } = element;
+
+				if (id && id in savedSettings) {
+					if (type === 'checkbox') {
+						element.checked = savedSettings[id];
+					} else {
+						element.value = savedSettings[id];
+					}
+				}
+			});
+		}
+
+		// Salvar configurações no localStorage
+		saveSettings() {
+			const settings = {};
+
+			this.container.querySelectorAll('input, select').forEach((element) => {
+				const { id, type } = element;
+
+				if (id) {
+					settings[id] = type === 'checkbox' ? element.checked : element.value;
+				}
+			});
+
+			localStorage.setItem(this.storageKey, JSON.stringify(settings));
+		}
+
+		// Adicionar ouvintes de evento para salvar automaticamente em mudanças
+		attachEventListeners() {
+			this.container.querySelectorAll('input, select').forEach((element) => {
+				element.addEventListener('change', () => this.saveSettings());
+			});
+		}
+	}
+
 	class TabSystem {
 		constructor(container) {
 			this.container = container;
@@ -23,10 +76,6 @@ var app = (function () {
 			// Add active class to the clicked button and the corresponding pane
 			button.classList.add('active');
 			const targetPane = this.container.querySelector(`#${button.dataset.tab}`);
-
-			console.log(button.dataset.tab)
-			console.log(targetPane)
-
 			if (targetPane) targetPane.classList.add('active');
 		}
 	}
@@ -1690,6 +1739,8 @@ var app = (function () {
 
 			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);
+
+			new SettingsManager('settings', 'wkt-settings');
 
 			mapUtilities.loadWKTs(true);
 

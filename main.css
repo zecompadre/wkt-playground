@@ -126,7 +126,7 @@ textarea {
 .tab-buttons {
 	display: flex;
 	justify-content: space-between;
-	/* Espaço uniforme entre os botões */
+	padding: 0 10px;
 }
 
 .tab-buttons button {
@@ -174,6 +174,95 @@ textarea {
 
 .tab-pane.active {
 	display: block;
+}
+
+#settingsContainer {
+	max-width: 400px;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels */
+label {
+	display: block;
+	margin-bottom: 20px;
+	font-size: 14px;
+	color: #555;
+}
+
+/* Modern Checkbox */
+input[type="checkbox"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #007BFF;
+	border-radius: 4px;
+	outline: none;
+	background-color: #ffffff;
+	cursor: pointer;
+	transition: background-color 0.3s, border-color 0.3s;
+}
+
+input[type="checkbox"]:checked {
+	background-color: #007BFF;
+	border-color: #007BFF;
+	position: relative;
+}
+
+input[type="checkbox"]:checked::after {
+	content: "";
+	display: block;
+	width: 10px;
+	height: 5px;
+	border: 2px solid #fff;
+	border-width: 0 0 2px 2px;
+	transform: rotate(-45deg);
+	position: absolute;
+	top: 5px;
+	left: 4px;
+}
+
+/* Modern Select */
+select {
+	width: 100%;
+	padding: 10px 15px;
+	font-size: 14px;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	background-color: #ffffff;
+	appearance: none;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="gray"><path d="M0 0l5 6 5-6z"/></svg>');
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	background-size: 10px;
+	cursor: pointer;
+	transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select:focus {
+	border-color: #007BFF;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+	outline: none;
+}
+
+/* Botão (opcional, caso precise) */
+button {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #0056b3;
 }
 
 /* Container layout */
