@@ -319,6 +319,7 @@ var app = (function () {
 	 */
 	const formatArea = function (feature) {
 		const area = ol.sphere.getArea(feature.getGeometry());
+		if (area === 0) return '';
 		let output;
 		if (area > 10000) {
 			output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
@@ -1355,10 +1356,11 @@ var app = (function () {
 					// Convert to square feet
 					//const areaInSquareFeet = areaInSquareMeters * 10.7639;
 					tooltip.getElement().style.display = 'none';
-					if (areaInSquareMeters > 0) {
+					let area = formatArea(feature);
+					if (area !== '') {
 						// Display the area in the tooltip
 						tooltip.setPosition(event.coordinate);
-						tooltip.getElement().innerHTML = formatArea(feature);
+						tooltip.getElement().innerHTML = area;
 						tooltip.getElement().style.display = 'block';
 						tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
 					}
