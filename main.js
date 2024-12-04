@@ -773,8 +773,47 @@ var app = (function () {
 					console.error('oops, something went wrong!', error);
 					loading.hide(); // Hide the loading overlay if an error occurs
 				});
-		}
+		},
 
+		/**
+		 * Reads text from the clipboard, focusing on text containing "POLYGON".
+		 * @async
+		 * @returns {string} - The WKT string from the clipboard, or an empty string if not found.
+		 */
+		readClipboard: async function () {
+			let returnVal = "";
+			try {
+				textarea.focus();
+				const permission = await navigator.permissions.query({ name: "clipboard-read" });
+
+				if (permission.state === "denied") {
+					throw new Error("Not allowed to read clipboard.");
+				}
+
+				const text = await navigator.clipboard.readText();
+				if (text.includes("POLYGON")) {
+					returnVal = text;
+					await navigator.clipboard.writeText(""); // Clear clipboard
+				}
+			} catch (error) {
+				console.error("Error reading clipboard:", error.message);
+			}
+			return returnVal;
+		},
+
+		/**
+		 * Adds a WKT entry from an element's value, then reloads the WKTs into the map.
+		 * @param {HTMLTextAreaElement} ele - The HTML element containing the WKT value.
+		 * @async
+		 */
+		paste: async () => {
+			try {
+				await mapUtilities.loadWKTs(true);
+				await mapUtilities.reviewLayout(true);
+			} catch (error) {
+				console.error("Error pasting WKT:", error);
+			}
+		},
 	};
 
 	const featureUtilities = {
@@ -1134,13 +1173,13 @@ var app = (function () {
 
 			try {
 				// Load existing WKT entries from localStorage
-				wktUtilities.load();
-				let wkts = wktUtilities.get();
+				WKTUtilities.load();
+				let wkts = WKTUtilities.get();
 
 				// Focus on textarea to prepare for possible WKT paste
 				textarea.focus();
 
-				let wkt = readcb ? await wktUtilities.readClipboard() : "";
+				let wkt = readcb ? await utilities.readClipboard() : "";
 
 				// Generate checksum for the WKT string
 				const checksum = await utilities.generateChecksum(wkt);
@@ -1167,7 +1206,7 @@ var app = (function () {
 
 				// Save the updated WKT list
 				map.set("wkts", wkts);
-				wktUtilities.save();
+				WKTUtilities.save();
 
 				// Add features to the map and review layout
 				await featureUtilities.addFeatures();
@@ -1181,38 +1220,40 @@ var app = (function () {
 	};
 
 	/**
-	 * Utility functions for handling WKT (Well-Known Text) operations,
+	 * Utility class for handling WKT (Well-Known Text) operations,
 	 * including saving, loading, removing, updating, and interacting with the clipboard.
 	 */
-	const wktUtilities = {
+	class WKTUtilities {
 		/**
 		 * Loads WKT data from localStorage into the map.
 		 */
-		load: function () {
-			const wkts = [];
-			if (settings.getSettingById('wkt-presistent'))
+		static load() {
+			let wkts = [];
+			if (settings.getSettingById('wkt-presistent')) {
 				wkts = localStorage.getItem(lfkey) || "[]";
+			}
 			map.set("wkts", JSON.parse(wkts));
-		},
+		}
 
 		/**
 		 * Removes a WKT entry from the map by its ID.
 		 * @param {string} id - The ID of the WKT to remove.
 		 */
-		remove: function (id) {
+		static remove(id) {
 			let wkts = map.get("wkts");
 			wkts = wkts.filter((item) => item.id !== id);
 			this.save(wkts);
-		},
+		}
 
 		/**
 		 * Saves the current WKT data from the map into localStorage.
 		 */
-		save: function (wkts) {
-			if (settings.getSettingById('wkt-presistent'))
+		static save(wkts) {
+			if (settings.getSettingById('wkt-presistent')) {
 				localStorage.setItem(lfkey, JSON.stringify(wkts));
+			}
 			map.set("wkts", wkts); // Update the map's WKT collection
-		},
+		}
 
 		/**
 		 * Adds a new WKT entry for a given feature after generating a checksum to ensure uniqueness.
@@ -1220,7 +1261,7 @@ var app = (function () {
 		 * @param {ol.Feature} feature - The OpenLayers feature to add.
 		 * @async
 		 */
-		add: async function (feature) {
+		static async add(feature) {
 			try {
 				// Convert the feature into its WKT representation
 				const wkt = utilities.getFeatureWKT(feature);
@@ -1249,22 +1290,22 @@ var app = (function () {
 			} catch (error) {
 				console.error("Error adding WKT:", error.message);
 			}
-		},
+		}
 
 		/**
 		 * Retrieves all WKT entries from the map.
 		 * @returns {Array} - An array of WKT objects.
 		 */
-		get: function () {
+		static get() {
 			return map.get("wkts") || [];
-		},
+		}
 
 		/**
 		 * Updates an existing WKT entry by ID.
 		 * @param {string} id - The ID of the WKT to update.
 		 * @param {string} wkt - The updated WKT string.
 		 */
-		update: function (id, wkt) {
+		static update(id, wkt) {
 			const wkts = map.get("wkts") || [];
 			wkts.forEach((item) => {
 				if (item.id === id) {
@@ -1272,48 +1313,8 @@ var app = (function () {
 				}
 			});
 			this.save(wkts);
-		},
-
-		/**
-		 * Reads text from the clipboard, focusing on text containing "POLYGON".
-		 * @async
-		 * @returns {string} - The WKT string from the clipboard, or an empty string if not found.
-		 */
-		readClipboard: async function () {
-			let returnVal = "";
-			try {
-				textarea.focus();
-				const permission = await navigator.permissions.query({ name: "clipboard-read" });
-
-				if (permission.state === "denied") {
-					throw new Error("Not allowed to read clipboard.");
-				}
-
-				const text = await navigator.clipboard.readText();
-				if (text.includes("POLYGON")) {
-					returnVal = text;
-					await navigator.clipboard.writeText(""); // Clear clipboard
-				}
-			} catch (error) {
-				console.error("Error reading clipboard:", error.message);
-			}
-			return returnVal;
-		},
-
-		/**
-		 * Adds a WKT entry from an element's value, then reloads the WKTs into the map.
-		 * @param {HTMLTextAreaElement} ele - The HTML element containing the WKT value.
-		 * @async
-		 */
-		paste: async () => {
-			try {
-				await mapUtilities.loadWKTs(true);
-				await mapUtilities.reviewLayout(true);
-			} catch (error) {
-				console.error("Error pasting WKT:", error);
-			}
-		},
-	};
+		}
+	}
 
 	/**
 	 * Sets up the map with its layers, controls, and default configuration.
@@ -1482,7 +1483,7 @@ var app = (function () {
 		// Keyboard shortcuts for interaction
 		document.addEventListener('keydown', handleKeyboardShortcuts);
 
-		document.addEventListener('paste', wktUtilities.paste);
+		document.addEventListener('paste', utilities.paste);
 
 		/**
 		 * Creates a control bar.
@@ -1524,7 +1525,7 @@ var app = (function () {
 			if (evt.deselected.length > 0) {
 				evt.deselected.forEach(feature => {
 					textarea.value = utilities.getFeatureWKT(feature);
-					wktUtilities.update(feature.getId(), textarea.value);
+					WKTUtilities.update(feature.getId(), textarea.value);
 					featureUtilities.createFromAllFeatures();
 				});
 				mapControls.selectBar.setVisible(false);
@@ -1555,7 +1556,7 @@ var app = (function () {
 
 						console.log(feature, feature.getId());
 
-						wktUtilities.remove(feature.getId());
+						WKTUtilities.remove(feature.getId());
 						for (var i = 0, f; f = features.item(i); i++) {
 							vectorLayer.getSource().removeFeature(f);
 						}
@@ -1627,7 +1628,7 @@ var app = (function () {
 		 * @param {ol.events.Event} evt - The event triggered by the draw interaction.
 		 */
 		async function handleDrawEnd(evt) {
-			await wktUtilities.add(evt.feature);
+			await WKTUtilities.add(evt.feature);
 			mapUtilities.reviewLayout(false);
 			featureUtilities.centerOnFeature(evt.feature);
 			mapControls.selectCtrl.setActive(true);
