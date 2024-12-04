@@ -31,8 +31,8 @@
 	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css" />
 	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.js"></script>
 
-	<script src="/main.js?v=202412041935"></script>
-	<link rel="stylesheet" href="/main.css?v=202412041935">
+	<script src="/main.js?v=202412042135"></script>
+	<link rel="stylesheet" href="/main.css?v=202412042135">
 
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-HQWSTRZMSN"></script>
@@ -65,7 +65,7 @@
 					</form>
 				</div>
 				<div id="settingsContainer" class="settings tab-pane">
-					<div class="themed">
+					<!-- <div class="themed">
 						<input id="show-area" type="checkbox" class="switch">
 						<label for="show-area">Mostrar Area</label>
 					</div>
@@ -79,7 +79,20 @@
 							<option value="dark">Escuro</option>
 							<option value="blue">Azul</option>
 						</select>
-					</div>
+					</div> -->
+					<form id="modern-form">
+						<label for="text-input">Text Input:</label>
+						<input type="text" id="text-input" name="text-input">
+
+						<label for="checkbox">Checkbox:</label>
+						<input type="checkbox" id="checkbox" name="checkbox">
+
+						<label for="select">Select:</label>
+						<select id="select" name="select">
+							<option value="option1">Option 1</option>
+							<option value="option2">Option 2</option>
+						</select>
+					</form>
 				</div>
 			</div>
 		</div>

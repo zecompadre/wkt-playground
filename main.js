@@ -1,5 +1,27 @@
 var app = (function () {
 
+	class FormThemeManager {
+		constructor(formSelector) {
+		  this.form = document.querySelector(formSelector);
+		  if (!this.form) throw new Error(`Form not found: ${formSelector}`);
+		}
+	  
+		applyTheme(theme) {
+		  Object.keys(theme).forEach((key) => {
+			document.documentElement.style.setProperty(`--${key}`, theme[key]);
+		  });
+		}
+	  
+		resetTheme() {
+		  const styles = getComputedStyle(document.documentElement);
+		  Array.from(styles).forEach((key) => {
+			if (key.startsWith("--")) {
+			  document.documentElement.style.removeProperty(key);
+			}
+		  });
+		}
+	  }
+	  
 	class SettingsManager {
 		constructor(containerId, storageKey) {
 			this.container = document.getElementById(containerId);
@@ -1761,6 +1783,19 @@ var app = (function () {
 		init: function () {
 
 			setupMap();
+
+const themeManager = new FormThemeManager("#modern-form");
+const modernTheme = {
+  "primary-color": "#6200ea",
+  "background-color": "#ffffff",
+  "text-color": "#000",
+  "border-radius": "8px",
+  "input-padding": "12px",
+  "border-color": "#ddd",
+  "focus-color": "#6200ea",
+};
+
+themeManager.applyTheme(modernTheme);
 
 			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);

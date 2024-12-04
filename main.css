@@ -182,6 +182,7 @@ textarea {
 	padding: 10px 0;
 }
 
+/* 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
 	.settings div.themed input[type=checkbox] {
 		--active: var(--color-theme-primary);
@@ -320,7 +321,7 @@ textarea {
 
 .settings div.themed select {
 
-	/* styling */
+
 	background-color: white;
 	border: thin solid var(--color-theme-primary);
 	border-radius: 4px;
@@ -329,8 +330,6 @@ textarea {
 	line-height: 1.5em;
 	padding: 0.5em 3.5em 0.5em 1em;
 
-	/* reset */
-
 	margin: 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -338,8 +337,6 @@ textarea {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 }
-
-/* arrows */
 
 .settings div.themed select.classic {
 	background-image:
@@ -446,6 +443,51 @@ textarea {
 .settings div.themed select:-moz-focusring {
 	color: transparent;
 	text-shadow: 0 0 0 #000;
+} */
+
+
+:root {
+	--primary-color: #0078d4;
+	--background-color: #f9f9f9;
+	--text-color: #333;
+	--border-radius: 4px;
+	--input-padding: 10px;
+	--border-color: #ccc;
+	--focus-color: #0078d4;
+}
+
+input,
+select,
+textarea {
+	display: block;
+	width: 100%;
+	padding: var(--input-padding);
+	margin: 10px 0;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	background-color: var(--background-color);
+	color: var(--text-color);
+	font-size: 16px;
+	transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--focus-color);
+	box-shadow: 0 0 5px var(--focus-color);
+}
+
+input[type="checkbox"] {
+	display: inline-block;
+	width: auto;
+	margin-right: 10px;
+}
+
+label {
+	font-weight: bold;
+	color: var(--text-color);
 }
 
 .ol-bar .ol-button {
