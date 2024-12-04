@@ -466,7 +466,7 @@ textarea {
 }
 
 /* Cool modern tooltip style */
-#tooltip {
+#zztooltip {
 	position: absolute;
 	background: linear-gradient(135deg, rgba(45, 45, 45, 0.8), rgba(0, 0, 0, 0.6));
 	/* Gradient background */
@@ -508,7 +508,7 @@ textarea {
 }
 
 /* Tooltip fade-in effect */
-#tooltip.fade-in {
+#zztooltip.fade-in {
 	opacity: 0;
 	animation: fadeIn 0.3s forwards;
 }

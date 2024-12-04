@@ -1340,6 +1340,7 @@ var app = (function () {
 
 		const tooltip = new ol.Overlay({
 			element: document.getElementById('tooltip'),
+			className: 'ol-tooltip hidden',
 			offset: [15, 15],
 			positioning: 'bottom-left',
 		});
@@ -1353,16 +1354,12 @@ var app = (function () {
 				});
 
 				if (feature) {
-					// Convert to square feet
-					//const areaInSquareFeet = areaInSquareMeters * 10.7639;
-					tooltip.getElement().style.display = 'none';
+					tooltip.className = 'ol-tooltip hidden';
 					let area = formatArea(feature);
 					if (area !== '') {
-						// Display the area in the tooltip
 						tooltip.setPosition(event.coordinate);
 						tooltip.getElement().innerHTML = area;
-						tooltip.getElement().style.display = 'block';
-						tooltip.getElement().classList.add('fade-in'); // Apply fade-in effect
+						tooltip.className = 'ol-tooltip ol-tooltip-static';
 					}
 				} else {
 					tooltip.getElement().style.display = 'none';
