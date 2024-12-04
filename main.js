@@ -2,59 +2,16 @@ var app = (function () {
 
 	class LightUI {
 		constructor() {
-			this.initDropdowns();
+			this.initSelects();
 		}
 
-		// Initialize dropdowns
-		initDropdowns() {
-			document.querySelectorAll('.ui-dropdown').forEach(dropdown => {
-				const button = dropdown.querySelector('.ui-dropdown-button');
-				const list = dropdown.querySelector('.ui-dropdown-list');
-				const items = list.querySelectorAll('li');
-
-				// Toggle dropdown visibility
-				button.addEventListener('click', () => {
-					list.style.display = list.style.display === 'block' ? 'none' : 'block';
+		// Enhance native selects
+		initSelects() {
+			document.querySelectorAll('.ui-select').forEach(select => {
+				// Optional: Add additional behaviors or logging if needed
+				select.addEventListener('change', (e) => {
+					console.log(`Selected value: ${e.target.value}`);
 				});
-
-				// Select an item
-				items.forEach(item => {
-					item.addEventListener('click', () => {
-						button.textContent = item.textContent;
-						button.setAttribute('data-value', item.getAttribute('data-value'));
-						list.style.display = 'none';
-					});
-				});
-
-				// Close dropdown if clicked outside
-				document.addEventListener('click', (e) => {
-					if (!dropdown.contains(e.target)) {
-						list.style.display = 'none';
-					}
-				});
-			});
-		}
-	}
-
-	class FormThemeManager {
-
-		constructor(formSelector) {
-			this.form = document.querySelector(formSelector);
-			if (!this.form) throw new Error(`Form not found: ${formSelector}`);
-		}
-
-		applyTheme(theme) {
-			Object.keys(theme).forEach((key) => {
-				document.documentElement.style.setProperty(`--${key}`, theme[key]);
-			});
-		}
-
-		resetTheme() {
-			const styles = getComputedStyle(document.documentElement);
-			Array.from(styles).forEach((key) => {
-				if (key.startsWith("--")) {
-					document.documentElement.style.removeProperty(key);
-				}
 			});
 		}
 	}

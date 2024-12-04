@@ -1,11 +1,10 @@
 :root {
 	--primary-color: #0078d4;
-	--secondary-color: #e0e0e0;
+	--secondary-color: #f1f1f1;
 	--text-color: #333;
 	--border-radius: 4px;
 	--input-padding: 8px;
-	--transition-speed: 0.2s;
-	--dropdown-max-height: 200px;
+	--arrow-size: 10px;
 }
 
 /* General Reset */
@@ -17,6 +16,14 @@ form {
 	padding: 0;
 }
 
+label {
+	font-weight: bold;
+	color: var(--text-color);
+	margin-bottom: 8px;
+	display: block;
+}
+
+/* Checkbox */
 .ui-checkbox {
 	display: flex;
 	align-items: center;
@@ -32,7 +39,6 @@ form {
 	cursor: pointer;
 	padding-left: 30px;
 	color: var(--primary-color);
-	user-select: none;
 }
 
 .ui-checkbox label::before {
@@ -45,7 +51,7 @@ form {
 	border: 2px solid var(--primary-color);
 	border-radius: var(--border-radius);
 	background: #fff;
-	transition: background var(--transition-speed), border var(--transition-speed);
+	transition: background 0.3s, border 0.3s;
 }
 
 .ui-checkbox input:checked+label::before {
@@ -62,56 +68,44 @@ form {
 	color: #fff;
 }
 
-/* Dropdown */
-.ui-dropdown {
+/* Select */
+.ui-select-container {
 	position: relative;
-	display: inline-block;
+	width: 100%;
 	margin: 10px 0;
 }
 
-.ui-dropdown-button {
-	background-color: #fff;
+.ui-select {
+	appearance: none;
+	/* Removes default select styling */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 100%;
+	padding: var(--input-padding);
+	padding-right: calc(var(--arrow-size) * 2);
+	font-size: 16px;
+	border: 1px solid var(--secondary-color);
+	border-radius: var(--border-radius);
+	background-color: var(--secondary-color);
 	color: var(--text-color);
-	border: 1px solid var(--secondary-color);
-	border-radius: var(--border-radius);
-	padding: var(--input-padding);
-	width: 100%;
-	text-align: left;
 	cursor: pointer;
-	transition: border var(--transition-speed);
+	transition: border-color 0.3s;
+	background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
+		linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
+	background-position: calc(100% - var(--arrow-size)) calc(50% - var(--arrow-size) / 2),
+		calc(100% - var(--arrow-size) / 2) calc(50% - var(--arrow-size) / 2);
+	background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
+	background-repeat: no-repeat;
 }
 
-.ui-dropdown-button:focus {
-	border-color: var(--primary-color);
+.ui-select:focus {
 	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 5px var(--primary-color);
 }
 
-.ui-dropdown-list {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	width: 100%;
-	background: #fff;
-	border: 1px solid var(--secondary-color);
-	border-radius: var(--border-radius);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	max-height: var(--dropdown-max-height);
-	overflow-y: auto;
-	display: none;
-	z-index: 10;
-}
-
-.ui-dropdown-list li {
-	padding: var(--input-padding);
-	cursor: pointer;
-	transition: background var(--transition-speed);
-}
-
-.ui-dropdown-list li:hover {
-	background: var(--primary-color);
-	color: #fff;
+.ui-select:hover {
+	background-color: #e6f2ff;
 }
 
 /* Inputs */
@@ -120,7 +114,7 @@ form {
 	padding: var(--input-padding);
 	border: 1px solid var(--secondary-color);
 	border-radius: var(--border-radius);
-	transition: border var(--transition-speed);
+	transition: border 0.3s;
 }
 
 .ui-input:focus {
