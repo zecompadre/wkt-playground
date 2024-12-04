@@ -1,6 +1,29 @@
 var app = (function () {
 
+	class LightUI {
+		constructor() {
+			this.initSliders();
+		}
+
+		// Initialize sliders
+		initSliders() {
+			document.querySelectorAll('.ui-slider').forEach(slider => {
+				const thumb = document.createElement('div');
+				thumb.classList.add('ui-slider-thumb');
+				slider.appendChild(thumb);
+
+				slider.addEventListener('click', (e) => {
+					const rect = slider.getBoundingClientRect();
+					const offsetX = e.clientX - rect.left;
+					const percentage = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
+					thumb.style.left = `${percentage}%`;
+				});
+			});
+		}
+	}
+
 	class FormThemeManager {
+
 		constructor(formSelector) {
 			this.form = document.querySelector(formSelector);
 			if (!this.form) throw new Error(`Form not found: ${formSelector}`);
@@ -1784,18 +1807,9 @@ var app = (function () {
 
 			setupMap();
 
-			const themeManager = new FormThemeManager("#modern-form");
-			const modernTheme = {
-				"primary-color": "#0078d4",
-				"background-color": "#f9f9f9",
-				"text-color": "#fff",
-				"border-radius": "8px",
-				"input-padding": "12px",
-				"border-color": "#ddd",
-				"focus-color": "#6200ea",
-			};
-
-			themeManager.applyTheme(modernTheme);
+			document.addEventListener('DOMContentLoaded', () => {
+				new LightUI();
+			});
 
 			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);
