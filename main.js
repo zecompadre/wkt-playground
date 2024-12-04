@@ -1360,7 +1360,7 @@ var app = (function () {
 					if (area !== '') {
 						tooltip.setPosition(event.coordinate);
 						tooltip.getElement().innerHTML = area;
-						tooltip.getElement().className = 'ol-tooltip ol-tooltip-measure';
+						tooltip.getElement().className = 'ol-tooltip ol-tooltip-static';
 					}
 				}
 			}
