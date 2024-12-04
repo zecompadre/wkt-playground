@@ -178,6 +178,10 @@ textarea {
 	display: block;
 }
 
+.settings div.themed {
+	padding: 10px 0;
+}
+
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
 	.settings div.themed input[type=checkbox] {
 		--active: #275EFE;
@@ -314,7 +318,7 @@ textarea {
 	box-sizing: inherit;
 }
 
-select {
+.settings div.themed select {
 
 	/* styling */
 	background-color: white;
@@ -337,7 +341,7 @@ select {
 
 /* arrows */
 
-select.classic {
+.settings div.themed select.classic {
 	background-image:
 		linear-gradient(45deg, transparent 50%, blue 50%),
 		linear-gradient(135deg, blue 50%, transparent 50%),
@@ -353,7 +357,7 @@ select.classic {
 	background-repeat: no-repeat;
 }
 
-select.classic:focus {
+.settings div.themed select.classic:focus {
 	background-image:
 		linear-gradient(45deg, white 50%, transparent 50%),
 		linear-gradient(135deg, transparent 50%, white 50%),
@@ -371,7 +375,7 @@ select.classic:focus {
 	outline: 0;
 }
 
-select.round {
+.settings div.themed select.round {
 	background-image:
 		linear-gradient(45deg, transparent 50%, gray 50%),
 		linear-gradient(135deg, gray 50%, transparent 50%),
@@ -387,7 +391,7 @@ select.round {
 	background-repeat: no-repeat;
 }
 
-select.round:focus {
+.settings div.themed select.round:focus {
 	background-image:
 		linear-gradient(45deg, white 50%, transparent 50%),
 		linear-gradient(135deg, transparent 50%, white 50%),
@@ -405,7 +409,7 @@ select.round:focus {
 	outline: 0;
 }
 
-select.minimal {
+.settings div.themed select.minimal {
 	background-image:
 		linear-gradient(45deg, transparent 50%, gray 50%),
 		linear-gradient(135deg, gray 50%, transparent 50%),
@@ -421,7 +425,7 @@ select.minimal {
 	background-repeat: no-repeat;
 }
 
-select.minimal:focus {
+.settings div.themed select.minimal:focus {
 	background-image:
 		linear-gradient(45deg, green 50%, transparent 50%),
 		linear-gradient(135deg, transparent 50%, green 50%),
@@ -439,49 +443,9 @@ select.minimal:focus {
 	outline: 0;
 }
 
-select:-moz-focusring {
+.settings div.themed select:-moz-focusring {
 	color: transparent;
 	text-shadow: 0 0 0 #000;
-}
-
-/* Modern Select */
-.settingsx select {
-	width: 100%;
-	padding: 10px 15px;
-	font-size: 14px;
-	border: 2px solid #ddd;
-	border-radius: 5px;
-	background-color: var(--color-base-white);
-	appearance: none;
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="gray"><path d="M0 0l5 6 5-6z"/></svg>');
-	background-repeat: no-repeat;
-	background-position: right 10px center;
-	background-size: 10px;
-	cursor: pointer;
-	transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.settingsx select:focus {
-	border-color: var(--color-theme-primary);
-	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-	outline: none;
-}
-
-/* Botão (opcional, caso precise) */
-.settingsx button {
-	width: 100%;
-	padding: 10px;
-	font-size: 16px;
-	background-color: var(--color-theme-primary);
-	color: var(--color-base-white);
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-}
-
-.settingsx button:hover {
-	background-color: #0056b3;
 }
 
 .ol-bar .ol-button {
