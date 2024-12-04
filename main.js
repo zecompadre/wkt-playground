@@ -1189,7 +1189,9 @@ var app = (function () {
 		 * Loads WKT data from localStorage into the map.
 		 */
 		load: function () {
-			const wkts = localStorage.getItem(lfkey) || "[]";
+			const wkts = [];
+			if (settings.getSettingById('wkt-presistent'))
+				wkts = localStorage.getItem(lfkey) || "[]";
 			map.set("wkts", JSON.parse(wkts));
 		},
 
@@ -1200,15 +1202,16 @@ var app = (function () {
 		remove: function (id) {
 			let wkts = map.get("wkts");
 			wkts = wkts.filter((item) => item.id !== id);
-			map.set("wkts", wkts);
-			this.save();
+			this.save(wkts);
 		},
 
 		/**
 		 * Saves the current WKT data from the map into localStorage.
 		 */
-		save: function () {
-			localStorage.setItem(lfkey, JSON.stringify(this.get()));
+		save: function (wkts) {
+			if (settings.getSettingById('wkt-presistent'))
+				localStorage.setItem(lfkey, JSON.stringify(wkts));
+			map.set("wkts", wkts); // Update the map's WKT collection
 		},
 
 		/**
@@ -1241,8 +1244,7 @@ var app = (function () {
 				// Add the new WKT to the collection if it does not already exist
 				if (!exists) {
 					wkts.push({ id: checksum, wkt });
-					map.set("wkts", wkts); // Update the map's WKT collection
-					this.save(); // Persist changes to localStorage
+					this.save(wkts); // Persist changes to localStorage
 				}
 			} catch (error) {
 				console.error("Error adding WKT:", error.message);
@@ -1269,8 +1271,7 @@ var app = (function () {
 					item.wkt = wkt;
 				}
 			});
-			map.set("wkts", wkts);
-			this.save();
+			this.save(wkts);
 		},
 
 		/**
