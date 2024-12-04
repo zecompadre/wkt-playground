@@ -1228,7 +1228,7 @@ var app = (function () {
 		 * Loads WKT data from localStorage into the map.
 		 */
 		static load() {
-			let wkts = [];
+			let wkts = "[]";
 			if (settings.getSettingById('wkt-presistent')) {
 				wkts = localStorage.getItem(lfkey) || "[]";
 			}
