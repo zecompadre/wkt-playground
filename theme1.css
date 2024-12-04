@@ -54,9 +54,9 @@ label {
 	top: 50%;
 	transform: translateY(-50%);
 	/* Center the checkbox */
-	width: 20px;
-	height: 20px;
-	border: 2px solid var(--primary-color);
+	width: 18px;
+	height: 18px;
+	border: 0 solid var(--primary-color);
 	border-radius: var(--border-radius);
 	background: #fff;
 	transition: background 0.3s, border 0.3s;
@@ -70,7 +70,7 @@ label {
 .ui-checkbox input:checked+label::after {
 	content: "✔";
 	position: absolute;
-	left: 6px;
+	left: 5px;
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: var(--font-size);
