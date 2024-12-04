@@ -321,7 +321,6 @@ textarea {
 
 .settings div.themed select {
 
-
 	background-color: white;
 	border: thin solid var(--color-theme-primary);
 	border-radius: 4px;
@@ -444,7 +443,6 @@ textarea {
 	color: transparent;
 	text-shadow: 0 0 0 #000;
 } */
-
 
 :root {
 	--primary-color: #0078d4;
