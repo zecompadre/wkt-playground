@@ -1786,9 +1786,9 @@ var app = (function () {
 
 			const themeManager = new FormThemeManager("#modern-form");
 			const modernTheme = {
-				"primary-color": "var(--color-theme-primary)",
-				"background-color": "var(--controls-background)",
-				"text-color": "var(--color-base-white)",
+				"primary-color": "#0078d4",
+				"background-color": "#f9f9f9",
+				"text-color": "#fff",
 				"border-radius": "8px",
 				"input-padding": "12px",
 				"border-color": "#ddd",
