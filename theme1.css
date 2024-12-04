@@ -5,6 +5,7 @@
 	--border-radius: 0;
 	--input-padding: 8px;
 	--arrow-size: 10px;
+	--font-size: 12px;
 }
 
 /* General Reset */
@@ -17,7 +18,8 @@ form {
 }
 
 label {
-	font-weight: bold;
+	font-weight: normal;
+	font-size: var(--font-size);
 	color: var(--text-color);
 	margin-bottom: 8px;
 	display: block;
@@ -42,7 +44,7 @@ label {
 	display: flex;
 	align-items: center;
 	font-weight: normal;
-	/* Center text vertically with the checkbox */
+	font-size: var(--font-size);
 }
 
 .ui-checkbox label::before {
@@ -71,7 +73,7 @@ label {
 	left: 6px;
 	top: 50%;
 	transform: translateY(-50%);
-	font-size: 12px;
+	font-size: var(--font-size);
 	color: #fff;
 }
 
@@ -90,7 +92,7 @@ label {
 	width: 100%;
 	padding: var(--input-padding);
 	padding-right: calc(var(--arrow-size) * 2);
-	font-size: 16px;
+	font-size: var(--font-size);
 	border: 1px solid var(--secondary-color);
 	border-radius: var(--border-radius);
 	background-color: var(--secondary-color);
@@ -122,6 +124,7 @@ label {
 	border: 1px solid var(--secondary-color);
 	border-radius: var(--border-radius);
 	transition: border 0.3s;
+	font-size: var(--font-size);
 }
 
 .ui-input:focus {
