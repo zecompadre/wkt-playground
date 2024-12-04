@@ -2,21 +2,35 @@ var app = (function () {
 
 	class LightUI {
 		constructor() {
-			this.initSliders();
+			this.initDropdowns();
 		}
 
-		// Initialize sliders
-		initSliders() {
-			document.querySelectorAll('.ui-slider').forEach(slider => {
-				const thumb = document.createElement('div');
-				thumb.classList.add('ui-slider-thumb');
-				slider.appendChild(thumb);
+		// Initialize dropdowns
+		initDropdowns() {
+			document.querySelectorAll('.ui-dropdown').forEach(dropdown => {
+				const button = dropdown.querySelector('.ui-dropdown-button');
+				const list = dropdown.querySelector('.ui-dropdown-list');
+				const items = list.querySelectorAll('li');
 
-				slider.addEventListener('click', (e) => {
-					const rect = slider.getBoundingClientRect();
-					const offsetX = e.clientX - rect.left;
-					const percentage = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
-					thumb.style.left = `${percentage}%`;
+				// Toggle dropdown visibility
+				button.addEventListener('click', () => {
+					list.style.display = list.style.display === 'block' ? 'none' : 'block';
+				});
+
+				// Select an item
+				items.forEach(item => {
+					item.addEventListener('click', () => {
+						button.textContent = item.textContent;
+						button.setAttribute('data-value', item.getAttribute('data-value'));
+						list.style.display = 'none';
+					});
+				});
+
+				// Close dropdown if clicked outside
+				document.addEventListener('click', (e) => {
+					if (!dropdown.contains(e.target)) {
+						list.style.display = 'none';
+					}
 				});
 			});
 		}
