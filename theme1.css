@@ -38,9 +38,10 @@ label {
 	position: relative;
 	cursor: pointer;
 	padding-left: 30px;
-	color: var(--primary-color);
+	color: var(--secondary-color);
 	display: flex;
 	align-items: center;
+	font-weight: normal;
 	/* Center text vertically with the checkbox */
 }
 
@@ -91,7 +92,7 @@ label {
 	padding-right: calc(var(--arrow-size) * 2);
 	font-size: 16px;
 	border: 1px solid var(--secondary-color);
-	border-radius: var(--border-radius);
+	border-radius: 0;
 	background-color: var(--secondary-color);
 	color: var(--text-color);
 	cursor: pointer;
