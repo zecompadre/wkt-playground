@@ -1340,9 +1340,10 @@ var app = (function () {
 
 		const tooltip = new ol.Overlay({
 			element: document.getElementById('tooltip'),
-			className: 'ol-tooltip hidden',
-			offset: [15, 15],
-			positioning: 'bottom-left',
+			offset: [0, -15],
+			positioning: 'bottom-center',
+			stopEvent: false,
+			insertFirst: false,
 		});
 		map.addOverlay(tooltip);
 
@@ -1353,16 +1354,14 @@ var app = (function () {
 					return feature;
 				});
 
+				tooltip.getElement().className = 'ol-tooltip hidden';
 				if (feature) {
-					tooltip.getElement().className = 'ol-tooltip hidden';
 					let area = formatArea(feature);
 					if (area !== '') {
 						tooltip.setPosition(event.coordinate);
 						tooltip.getElement().innerHTML = area;
-						tooltip.getElement().className = 'ol-tooltip ol-tooltip-static';
+						tooltip.getElement().className = 'ol-tooltip ol-tooltip-measure';
 					}
-				} else {
-					tooltip.getElement().style.display = 'none';
 				}
 			}
 		});
