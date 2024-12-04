@@ -428,89 +428,8 @@ textarea {
 	margin-left: 1px;
 }
 
-#xtooltip {
-	position: absolute;
-	background: rgba(0, 0, 0, 0.7);
-	/* Semi-transparent background */
-	color: white;
-	/* Text color */
-	padding: 8px 12px;
-	/* Padding inside the tooltip */
-	border-radius: 5px;
-	/* Rounded corners */
-	font-size: 14px;
-	/* Font size */
-	font-family: Arial, sans-serif;
-	/* Font style */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	/* Box shadow for better visibility */
-	pointer-events: none;
-	/* Disable pointer events to avoid interaction interference */
-	white-space: nowrap;
-	/* Prevent text wrapping */
-	z-index: 1000;
-	/* Ensure it appears on top of the map */
-}
-
-/* Tooltip arrow (optional) */
-#xtooltip::after {
-	content: "";
-	position: absolute;
-	border-width: 6px;
-	border-style: solid;
-	border-color: rgba(0, 0, 0, 0.7) transparent transparent transparent;
-	/* Arrow color */
-	top: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-}
-
-/* Cool modern tooltip style */
-#zztooltip {
-	position: absolute;
-	background: linear-gradient(135deg, rgba(45, 45, 45, 0.8), rgba(0, 0, 0, 0.6));
-	/* Gradient background */
-	color: #f0f0f0;
-	/* Light grey text for contrast */
-	padding: 12px 16px;
-	/* Slightly larger padding for more space */
-	border-radius: 8px;
-	/* Rounded corners for a smooth look */
-	font-size: 16px;
-	/* Slightly larger text */
-	font-family: 'Helvetica Neue', sans-serif;
-	/* Modern font */
-	font-weight: bold;
-	/* Bold text for emphasis */
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-	/* Soft shadow for a 3D effect */
-	pointer-events: none;
-	/* Avoid interfering with map interactions */
-	z-index: 1000;
-	/* Make sure it shows above other elements */
-	white-space: nowrap;
-	/* Prevent text wrapping */
-	transition: all 0.2s ease-in-out;
-	/* Smooth transition effect */
-}
-
-/* Tooltip arrow - sleek triangle with rounded edges */
-#vtooltip::after {
-	content: "";
-	position: absolute;
-	border-width: 10px;
-	border-style: solid;
-	border-color: transparent transparent rgba(45, 45, 45, 0.8) transparent;
-	/* Gradient color of the tooltip */
-	top: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-}
-
-/* Tooltip fade-in effect */
-#zztooltip.fade-in {
-	opacity: 0;
-	animation: fadeIn 0.3s forwards;
+.hidden {
+	display: none;
 }
 
 .ol-tooltip {
@@ -551,14 +470,4 @@ textarea {
 
 .ol-tooltip-static:before {
 	border-top-color: #ffcc33;
-}
-
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
 }
