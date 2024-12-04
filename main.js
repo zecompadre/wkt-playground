@@ -1354,12 +1354,12 @@ var app = (function () {
 				});
 
 				if (feature) {
-					tooltip.className = 'ol-tooltip hidden';
+					tooltip.getElement().className = 'ol-tooltip hidden';
 					let area = formatArea(feature);
 					if (area !== '') {
 						tooltip.setPosition(event.coordinate);
 						tooltip.getElement().innerHTML = area;
-						tooltip.className = 'ol-tooltip ol-tooltip-static';
+						tooltip.getElement().className = 'ol-tooltip ol-tooltip-static';
 					}
 				} else {
 					tooltip.getElement().style.display = 'none';
