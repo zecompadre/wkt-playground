@@ -295,7 +295,7 @@ textarea {
 		border-radius: 50%;
 		width: 17px;
 		height: 17px;
-		background: var(--ab, var(--border));
+		background: var(--ab, var(--color-theme-primary));
 		transform: translateX(var(--x, 0));
 	}
 
