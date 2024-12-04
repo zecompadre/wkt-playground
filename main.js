@@ -1225,67 +1225,68 @@ var app = (function () {
 	 */
 	class WKTUtilities {
 		/**
-		 * Loads WKT data from localStorage into the map.
+		 * Internal variable to hold the WKTs array.
+		 */
+		static wkts = [];
+
+		/**
+		 * Loads WKT data from localStorage and updates the internal wkts variable.
 		 */
 		static load() {
-			let wkts = "[]";
 			if (settings.getSettingById('wkt-presistent')) {
-				wkts = localStorage.getItem(lfkey) || "[]";
+				const storedData = localStorage.getItem(lfkey) || "[]";
+				this.wkts = JSON.parse(storedData);
+			} else {
+				this.wkts = [];
 			}
-			map.set("wkts", JSON.parse(wkts));
+			map.set("wkts", this.wkts); // Sync with the map
+			console.log("Loaded WKTs:", this.wkts);
 		}
 
 		/**
-		 * Removes a WKT entry from the map by its ID.
+		 * Saves the current WKT data to localStorage and syncs with the map.
+		 */
+		static save() {
+			if (settings.getSettingById('wkt-presistent')) {
+				localStorage.setItem(lfkey, JSON.stringify(this.wkts));
+			}
+			map.set("wkts", this.wkts); // Update the map's WKT collection
+			console.log("Saved WKTs:", this.wkts);
+		}
+
+		/**
+		 * Removes a WKT entry by its ID.
 		 * @param {string} id - The ID of the WKT to remove.
 		 */
 		static remove(id) {
-			let wkts = map.get("wkts");
-			wkts = wkts.filter((item) => item.id !== id);
-			this.save(wkts);
+			this.wkts = this.wkts.filter((item) => item.id !== id);
+			this.save();
+			console.log(`Removed WKT with ID: ${id}`);
 		}
 
 		/**
-		 * Saves the current WKT data from the map into localStorage.
-		 */
-		static save(wkts) {
-			if (settings.getSettingById('wkt-presistent')) {
-				localStorage.setItem(lfkey, JSON.stringify(wkts));
-			}
-			map.set("wkts", wkts); // Update the map's WKT collection
-		}
-
-		/**
-		 * Adds a new WKT entry for a given feature after generating a checksum to ensure uniqueness.
-		 * Assigns the checksum as the feature's ID.
+		 * Adds a new WKT entry for a given feature after generating a checksum.
 		 * @param {ol.Feature} feature - The OpenLayers feature to add.
 		 * @async
 		 */
 		static async add(feature) {
 			try {
-				// Convert the feature into its WKT representation
 				const wkt = utilities.getFeatureWKT(feature);
 
 				if (!wkt) {
 					throw new Error("Feature WKT is undefined or invalid.");
 				}
 
-				// Generate a checksum for the WKT
 				const checksum = await utilities.generateChecksum(wkt);
 
-				// Retrieve current WKTs from the map or initialize an empty array
-				const wkts = map.get("wkts") || [];
-
 				// Check if the WKT already exists based on the checksum
-				const exists = wkts.some((item) => item.id === checksum);
-
-				// Set the checksum as the feature's ID
-				feature.setId(checksum);
-
-				// Add the new WKT to the collection if it does not already exist
-				if (!exists) {
-					wkts.push({ id: checksum, wkt });
-					this.save(wkts); // Persist changes to localStorage
+				if (!this.wkts.some((item) => item.id === checksum)) {
+					this.wkts.push({ id: checksum, wkt });
+					feature.setId(checksum); // Assign checksum as feature ID
+					this.save(); // Persist changes
+					console.log("Added new WKT:", { id: checksum, wkt });
+				} else {
+					console.log("WKT already exists with ID:", checksum);
 				}
 			} catch (error) {
 				console.error("Error adding WKT:", error.message);
@@ -1293,11 +1294,11 @@ var app = (function () {
 		}
 
 		/**
-		 * Retrieves all WKT entries from the map.
+		 * Retrieves all WKT entries.
 		 * @returns {Array} - An array of WKT objects.
 		 */
 		static get() {
-			return map.get("wkts") || [];
+			return this.wkts;
 		}
 
 		/**
@@ -1306,13 +1307,14 @@ var app = (function () {
 		 * @param {string} wkt - The updated WKT string.
 		 */
 		static update(id, wkt) {
-			const wkts = map.get("wkts") || [];
-			wkts.forEach((item) => {
-				if (item.id === id) {
-					item.wkt = wkt;
-				}
-			});
-			this.save(wkts);
+			const updated = this.wkts.find((item) => item.id === id);
+			if (updated) {
+				updated.wkt = wkt;
+				this.save();
+				console.log(`Updated WKT with ID: ${id}`, updated);
+			} else {
+				console.warn(`WKT with ID: ${id} not found.`);
+			}
 		}
 	}
 
