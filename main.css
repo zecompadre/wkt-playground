@@ -184,11 +184,11 @@ textarea {
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
 	.settings div.themed input[type=checkbox] {
-		--active: #275EFE;
+		--active: var(--color-theme-primary);
 		--active-inner: #fff;
 		--focus: 2px rgba(39, 94, 254, .3);
 		--border: #BBC1E1;
-		--border-hover: #275EFE;
+		--border-hover: var(--color-theme-primary);
 		--background: #fff;
 		--disabled: #F6F8FF;
 		--disabled-inner: #E1E6F9;
@@ -322,7 +322,7 @@ textarea {
 
 	/* styling */
 	background-color: white;
-	border: thin solid blue;
+	border: thin solid var(--color-theme-primary);
 	border-radius: 4px;
 	display: inline-block;
 	font: inherit;
@@ -343,8 +343,8 @@ textarea {
 
 .settings div.themed select.classic {
 	background-image:
-		linear-gradient(45deg, transparent 50%, blue 50%),
-		linear-gradient(135deg, blue 50%, transparent 50%),
+		linear-gradient(45deg, transparent 50%, var(--color-theme-primary) 50%),
+		linear-gradient(135deg, var(--color-theme-primary) 50%, transparent 50%),
 		linear-gradient(to right, skyblue, skyblue);
 	background-position:
 		calc(100% - 20px) calc(1em + 2px),
