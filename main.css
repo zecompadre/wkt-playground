@@ -12,8 +12,8 @@
 	--text-area-color: #495057;
 	--border-color-focused-textarea: #80bdff;
 	--box-shadow-text-area: rgba(0, 123, 255, .25);
-	--primary-header-color: #333;
-	--map-background-color: #ddd;
+	--primary-text-color: #333;
+	--site-background-color: #ddd;
 	--button-hover-background: rgb(0 0 0 / 5%);
 	--button-divider-color: #0000001c;
 	--header-color-text: #9ca3af;
@@ -61,13 +61,13 @@ textarea {
 	width: var(--map-width);
 	max-width: 100%;
 	max-height: 100%;
-	background-color: var(--map-background-color);
+	background-color: var(--site-background-color);
 }
 
 #controls {
 	width: var(--controls-width);
 	max-height: 100%;
-	background-color: var(--controls-background);
+	background-color: var(--site-background-color);
 }
 
 #controls #header {
@@ -161,7 +161,7 @@ textarea {
 .tab-pane {
 	display: none;
 	position: relative;
-	color: var(--color-base-white);
+	color: var(--primary-text-color);
 	max-height: 30%;
 	overflow-y: auto;
 	-webkit-box-flex: 1;
