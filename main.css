@@ -169,7 +169,8 @@ textarea {
 	background-color: var(--button-hover-background);
 }
 
-.tab-buttons button.active .tab-buttons button.active:hover {
+.tab-buttons button.active,
+.tab-buttons button.active:hover {
 	background-color: var(--color-theme-primary);
 	color: var(--color-base-white);
 	margin-bottom: calc(var(--button-size) - 33px) !important;
