@@ -40,7 +40,7 @@ label {
 	position: relative;
 	cursor: pointer;
 	padding-left: 30px;
-	color: var(--secondary-color);
+	color: var(--text-color);
 	display: flex;
 	align-items: center;
 	font-weight: normal;
@@ -56,7 +56,7 @@ label {
 	/* Center the checkbox */
 	width: 18px;
 	height: 18px;
-	border: 0 solid var(--primary-color);
+	border: 1 solid var(--text-color);
 	border-radius: var(--border-radius);
 	background: #fff;
 	transition: background 0.3s, border 0.3s;
