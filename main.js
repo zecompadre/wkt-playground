@@ -17,9 +17,10 @@ var app = (function () {
 	}
 
 	class SettingsManager {
-		constructor(containerId, storageKey) {
+		constructor(containerId, storageKey, callbacks = []) {
 			this.container = document.getElementById(containerId);
 			this.storageKey = storageKey;
+			this.callbacks = callbacks; // Lista de callbacks no formato especificado
 
 			if (!this.container) {
 				throw new Error("Container not found");
@@ -70,11 +71,25 @@ var app = (function () {
 			return settings[id] !== undefined ? settings[id] : null;
 		}
 
-		// Adicionar ouvintes de evento para salvar automaticamente em mudanças
+		// Adicionar ouvintes de eventos para os elementos baseados nos callbacks
 		attachEventListeners() {
-			this.container.querySelectorAll('input, select').forEach((element) => {
-				element.addEventListener('change', () => this.saveSettings());
+			this.callbacks.forEach(({ id, type, callback }) => {
+				const element = this.container.querySelector(`#${id}`);
+				if (element) {
+					element.addEventListener(type, (e) => callback(e, this));
+				}
 			});
+		}
+
+		// Adicionar um novo evento com callback dinamicamente
+		addEvent(elementId, eventType, eventCallback) {
+			this.callbacks.push({ id: elementId, type: eventType, callback: eventCallback });
+
+			// Garantir que o novo evento seja aplicado ao elemento correspondente
+			const element = this.container.querySelector(`#${elementId}`);
+			if (element) {
+				element.addEventListener(eventType, (e) => eventCallback(e, this));
+			}
 		}
 	}
 
@@ -365,7 +380,7 @@ var app = (function () {
 
 	const loading = new Loading({ dotCount: 4, dotSize: 25 });
 
-	let settings = null;
+	let settingsManager = null;
 
 	const translator = new Translation();
 
@@ -1233,7 +1248,7 @@ var app = (function () {
 		 * Loads WKT data from localStorage and updates the internal wkts variable.
 		 */
 		static load() {
-			if (settings.getSettingById('wkt-presistent')) {
+			if (settingsManager.getSettingById('wkt-presistent')) {
 				const storedData = localStorage.getItem(lfkey) || "[]";
 				this.wkts = JSON.parse(storedData);
 			} else {
@@ -1247,7 +1262,7 @@ var app = (function () {
 		 * Saves the current WKT data to localStorage and syncs with the map.
 		 */
 		static save() {
-			if (settings.getSettingById('wkt-presistent')) {
+			if (settingsManager.getSettingById('wkt-presistent')) {
 				localStorage.setItem(lfkey, JSON.stringify(this.wkts));
 			}
 			map.set("wkts", this.wkts); // Update the map's WKT collection
@@ -1369,7 +1384,7 @@ var app = (function () {
 
 		map.on('pointermove', function (event) {
 
-			if (settings.getSettingById('show-area')) {
+			if (settingsManager.getSettingById('show-area')) {
 				const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
 					return feature;
 				});
@@ -1789,7 +1804,10 @@ var app = (function () {
 			const tabContainer = document.querySelector('#controls');
 			if (tabContainer) new TabSystem(tabContainer);
 
-			settings = new SettingsManager('settingsContainer', 'wkt-settings');
+			settingsManager = new SettingsManager('settingsContainer', 'wkt-settings');
+			settingsManager.addEvent('wkt-presistent', 'change', (e, manager) => {
+				console.log('O campo email foi alterado para:', e.target.value);
+			});
 
 			mapUtilities.loadWKTs(true);
 
