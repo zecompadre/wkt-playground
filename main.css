@@ -68,7 +68,8 @@ textarea {
 	width: var(--controls-width);
 	max-height: 100%;
 	background-color: var(--site-background-color);
-	border-left: 2px solid var(--button-divider-color);
+	border-left: 5px solid var(--button-divider-color);
+	box-shadow: -4px 0 4px rgba(0, 0, 0, 0.3);
 }
 
 #controls #header {
