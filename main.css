@@ -130,7 +130,9 @@ textarea {
 .tab-buttons {
 	display: flex;
 	justify-content: space-between;
-	padding: 0 10px;
+	margin: 0 10px;
+	background-color: var(--color-base-white);
+	box-shadow: var(--navbar-shadow);
 }
 
 .tab-buttons button {
@@ -144,11 +146,23 @@ textarea {
 	background-color: #f0f0f0;
 	cursor: pointer;
 	border-radius: 5px 5px 0 0;
+	pointer-events: auto;
+	background-color: transparent;
+	border: 0;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	height: var(--button-size);
+	outline: none;
+	padding: 0;
+	width: var(--button-size);
+	margin: 0;
+	border-radius: 0;
+	border-right: 1px solid var(--button-divider-color);
 }
 
 .tab-buttons button:not(:last-child) {
-	margin-right: 2px;
-	/* Espaço entre botões (opcional) */
+	border-right: 1px solid var(--button-divider-color);
 }
 
 .tab-buttons button.active {
@@ -180,34 +194,13 @@ textarea {
 	display: block;
 }
 
-.tab-buttons {
-	margin: 0 10px;
-	background-color: var(--color-base-white);
-	box-shadow: var(--navbar-shadow);
-}
-
-.tab-buttons button {
-	pointer-events: auto;
-	background-color: transparent;
-	border: 0;
-	box-sizing: border-box;
-	cursor: pointer;
-	display: block;
-	height: var(--button-size);
-	outline: none;
-	padding: 0;
-	width: var(--button-size);
-	margin: 0;
-	border-radius: 0;
-	border-right: 1px solid var(--button-divider-color);
-	/* Adjust color and style as needed */
-}
+.tab-buttons button {}
 
 .tab-buttons button.active {
+	margin-bottom: calc(var(--button-size) - 33px) !important;
 	background-color: #0AF;
 	color: #fff;
 }
-
 
 .tab-buttons button:hover {
 	background-color: var(--button-hover-background);
@@ -218,11 +211,9 @@ textarea {
 	margin-bottom: calc(var(--button-size) - 33px) !important;
 } */
 
-
 .tab-buttons button:hover {
 	background-color: var(--button-hover-background);
 }
-
 
 .ol-bar .ol-button {
 	border-radius: 0;
