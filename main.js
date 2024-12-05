@@ -73,6 +73,12 @@ var app = (function () {
 
 		// Adicionar ouvintes de eventos para os elementos baseados nos callbacks
 		attachEventListeners() {
+
+			// Garantir que todos os inputs e selects tenham eventos padrão para salvar configurações
+			this.container.querySelectorAll('input, select').forEach((element) => {
+				element.addEventListener('change', () => this.saveSettings());
+			});
+
 			this.callbacks.forEach(({ id, type, callback }) => {
 				const element = this.container.querySelector(`#${id}`);
 				if (element) {
