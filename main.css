@@ -73,7 +73,7 @@ textarea {
 
 #controls #header {
 	text-align: center;
-	border-bottom: 2px solid var(--button-divider-color);
+	/* border-bottom: 2px solid var(--button-divider-color); */
 }
 
 #controls #header img {
@@ -179,6 +179,50 @@ textarea {
 .tab-pane.active {
 	display: block;
 }
+
+.tab-buttons {
+	margin: 0 10px;
+	background-color: var(--color-base-white);
+	box-shadow: var(--navbar-shadow);
+}
+
+.tab-buttons button {
+	pointer-events: auto;
+	background-color: transparent;
+	border: 0;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	height: var(--button-size);
+	outline: none;
+	padding: 0;
+	width: var(--button-size);
+	margin: 0;
+	border-radius: 0;
+	border-right: 1px solid var(--button-divider-color);
+	/* Adjust color and style as needed */
+}
+
+.tab-buttons button.active {
+	background-color: #0AF;
+	color: #fff;
+}
+
+
+.tab-buttons button:hover {
+	background-color: var(--button-hover-background);
+}
+
+/* .ol-toggle.ol-active>button {
+	height: calc(var(--button-size) - 3px) !important;
+	margin-bottom: calc(var(--button-size) - 33px) !important;
+} */
+
+
+.tab-buttons button:hover {
+	background-color: var(--button-hover-background);
+}
+
 
 .ol-bar .ol-button {
 	border-radius: 0;
