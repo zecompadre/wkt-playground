@@ -1806,7 +1806,8 @@ var app = (function () {
 
 			settingsManager = new SettingsManager('settingsContainer', 'wkt-settings');
 			settingsManager.addEvent('wkt-presistent', 'change', (e, manager) => {
-				console.log('O campo email foi alterado para:', e.target.value);
+				console.log('O campo "kt-presistent" foi alterado para:', e.target.checked);
+				WKTUtilities.save();
 			});
 
 			mapUtilities.loadWKTs(true);
