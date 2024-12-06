@@ -1345,8 +1345,10 @@ var app = (function () {
 				await featureUtilities.addFeatures();
 				await self.reviewLayout(!frompaste);
 
-				if (frompaste && newFeature) {
-					featureUtilities.centerOnFeature(newFeature);
+				console.log(newfeature);
+
+				if (frompaste && newfeature) {
+					featureUtilities.centerOnFeature(newfeature);
 				}
 
 			} catch (error) {
