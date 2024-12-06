@@ -79,6 +79,8 @@ textarea {
 
 #controls #header img {
 	margin: 10px;
+	width: 100%;
+	height: auto;
 }
 
 #controls textarea {
