@@ -70,7 +70,7 @@ label {
 .ui-checkbox input:checked+label::after {
 	content: "✔";
 	position: absolute;
-	left: 4px;
+	left: 5px;
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: var(--font-size);
