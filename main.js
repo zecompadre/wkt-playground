@@ -939,7 +939,7 @@ var app = (function () {
 		 */
 		paste: async () => {
 			try {
-				await mapUtilities.loadWKTs(true);
+				await mapUtilities.loadWKTs(true, true);
 				await mapUtilities.reviewLayout(true);
 			} catch (error) {
 				console.error("Error pasting WKT:", error);
@@ -1303,7 +1303,7 @@ var app = (function () {
 		 * @param {boolean} [readcb=false] - If true, reads WKT from clipboard before processing.
 		 * @returns {Promise<void>} - An asynchronous function that updates the map and layout.
 		 */
-		loadWKTs: async function (readcb = false) {
+		loadWKTs: async function (readcb = false, frompaste = false) {
 			const self = this; // Capture the correct context
 
 			try {
@@ -1336,7 +1336,7 @@ var app = (function () {
 				// Add the new WKT if it doesn't exist
 				if (wkt && !exists) {
 					wkts.push({ id: checksum, wkt });
-					featureUtilities.addToFeatures(checksum, wkt, true);
+					featureUtilities.addToFeatures(checksum, wkt, frompaste);
 				}
 
 				// Save the updated WKT list
@@ -1345,7 +1345,7 @@ var app = (function () {
 
 				// Add features to the map and review layout
 				await featureUtilities.addFeatures();
-				await self.reviewLayout(true);
+				await self.reviewLayout(!frompaste);
 
 			} catch (error) {
 				console.error('Error loading WKTs:', error);
@@ -1834,7 +1834,7 @@ var app = (function () {
 					WKTUtilities.clear(false, true);
 			});
 
-			mapUtilities.loadWKTs(true);
+			mapUtilities.loadWKTs(true, false);
 
 			/**
 			 * Obtém o endereço IP do usuário e sua localização geográfica (latitude e longitude).
