@@ -940,7 +940,7 @@ var app = (function () {
 		paste: async () => {
 			try {
 				await mapUtilities.loadWKTs(true, true);
-				await mapUtilities.reviewLayout(false);
+				//await mapUtilities.reviewLayout(false);
 			} catch (error) {
 				console.error("Error pasting WKT:", error);
 			}
@@ -1135,7 +1135,7 @@ var app = (function () {
 		 * 
 		 * @returns {void}
 		 */
-		addToFeatures: (id, wkt, center) => {
+		addToFeatures: (id, wkt) => {
 			let newFeature;
 			const wktString = wkt || textarea.value;
 			center = center || false;
@@ -1171,12 +1171,11 @@ var app = (function () {
 			newFeature.setId(id);
 			featureCollection.push(newFeature);
 
-			if (center)
-				featureUtilities.centerOnFeature(newFeature);
-
 			// Reset the textarea style on successful feature addition
 			textarea.style.borderColor = "";
 			textarea.style.backgroundColor = "";
+
+			return newFeature;
 		}
 	};
 
@@ -1305,7 +1304,7 @@ var app = (function () {
 		 */
 		loadWKTs: async function (readcb = false, frompaste = false) {
 			const self = this; // Capture the correct context
-
+			let newfeature = null;
 			try {
 				// Load existing WKT entries from localStorage
 				WKTUtilities.load();
@@ -1336,7 +1335,7 @@ var app = (function () {
 				// Add the new WKT if it doesn't exist
 				if (wkt && !exists) {
 					wkts.push({ id: checksum, wkt });
-					featureUtilities.addToFeatures(checksum, wkt, frompaste);
+					newfeature = featureUtilities.addToFeatures(checksum, wkt);
 				}
 
 				// Save the updated WKT list
@@ -1347,11 +1346,14 @@ var app = (function () {
 				await featureUtilities.addFeatures();
 				await self.reviewLayout(!frompaste);
 
+				if (frompaste && newFeature) {
+					featureUtilities.centerOnFeature(newFeature);
+				}
+
 			} catch (error) {
 				console.error('Error loading WKTs:', error);
 			}
 		}
-
 	};
 
 	/**
