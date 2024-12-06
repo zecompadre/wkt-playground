@@ -940,7 +940,7 @@ var app = (function () {
 		paste: async () => {
 			try {
 				await mapUtilities.loadWKTs(true, true);
-				await mapUtilities.reviewLayout(true);
+				await mapUtilities.reviewLayout(false);
 			} catch (error) {
 				console.error("Error pasting WKT:", error);
 			}
