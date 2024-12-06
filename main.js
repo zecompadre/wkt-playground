@@ -1135,7 +1135,7 @@ var app = (function () {
 		 * 
 		 * @returns {void}
 		 */
-		addToFeatures: function (id, wkt) {
+		addToFeatures: function (id, wkt, center) {
 			let newFeature;
 			const wktString = wkt || textarea.value;
 
@@ -1169,6 +1169,9 @@ var app = (function () {
 			// Set the feature's unique ID and add it to the feature collection
 			newFeature.setId(id);
 			featureCollection.push(newFeature);
+
+			if (center)
+				featureUtilities.centerOnFeature(newFeature);
 
 			// Reset the textarea style on successful feature addition
 			textarea.style.borderColor = "";
@@ -1332,7 +1335,7 @@ var app = (function () {
 				// Add the new WKT if it doesn't exist
 				if (wkt && !exists) {
 					wkts.push({ id: checksum, wkt });
-					featureUtilities.addToFeatures(checksum, wkt);
+					featureUtilities.addToFeatures(checksum, wkt, center);
 				}
 
 				// Save the updated WKT list
