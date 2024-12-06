@@ -1336,7 +1336,7 @@ var app = (function () {
 				// Add the new WKT if it doesn't exist
 				if (wkt && !exists) {
 					wkts.push({ id: checksum, wkt });
-					featureUtilities.addToFeatures(checksum, wkt, center);
+					featureUtilities.addToFeatures(checksum, wkt, true);
 				}
 
 				// Save the updated WKT list
