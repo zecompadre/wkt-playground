@@ -1138,7 +1138,6 @@ var app = (function () {
 		addToFeatures: (id, wkt) => {
 			let newFeature;
 			const wktString = wkt || textarea.value;
-			center = center || false;
 
 			// Check if WKT string is empty
 			if (wktString === "") {
