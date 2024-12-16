@@ -1058,7 +1058,7 @@ var app = (function () {
 				console.warn('No valid polygons or multipolygons found to create a MultiPolygon.');
 			}
 		},
-		convertFeaturesToWKT: function (vectorLayer) {
+		convertFeaturesToWKT: (vectorLayer) => {
 			const source = vectorLayer.getSource();
 			const features = source.getFeatures();
 
@@ -1072,14 +1072,15 @@ var app = (function () {
 			features.forEach(function (feature) {
 				try {
 					// Get the geometry of the feature
-					const geometry = feature.getGeometry().transform(projections.mercator, projections.geodetic);
+					const geometry = feature.getGeometry();
 
 					// Check if the geometry exists
 					if (geometry) {
 						// Convert the geometry to WKT
-						const wktRepresentation = wktFormat.writeGeometry(geometry, {
-							decimals: 4
-						});
+
+						geometry.transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+
+						const wktRepresentation = wktFormat.writeGeometry(geometry);
 
 						// Add the WKT representation to the array
 						wktRepresentations.push(wktRepresentation);
