@@ -1044,6 +1044,9 @@ var app = (function () {
 		createFromAllFeatures: () => {
 
 			var wkt = featureUtilities.convertFeaturesToWKT(vectorLayer);
+
+
+
 			textarea.value = wkt[0];
 			return;
 			const multi = featureUtilities.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
@@ -1077,7 +1080,8 @@ var app = (function () {
 					// Check if the geometry exists
 					if (geometry) {
 						// Convert the geometry to WKT
-						const wktRepresentation = wktFormat.writeGeometry(geometry);
+						const geo = geometry.transform(projections.mercator, projections.geodetic);
+						const wktRepresentation = wktFormat.writeGeometry(geo);
 
 						// Add the WKT representation to the array
 						wktRepresentations.push(wktRepresentation);
