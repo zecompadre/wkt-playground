@@ -1077,15 +1077,11 @@ var app = (function () {
 					// Check if the geometry exists
 					if (geometry) {
 						// Convert the geometry to WKT
-
 						const geom = geometry.clone();
-
-						geom.transform(projections.mercator, projections.geodetic, {
+						geom.transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+						const wktRepresentation = wktFormat.writeGeometry(geom, {
 							decimals: 5
-						}); // Transform the geometry to Geodetic
-
-						const wktRepresentation = wktFormat.writeGeometry(geom);
-
+						});
 						// Add the WKT representation to the array
 						wktRepresentations.push(wktRepresentation);
 					}
