@@ -1043,7 +1043,7 @@ var app = (function () {
 		 */
 		createFromAllFeatures: () => {
 
-			console.log(featureUtilities.convertFeaturesToWKT(vectorLayer.getSource().getFeatures()));
+			console.log(featureUtilities.convertFeaturesToWKT(vectorLayer));
 
 			const multi = featureUtilities.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
 
