@@ -972,7 +972,7 @@ var app = (function () {
 
 				const text = await navigator.clipboard.readText();
 
-				console.log("readClipboard", text);
+				//console.log("readClipboard", text);
 
 				if (text.includes("POLYGON")) {
 					returnVal = text;
@@ -1160,7 +1160,7 @@ var app = (function () {
 			// Filter for features of type 'Polygon' or 'MultiPolygon'
 			const polygons = features.filter((f) => ['Polygon', 'MultiPolygon'].includes(f.getGeometry().getType()));
 
-			console.log("polygons.length", polygons.length);
+			//console.log("polygons.length", polygons.length);
 
 
 			// If no polygons were found, return null
@@ -1443,7 +1443,7 @@ var app = (function () {
 				await featureUtilities.addFeatures();
 				await self.reviewLayout(!frompaste);
 
-				console.log(newfeature);
+				//console.log(newfeature);
 
 				if (frompaste && newfeature) {
 					featureUtilities.centerOnFeature(newfeature);
@@ -1708,7 +1708,7 @@ var app = (function () {
 					} else {
 						var feature = features.item(0);
 
-						console.log(feature, feature.getId());
+						//console.log(feature, feature.getId());
 
 						WKTUtilities.remove(feature.getId());
 						for (var i = 0, f; f = features.item(i); i++) {
@@ -1943,7 +1943,7 @@ var app = (function () {
 
 			settingsManager = new SettingsManager('settingsContainer', 'wkt-settings');
 			settingsManager.addEvent('wkt-presistent', 'change', (e, manager) => {
-				console.log('O campo "kt-presistent" foi alterado para:', e.target.checked);
+				console.log('O campo "wkt-presistent" foi alterado para:', e.target.checked);
 				if (e.target.checked)
 					WKTUtilities.save();
 				else
