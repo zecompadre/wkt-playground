@@ -1075,13 +1075,12 @@ var app = (function () {
 			features.forEach(function (feature) {
 				try {
 					// Get the geometry of the feature
-					const geometry = feature.getGeometry();
+					const geometry = feature.getGeometry().transform(projections.mercator, projections.geodetic);
 
 					// Check if the geometry exists
 					if (geometry) {
 						// Convert the geometry to WKT
-						const geo = geometry.transform(projections.mercator, projections.geodetic);
-						const wktRepresentation = wktFormat.writeGeometry(geo);
+						const wktRepresentation = wktFormat.writeGeometry(geometry);
 
 						// Add the WKT representation to the array
 						wktRepresentations.push(wktRepresentation);
