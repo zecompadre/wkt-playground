@@ -1078,9 +1078,11 @@ var app = (function () {
 					if (geometry) {
 						// Convert the geometry to WKT
 
-						geometry.transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+						const geom = geometry.clone();
 
-						const wktRepresentation = wktFormat.writeGeometry(geometry);
+						geom.transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+
+						const wktRepresentation = wktFormat.writeGeometry(geom);
 
 						// Add the WKT representation to the array
 						wktRepresentations.push(wktRepresentation);
