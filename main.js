@@ -1277,7 +1277,7 @@ var app = (function () {
 
 				if (featureCount > 0) {
 					// Features exist: update layout and controls accordingly
-					featureUtilities.createFromAllFeatures();
+					//featureUtilities.createFromAllFeatures();
 					mapControls.centerObjectsBtn.setVisible(true);
 				} else {
 					// No features: adjust layout and hide controls
