@@ -1042,13 +1042,51 @@ var app = (function () {
 		 * @returns {void} This method does not return a value. It modifies the textarea input value.
 		 */
 		createFromAllFeatures: () => {
+
+			console.log(featureUtilities.convertFeaturesToWKT(vectorLayer.getSource().getFeatures()));
+
 			const multi = featureUtilities.featuresToMultiPolygon(); // Get MultiPolygon geometry from all features
+
+
+			//const features = vectorLayer.getSource().getFeatures();
+
 			if (multi) {
 				const geo = multi.getGeometry().transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
 				textarea.value = format.writeGeometry(geo); // Write the WKT representation to textarea
 			} else {
 				console.warn('No valid polygons or multipolygons found to create a MultiPolygon.');
 			}
+		},
+		convertFeaturesToWKT: function (vectorLayer) {
+			const source = vectorLayer.getSource();
+			const features = source.getFeatures();
+
+			// Create a WKT format object
+			const wktFormat = new ol.format.WKT();
+
+			// Initialize an empty array to store WKT representations
+			const wktRepresentations = [];
+
+			// Iterate through each feature
+			features.forEach(function (feature) {
+				try {
+					// Get the geometry of the feature
+					const geometry = feature.getGeometry();
+
+					// Check if the geometry exists
+					if (geometry) {
+						// Convert the geometry to WKT
+						const wktRepresentation = wktFormat.writeGeometry(geometry);
+
+						// Add the WKT representation to the array
+						wktRepresentations.push(wktRepresentation);
+					}
+				} catch (error) {
+					console.error(`Error converting feature ${feature.getId()} to WKT:`, error);
+				}
+			});
+
+			return wktRepresentations;
 		},
 		/**
 		 * Centers and zooms the map view to fit the provided feature's geometry.
