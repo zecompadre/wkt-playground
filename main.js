@@ -1121,6 +1121,9 @@ var app = (function () {
 			// Filter for features of type 'Polygon' or 'MultiPolygon'
 			const polygons = features.filter((f) => ['Polygon', 'MultiPolygon'].includes(f.getGeometry().getType()));
 
+			console.log("polygons.length", polygons.length);
+
+
 			// If no polygons were found, return null
 			if (polygons.length === 0) return null;
 
@@ -1277,7 +1280,7 @@ var app = (function () {
 
 				if (featureCount > 0) {
 					// Features exist: update layout and controls accordingly
-					//featureUtilities.createFromAllFeatures();
+					featureUtilities.createFromAllFeatures();
 					mapControls.centerObjectsBtn.setVisible(true);
 				} else {
 					// No features: adjust layout and hide controls
