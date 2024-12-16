@@ -1080,7 +1080,9 @@ var app = (function () {
 
 						const geom = geometry.clone();
 
-						geom.transform(projections.mercator, projections.geodetic); // Transform the geometry to Geodetic
+						geom.transform(projections.mercator, projections.geodetic, {
+							decimals: 5
+						}); // Transform the geometry to Geodetic
 
 						const wktRepresentation = wktFormat.writeGeometry(geom);
 
