@@ -1444,16 +1444,15 @@ var app = (function () {
 						newfeature = featureUtilities.addToFeatures(checksum, wkt);
 					}
 
-					// Save the updated WKT list
-					map.set("wkts", wkts);
-
-					WKTUtilities.save();
-
-					// Add features to the map and review layout
-					await featureUtilities.addFeatures();
-
-
 				});
+
+				// Save the updated WKT list
+				map.set("wkts", wkts);
+
+				WKTUtilities.save();
+
+				// Add features to the map and review layout
+				await featureUtilities.addFeatures();
 
 				await self.reviewLayout(!frompaste);
 
