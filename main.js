@@ -1444,23 +1444,24 @@ var app = (function () {
 						newfeature = featureUtilities.addToFeatures(checksum, wkt);
 					}
 
+				}).then(async () => {
+
+					// Save the updated WKT list
+					map.set("wkts", wkts);
+
+					WKTUtilities.save();
+
+					// Add features to the map and review layout
+					await featureUtilities.addFeatures();
+
+					await self.reviewLayout(!frompaste);
+
+					//console.log(newfeature);
+
+					if (frompaste && newfeature) {
+						featureUtilities.centerOnFeature(newfeature);
+					}
 				});
-
-				// Save the updated WKT list
-				map.set("wkts", wkts);
-
-				WKTUtilities.save();
-
-				// Add features to the map and review layout
-				await featureUtilities.addFeatures();
-
-				await self.reviewLayout(!frompaste);
-
-				//console.log(newfeature);
-
-				if (frompaste && newfeature) {
-					featureUtilities.centerOnFeature(newfeature);
-				}
 
 			} catch (error) {
 				console.error('Error loading WKTs:', error);
