@@ -1407,10 +1407,17 @@ var app = (function () {
 				WKTUtilities.load();
 				let wkts = WKTUtilities.get();
 
+				if (!Array.isArray(wkts)) {
+					wkts = [];
+				}
+
 				// Focus on textarea to prepare for possible WKT paste
 				textarea.focus();
 
 				let wkt = readcb ? await utilities.readClipboard() : "";
+
+				// Ensure wkts is an array
+
 
 				let arrWKT = wkt.split("\n");
 				arrWKT.forEach(async (wkt) => {
@@ -1418,11 +1425,6 @@ var app = (function () {
 
 					// Generate checksum for the WKT string
 					const checksum = await utilities.generateChecksum(wkt);
-
-					// Ensure wkts is an array
-					if (!Array.isArray(wkts)) {
-						wkts = [];
-					}
 
 					// Check for existing WKT entries and add them to features
 					let exists = false;
@@ -1444,12 +1446,15 @@ var app = (function () {
 
 					// Save the updated WKT list
 					map.set("wkts", wkts);
+
 					WKTUtilities.save();
+
+					// Add features to the map and review layout
+					await featureUtilities.addFeatures();
+
 
 				});
 
-				// Add features to the map and review layout
-				await featureUtilities.addFeatures();
 				await self.reviewLayout(!frompaste);
 
 				//console.log(newfeature);
