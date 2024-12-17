@@ -1413,37 +1413,40 @@ var app = (function () {
 				let wkt = readcb ? await utilities.readClipboard() : "";
 
 				let arrWKT = wkt.split("\n");
-				console.dir(arrWKT);
+				arrWKT.forEach(async (wkt) => {
+					console.dir(arrWKT);
 
-				// Generate checksum for the WKT string
-				const checksum = await utilities.generateChecksum(wkt);
+					// Generate checksum for the WKT string
+					const checksum = await utilities.generateChecksum(wkt);
 
-				// Ensure wkts is an array
-				if (!Array.isArray(wkts)) {
-					wkts = [];
-				}
-
-				// Check for existing WKT entries and add them to features
-				let exists = false;
-				wkts.forEach(item => {
-					if (checksum && item.id === checksum) {
-						exists = true;
+					// Ensure wkts is an array
+					if (!Array.isArray(wkts)) {
+						wkts = [];
 					}
-					featureUtilities.addToFeatures(item.id, item.wkt);
-				});
 
-				// Add the new WKT if it doesn't exist
-				if (wkt && !exists) {
-					wkts.push({
-						id: checksum,
-						wkt
+					// Check for existing WKT entries and add them to features
+					let exists = false;
+					wkts.forEach(item => {
+						if (checksum && item.id === checksum) {
+							exists = true;
+						}
+						featureUtilities.addToFeatures(item.id, item.wkt);
 					});
-					newfeature = featureUtilities.addToFeatures(checksum, wkt);
-				}
 
-				// Save the updated WKT list
-				map.set("wkts", wkts);
-				WKTUtilities.save();
+					// Add the new WKT if it doesn't exist
+					if (wkt && !exists) {
+						wkts.push({
+							id: checksum,
+							wkt
+						});
+						newfeature = featureUtilities.addToFeatures(checksum, wkt);
+					}
+
+					// Save the updated WKT list
+					map.set("wkts", wkts);
+					WKTUtilities.save();
+
+				});
 
 				// Add features to the map and review layout
 				await featureUtilities.addFeatures();
