@@ -1420,31 +1420,31 @@ var app = (function () {
 
 
 				let arrWKT = wkt.split("\n");
-				arrWKT.forEach(async (wkt) => {
-					console.dir(arrWKT);
+				(async () => {
+					for (const wkt of arrWKT) {
+						console.dir(arrWKT);
 
-					// Generate checksum for the WKT string
-					const checksum = await utilities.generateChecksum(wkt);
+						// Generate checksum for the WKT string
+						const checksum = await utilities.generateChecksum(wkt);
 
-					// Check for existing WKT entries and add them to features
-					let exists = false;
-					wkts.forEach(item => {
-						if (checksum && item.id === checksum) {
-							exists = true;
-						}
-						featureUtilities.addToFeatures(item.id, item.wkt);
-					});
-
-					// Add the new WKT if it doesn't exist
-					if (wkt && !exists) {
-						wkts.push({
-							id: checksum,
-							wkt
+						// Check for existing WKT entries and add them to features
+						let exists = false;
+						wkts.forEach(item => {
+							if (checksum && item.id === checksum) {
+								exists = true;
+							}
+							featureUtilities.addToFeatures(item.id, item.wkt);
 						});
-						newfeature = featureUtilities.addToFeatures(checksum, wkt);
-					}
 
-				}).then(async () => {
+						// Add the new WKT if it doesn't exist
+						if (wkt && !exists) {
+							wkts.push({
+								id: checksum,
+								wkt
+							});
+							newfeature = featureUtilities.addToFeatures(checksum, wkt);
+						}
+					}
 
 					// Save the updated WKT list
 					map.set("wkts", wkts);
@@ -1456,12 +1456,12 @@ var app = (function () {
 
 					await self.reviewLayout(!frompaste);
 
-					//console.log(newfeature);
+					// console.log(newfeature);
 
 					if (frompaste && newfeature) {
 						featureUtilities.centerOnFeature(newfeature);
 					}
-				});
+				})();
 
 			} catch (error) {
 				console.error('Error loading WKTs:', error);
