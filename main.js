@@ -1412,6 +1412,9 @@ var app = (function () {
 
 				let wkt = readcb ? await utilities.readClipboard() : "";
 
+				let arrWKT = wkt.split("\n");
+				console.dir(arrWKT);
+
 				// Generate checksum for the WKT string
 				const checksum = await utilities.generateChecksum(wkt);
 
