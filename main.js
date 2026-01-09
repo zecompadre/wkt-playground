@@ -8,7 +8,7 @@ var app = (function () {
 		// Enhance native selects
 		initSelects() {
 			document.querySelectorAll('.ui-select').forEach(select => {
-				// Optional: Add additional behaviors or logging if needed
+				// Optional: Add additional behaviors or logging if neededs
 				select.addEventListener('change', (e) => {
 					console.log(`Selected value: ${e.target.value}`);
 				});
